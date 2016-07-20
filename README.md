@@ -8,6 +8,6 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Download
 
-* [Windows 32bit](https://github.com/CoolmanCZ/rajce/release/rajce-1.0.32bit.zip)
-* [Windows 64bit](https://github.com/CoolmanCZ/rajce/release/rajce-1.0.64bit.zip)
+* [Windows 32bit](https://github.com/CoolmanCZ/rajce/blob/master/release/rajce-1.0.32bit.zip)
+* [Windows 64bit](https://github.com/CoolmanCZ/rajce/blob/master/release/rajce-1.0.64bit.zip
 
