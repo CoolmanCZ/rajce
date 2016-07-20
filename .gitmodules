@@ -1,0 +1,10 @@
+[submodule "ultimatepp"]
+	path = ultimatepp
+	url = https://github.com/ultimatepp/mirror.git
+        branch = master
+        ignore = dirty
+[submodule "upp_cmake"]
+	path = upp_cmake
+	url = https://github.com/CoolmanCZ/upp_cmake.git
+        branch = master
+        ignore = dirty

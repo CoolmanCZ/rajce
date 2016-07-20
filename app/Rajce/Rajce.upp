@@ -1,0 +1,22 @@
+description "Download images/videos from albums on rajce.net\377";
+
+uses
+	CtrlLib,
+	Core/SSL;
+
+file
+	"Main package" readonly separator,
+	Rajce.cpp charset "UTF-8",
+	"Header files" readonly separator,
+	Rajce.h charset "UTF-8",
+	ThreadSafeQueue.h charset "UTF-8",
+	mingw.condition_variable.h charset "UTF-8",
+	mingw.mutex.h charset "UTF-8",
+	Resources readonly separator,
+	Rajce.t charset "UTF-8",
+	Rajce.lay,
+	Rajce.rc;
+
+mainconfig
+	"" = "GUI";
+
