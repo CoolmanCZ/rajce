@@ -41,6 +41,10 @@ using namespace Upp;
 #define TFILE <Rajce/Rajce.t>
 #include <Core/t.h>
 
+#define IMAGECLASS RajceImg
+#define IMAGEFILE  <Rajce/Rajce.iml>
+#include <Draw/iml.h>
+
 #define ERR_NO_ERROR  0
 #define ERR_NO_DATA  -1
 #define ERR_OPEN     -2
@@ -78,6 +82,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	FileOut		m_http_file_out;		// download directory with filename
 	String		m_http_file_out_string;	// download directory with filename
 	bool		m_http_started;
+	int			m_current_lang;
 
 	void SelectDownloadDir(void);
 	void Exit(void);
@@ -98,9 +103,11 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void FileProgress(void);
 	void FileStart(void);
 
+	void InitText(void);
 	void ToggleProxy(void);
 	void ToggleAlbum(void);
 	void ToggleDownload(void);
+	void ToggleLang(void);
 };
 
 #endif

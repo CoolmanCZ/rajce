@@ -36,14 +36,16 @@ GUI_APP_MAIN {
 Rajce::Rajce()
 {
 	SetLanguage(GetSystemLNG());
+	Icon(RajceImg::AppLogo());
 
-	m_title_name = t_("Rajce album download");
-	m_download_text = t_("Download progress");
+	m_title_name = "Rajce album download";
+	m_download_text = "Download progress";
 	m_http_started = false;
 
-	Title(m_title_name);
 	CtrlLayout(*this);
 	this->WhenClose = THISBACK(Exit);
+
+	lang.WhenPush = THISBACK(ToggleLang);
 
 	download_dir_select.WhenPush = THISBACK(SelectDownloadDir);
 	download_exit.WhenPush = THISBACK(Exit);
@@ -66,10 +68,12 @@ Rajce::Rajce()
 	http_proxy_pass.Password();
 
 	download_dir <<= Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
-	download_label.SetText(m_download_text);
 	download1_name.SetText("");
 	download1_pi.Set(0,1);
 
+	http_uri.SetText("https://www.rajce.net/");
+
+	ToggleLang();
 	ToggleProxy();
 	ToggleAlbum();
 	ToggleDownload();
@@ -86,7 +90,7 @@ void Rajce::SelectDownloadDir(void)
 
 void Rajce::Exit(void)
 {
-	if (PromptOKCancel(t_("Exit ") + m_title_name + "?")) {
+	if (PromptOKCancel(Format("%s %s?", t_("Exit "), t_(m_title_name)))) {
 		HttpAbort(false);
 		Close();
 	}
@@ -340,7 +344,7 @@ int Rajce::HttpParse(void)
 
 			String dir_param = "images";
 			if (is_video.Find("false") > 0) {
-				dir_param = "videos";
+				dir_param = "video";
 			}
 
 			String full_path = AppendFileName(album_storage, dir_param);
@@ -365,7 +369,7 @@ void Rajce::FileDownload(void)
 	int all_files = q.GetCount();
 
 	while (m_http_started && !q.IsEmpty()) {
-		download_label.SetText(Format("%s %d/%d", m_download_text, processed_files + 1, all_files));
+		download_label.SetText(Format("%s %d/%d", t_(m_download_text), processed_files + 1, all_files));
 
 		QueueData queue_data = q.Pop();;
 		String file_download = UnixPath(queue_data.download_url);
@@ -409,7 +413,7 @@ void Rajce::FileDownload(void)
 		}
 	}
 
-	download_label.SetText(m_download_text);
+	download_label.SetText(t_(m_download_text));
 	download1_name.SetText("");
 	download1_pi.Set(0, 1);
 
@@ -432,7 +436,7 @@ void Rajce::FileProgress(void)
 	if (file_http.GetContentLength() >= 0) {
 		download1_pi.Set((int)file_http_loaded, (int)file_http.GetContentLength());
 	} else {
-		download_label.SetText(m_download_text);
+		download_label.SetText(t_(m_download_text));
 		download1_name.SetText("");
 		download1_pi.Set(0, 1);
 	}
@@ -445,6 +449,42 @@ void Rajce::FileStart(void)
 		DeleteFile(file_http_out_string);
 	}
 	file_http_loaded = 0;
+}
+
+void Rajce::InitText(void)
+{
+	Title(t_(m_title_name));
+
+	http_label.SetLabel(t_("Album settings"));
+	http_uri_text.SetText(t_("Album URL:"));
+	album_user_text.SetText(t_("Album user:"));
+	album_pass_text.SetText(t_("Album password:"));
+	download_text.SetText(t_("Download directory:"));
+	album_authorization.SetLabel(t_("Enable album authorization"));
+	http_proxy_label.SetLabel(t_("HTTP proxy setting"));
+	http_proxy_url_text.SetText(t_("Proxy URL:"));
+	http_proxy_user_text.SetText(t_("Proxy user:"));
+	http_proxy_pass_text.SetText(t_("Proxy password:"));
+	proxy_enabled.SetLabel(t_("Enable HTTP proxy"));
+	download_label.SetText(t_(m_download_text));
+	download_ok.SetLabel(t_("Download"));
+	download_abort.SetLabel(t_("Abort"));
+	download_exit.SetLabel(t_("Exit"));
+}
+
+void Rajce::ToggleLang(void)
+{
+	Size lang_size = lang.GetSize();
+
+	if (m_current_lang == LNG_('C','S','C','Z')) {
+		m_current_lang = LNG_('E','N','U','S');
+		lang.SetImage(Rescale(RajceImg::cz(), lang_size.cx, lang_size.cy));
+	} else {
+		m_current_lang = LNG_('C','S','C','Z');
+		lang.SetImage(Rescale(RajceImg::gb(), lang_size.cx, lang_size.cy));
+	}
+	SetLanguage(m_current_lang);
+	InitText();
 }
 
 void Rajce::ToggleProxy(void)

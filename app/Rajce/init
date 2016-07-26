@@ -2,4 +2,5 @@
 #define _Rajce_icpp_init_stub
 #include "CtrlLib/init"
 #include "Core/SSL/init"
+#include "Draw/init"
 #endif

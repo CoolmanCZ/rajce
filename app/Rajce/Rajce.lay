@@ -26,5 +26,6 @@ LAYOUT(RajceLayout, 492, 308)
 	ITEM(Button, download_ok, SetLabel(t_("Download")).RightPosZ(84, 68).BottomPosZ(8, 20))
 	ITEM(Button, download_abort, SetLabel(t_("Abort")).RightPosZ(84, 68).BottomPosZ(8, 20))
 	ITEM(Button, download_exit, SetLabel(t_("Exit")).RightPosZ(8, 68).BottomPosZ(8, 20))
+	ITEM(Button, lang, LeftPosZ(8, 24).BottomPosZ(13, 15))
 END_LAYOUT
 
