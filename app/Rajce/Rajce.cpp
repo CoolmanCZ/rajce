@@ -297,6 +297,7 @@ int Rajce::HttpParse(void)
 	bool album_storage_found = false;
 	String album_storage;
 	String album_server_dir;
+	String album_user_name;
 
 	while (!in.IsEof()) {
 		txt = in.GetLine();
@@ -328,6 +329,11 @@ int Rajce::HttpParse(void)
 			continue;
 		}
 
+		if (txt.Find("albumUserName") > 0) {
+			album_user_name = HttpGetParameterValue("albumUserName", txt, true);
+			continue;
+		}
+
 		if ((album_storage_found) && (!album_photo_found) && (txt.Find("photos") > 0)) {
 			album_photo_found = true;
 			continue;
@@ -353,6 +359,8 @@ int Rajce::HttpParse(void)
 			QueueData queue_data;
 			queue_data.download_url = full_path;
 			queue_data.download_dir = GetFileDirectory(m_http_file_out_string);
+			if (~append_album_user_name)
+				queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user_name);
 			queue_data.album_server_dir = album_server_dir;
 			q.Push(queue_data);
 			continue;

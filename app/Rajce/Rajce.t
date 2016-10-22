@@ -50,9 +50,6 @@ T_("[= Download complete!&& Files downloaded: ")
 csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
      "soubor\305\257: ")
 
-
-// Rajce.lay
-
 T_("Album settings")
 csCZ("Nastaven\303\255 alba")
 
@@ -68,9 +65,6 @@ csCZ("U\305\276ivatelsk\303\251 heslo:")
 T_("Download directory:")
 csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255:")
 
-T_("...")
-csCZ("")
-
 T_("Enable album authorization")
 csCZ("Povolit u\305\276ivatelskou autorizaci")
 
@@ -79,9 +73,6 @@ csCZ("Nastaven\303\255 HTTP proxy")
 
 T_("Proxy URL:")
 csCZ("Adresa proxy:")
-
-T_(":")
-csCZ("")
 
 T_("Proxy user:")
 csCZ("Proxy u\305\276ivatel:")
@@ -100,3 +91,16 @@ csCZ("Zru\305\241it")
 
 T_("Exit")
 csCZ("Ukon\304\215it")
+
+
+// Rajce.lay
+
+T_("...")
+csCZ("")
+
+T_("Append album user name to download directory")
+csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
+     "pro ulo\305\276en\303\255")
+
+T_(":")
+csCZ("")

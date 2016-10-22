@@ -6,8 +6,7 @@
 # *~
 .svn
 
-GCC.Debug.Debug_Full.*
-GCC4.Debug.Debug_Full.*
+*.Debug.Debug_Full.*
 Rajce/Rajce
 
 build.linux
