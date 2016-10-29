@@ -468,6 +468,7 @@ void Rajce::InitText(void)
 	album_user_text.SetText(t_("Album user:"));
 	album_pass_text.SetText(t_("Album password:"));
 	download_text.SetText(t_("Download directory:"));
+	append_album_user_name.SetLabel(t_("Append album user name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
 	http_proxy_label.SetLabel(t_("HTTP proxy setting"));
 	http_proxy_url_text.SetText(t_("Proxy URL:"));
