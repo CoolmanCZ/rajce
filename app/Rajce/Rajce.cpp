@@ -71,7 +71,11 @@ Rajce::Rajce()
 	download1_name.SetText("");
 	download1_pi.Set(0,1);
 
+	http_uri.WhenEnter = THISBACK(HttpUriChange);
 	http_uri.SetText("https://www.rajce.net/");
+
+	download_protocol <<= THISBACK(ToggleProtocol);
+	download_protocol.Set(1);
 
 	ToggleLang();
 	ToggleProxy();
@@ -157,12 +161,16 @@ bool Rajce::HttpCheckAndGetUrl(String &url)
 		url.Remove(url_len - 1);
 	}
 
-	// prepend https:// to the begin of the url
+	// prepend https:// or http:// protocol
+	String protocol = "https://";
+	if (download_protocol.Get() == 0)
+		protocol = "http://";
+
 	int https_pos = url.FindFirstOf("//");
 	if (https_pos == -1) {
-		url = "https://" + url;
+		url = protocol + url;
 	} else {
-		url = "https://" + url.Mid(https_pos + 2);
+		url = protocol + url.Mid(https_pos + 2);
 	}
 
 	return (true);
@@ -293,7 +301,6 @@ int Rajce::HttpParse(void)
 
 	String txt;
 
-	bool album_photo_found = false;
 	bool album_storage_found = false;
 	String album_storage;
 	String album_server_dir;
@@ -334,36 +341,38 @@ int Rajce::HttpParse(void)
 			continue;
 		}
 
-		if ((album_storage_found) && (!album_photo_found) && (txt.Find("photos") > 0)) {
-			album_photo_found = true;
-			continue;
-		}
+		if ((album_storage_found)  && (txt.Find("photos") > 0)  && (txt.Find("photoID") > 0)) {
+			int pos = txt.FindFirstOf("[");
+			Value photos = ParseJSON(txt.Mid(pos));
+			
+			for (int i = 0; i < photos.GetCount(); ++i) {
 
-		if ((album_photo_found) && (txt.Find("</script>") > 0)) {
-			album_photo_found = false;
-			continue;
-		}
+				String is_video = photos[i]["isVideo"].ToString();
+				String file_name = photos[i]["fileName"].ToString();
 
-		if ((album_photo_found) && (txt.Find("photoID") > 0)) {
-			String is_video = HttpGetParameterValue("isVideo", txt, false);
-			String file_name = HttpGetParameterValue("fileName", txt, true);
+				String dir_param = "images";
+				if (is_video.Find("false") > 0) {
+					dir_param = "video";
+				}
 
-			String dir_param = "images";
-			if (is_video.Find("false") > 0) {
-				dir_param = "video";
+				String full_path = AppendFileName(album_storage, dir_param);
+				full_path = UnixPath(AppendFileName(full_path, file_name));
+
+				int start = full_path.Find("://") + 2;
+				while (full_path.Find("//", start) != -1) {
+					int pos = full_path.Find("//", start);
+					full_path.Remove(pos);
+				}
+
+				QueueData queue_data;
+				queue_data.download_url = full_path;
+				queue_data.download_dir = GetFileDirectory(m_http_file_out_string);
+
+				if (~append_album_user_name)
+					queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user_name);
+				queue_data.album_server_dir = album_server_dir;
+				q.Push(queue_data);
 			}
-
-			String full_path = AppendFileName(album_storage, dir_param);
-			full_path = AppendFileName(full_path, file_name);
-
-			QueueData queue_data;
-			queue_data.download_url = full_path;
-			queue_data.download_dir = GetFileDirectory(m_http_file_out_string);
-			if (~append_album_user_name)
-				queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user_name);
-			queue_data.album_server_dir = album_server_dir;
-			q.Push(queue_data);
-			continue;
 		}
 	}
 
@@ -470,6 +479,8 @@ void Rajce::InitText(void)
 	download_text.SetText(t_("Download directory:"));
 	append_album_user_name.SetLabel(t_("Append album user name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
+	download_protocol.SetLabel(t_("Use https protocol for autorization and download"));
+	download_protocol.Tip(t_("HTTPS is used for authentication of the visited website and protection of the privacy and integrity of the exchanged data."));
 	http_proxy_label.SetLabel(t_("HTTP proxy setting"));
 	http_proxy_url_text.SetText(t_("Proxy URL:"));
 	http_proxy_user_text.SetText(t_("Proxy user:"));
@@ -524,17 +535,32 @@ void Rajce::ToggleAlbum(void)
 
 void Rajce::ToggleDownload(void)
 {
+	ToggleProtocol();
 	if (m_http_started) {
 		download_abort.Enable();
 		download_abort.Show();
 		download_ok.Disable();
 		download_ok.Hide();
+		download_protocol.Disable();
 	} else {
 		download_abort.Disable();
 		download_abort.Hide();
 		download_ok.Enable();
 		download_ok.Show();
+		download_protocol.Enable();
 	}
+}
+
+void Rajce::ToggleProtocol(void)
+{
+	String url;
+	bool do_download = HttpCheckAndGetUrl(url);
+	http_uri.SetData(url);
+}
+
+void Rajce::HttpUriChange(void)
+{
+	ToggleProtocol();
 }
 
 // vim: ts=4

@@ -3,12 +3,6 @@
 #endif
 // Rajce.cpp
 
-T_("Rajce album download")
-csCZ("Raj\304\215e album download")
-
-T_("Download progress")
-csCZ("Status stahov\303\241n\303\255")
-
 T_("Exit ")
 csCZ("Ukon\304\215it ")
 
@@ -65,8 +59,21 @@ csCZ("U\305\276ivatelsk\303\251 heslo:")
 T_("Download directory:")
 csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255:")
 
+T_("Append album user name to download directory")
+csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
+     "pro ulo\305\276en\303\255")
+
 T_("Enable album authorization")
 csCZ("Povolit u\305\276ivatelskou autorizaci")
+
+T_("Use https protocol for autorization and download")
+csCZ("Pou\305\276\303\255t https protokol pro autorizaci a stahov\303\241n\303\255")
+
+T_("HTTPS is used for authentication of the visited website and protection "
+     "of the privacy and integrity of the exchanged data.")
+csCZ("HTTPS je pou\305\276it pro zaji\305\241t\304\233n\303\255 autentizace, "
+     "d\305\257v\304\233rnosti p\305\231en\303\241\305\241en\303\275ch dat a "
+     "jejich integritu.")
 
 T_("HTTP proxy setting")
 csCZ("Nastaven\303\255 HTTP proxy")
@@ -98,9 +105,17 @@ csCZ("Ukon\304\215it")
 T_("...")
 csCZ("")
 
-T_("Append album user name to download directory")
-csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
-     "pro ulo\305\276en\303\255")
+T_("Use https protocol for autorization and download ")
+csCZ("")
 
 T_(":")
 csCZ("")
+
+
+// Obsolete
+
+T_("Rajce album download")
+csCZ("Raj\304\215e album download")
+
+T_("Download progress")
+csCZ("Status stahov\303\241n\303\255")

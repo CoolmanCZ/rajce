@@ -108,6 +108,8 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void ToggleAlbum(void);
 	void ToggleDownload(void);
 	void ToggleLang(void);
+	void ToggleProtocol(void);
+	void HttpUriChange(void);
 };
 
 #endif
