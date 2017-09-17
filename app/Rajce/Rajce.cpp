@@ -77,6 +77,11 @@ Rajce::Rajce()
 	download_protocol <<= THISBACK(ToggleProtocol);
 	download_protocol.Set(1);
 
+	homepage.SetQTF("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce homepage]]");
+
+	start_sz = GetMinSize();
+	proxy_sz = http_proxy_label.GetSize();
+
 	ToggleLang();
 	ToggleProxy();
 	ToggleAlbum();
@@ -509,17 +514,47 @@ void Rajce::ToggleLang(void)
 
 void Rajce::ToggleProxy(void)
 {
+	Rect main_rc = GetRect();
+	Size main_sz = main_rc.GetSize();
+
 	if (~proxy_enabled) {
-		http_proxy_url.Enable();
-		http_proxy_port.Enable();
-		http_proxy_user.Enable();
-		http_proxy_pass.Enable();
+		main_sz.cy += proxy_sz.cy;
+		main_rc.InflateVert(proxy_sz.cy / 2);
+		main_rc.SetSize(main_sz);
+
+		SetMinSize(start_sz);
+
+		http_proxy_label.Show();
+		http_proxy_url.Show();
+		http_proxy_url_text.Show();
+		http_proxy_port.Show();
+		http_proxy_user.Show();
+		http_proxy_user_text.Show();
+		http_proxy_pass.Show();
+		http_proxy_pass_text.Show();
+		http_proxy_colon.Show();
 	} else {
-		http_proxy_url.Disable();
-		http_proxy_port.Disable();
-		http_proxy_user.Disable();
-		http_proxy_pass.Disable();
+		main_sz.cy -= proxy_sz.cy;
+		main_rc.DeflateVert(proxy_sz.cy / 2);
+		main_rc.SetSize(main_sz);
+
+		Size sz = start_sz;
+		sz.cy -= proxy_sz.cy;
+		SetMinSize(sz);
+
+		http_proxy_label.Hide();
+		http_proxy_url.Hide();
+		http_proxy_url_text.Hide();
+		http_proxy_port.Hide();
+		http_proxy_user.Hide();
+		http_proxy_user_text.Hide();
+		http_proxy_pass.Hide();
+		http_proxy_pass_text.Hide();
+		http_proxy_colon.Hide();
 	}
+
+	SetRect(main_rc);
+	UpdateLayout();
 }
 
 void Rajce::ToggleAlbum(void)

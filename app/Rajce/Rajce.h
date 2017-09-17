@@ -71,6 +71,9 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String m_title_name;
 	String m_download_text;
 
+	Size start_sz;
+	Size proxy_sz;
+
 	ThreadSafeQueue < QueueData > q;
 
 	HttpRequest file_http;
