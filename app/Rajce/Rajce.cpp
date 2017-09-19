@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Radek Malcic
+ * Copyright (C) 2016, 2017 Radek Malcic
  *
  * All rights reserved.
  *
@@ -67,6 +67,9 @@ Rajce::Rajce()
 	proxy_enabled <<= false;
 	http_proxy_pass.Password();
 
+	download_protocol <<= THISBACK(ToggleProtocol);
+	download_protocol <<= true;
+
 	download_dir <<= Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
 	download1_name.SetText("");
 	download1_pi.Set(0,1);
@@ -74,10 +77,7 @@ Rajce::Rajce()
 	http_uri.WhenEnter = THISBACK(HttpUriChange);
 	http_uri.SetText("https://www.rajce.net/");
 
-	download_protocol <<= THISBACK(ToggleProtocol);
-	download_protocol.Set(1);
-
-	homepage.SetQTF("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce homepage]]");
+	homepage.SetQTF("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]");
 
 	start_sz = GetMinSize();
 	proxy_sz = http_proxy_label.GetSize();
@@ -133,17 +133,30 @@ bool Rajce::HttpProxy(void)
 		String proxy_pass = ~http_proxy_pass;
 
 		if ((!proxy_url.IsEmpty()) && (proxy_port > 0)) {
-			m_http.CommonProxy(proxy_url, proxy_port);
-			if (!proxy_user.IsEmpty()) {
-				m_http.CommonProxyAuth(proxy_user, proxy_pass);
+			if (download_protocol.Get() == 0) {
+				m_http.CommonProxy(proxy_url, proxy_port);
+				if (!proxy_user.IsEmpty()) {
+					m_http.CommonProxyAuth(proxy_user, proxy_pass);
+				}
+			} else {
+				m_http.SSLProxy(proxy_url, proxy_port);
+				if (!proxy_user.IsEmpty()) {
+					m_http.SSLProxyAuth(proxy_user, proxy_pass);
+				}
 			}
 		} else {
 			Exclamation(t_("[= HTTP proxy settings is wrong!]"));
 			result = false;
 		}
+
+		m_http.RequestTimeout(6000);
 	} else {
 		m_http.CommonProxy("",0);
 		m_http.CommonProxyAuth("","");
+		m_http.SSLProxy("",0);
+		m_http.SSLProxyAuth("","");
+
+		m_http.RequestTimeout(1000);
 	}
 
 	return (result);
@@ -524,15 +537,8 @@ void Rajce::ToggleProxy(void)
 
 		SetMinSize(start_sz);
 
-		http_proxy_label.Show();
-		http_proxy_url.Show();
-		http_proxy_url_text.Show();
-		http_proxy_port.Show();
-		http_proxy_user.Show();
-		http_proxy_user_text.Show();
-		http_proxy_pass.Show();
-		http_proxy_pass_text.Show();
-		http_proxy_colon.Show();
+		HttpProxyShow(true);
+
 	} else {
 		main_sz.cy -= proxy_sz.cy;
 		main_rc.DeflateVert(proxy_sz.cy / 2);
@@ -542,15 +548,7 @@ void Rajce::ToggleProxy(void)
 		sz.cy -= proxy_sz.cy;
 		SetMinSize(sz);
 
-		http_proxy_label.Hide();
-		http_proxy_url.Hide();
-		http_proxy_url_text.Hide();
-		http_proxy_port.Hide();
-		http_proxy_user.Hide();
-		http_proxy_user_text.Hide();
-		http_proxy_pass.Hide();
-		http_proxy_pass_text.Hide();
-		http_proxy_colon.Hide();
+		HttpProxyShow(false);
 	}
 
 	SetRect(main_rc);
@@ -572,30 +570,69 @@ void Rajce::ToggleDownload(void)
 {
 	ToggleProtocol();
 	if (m_http_started) {
-		download_abort.Enable();
-		download_abort.Show();
-		download_ok.Disable();
-		download_ok.Hide();
-		download_protocol.Disable();
+		EnableElements(false);
+
+		album_user.Disable();
+		album_pass.Disable();
 	} else {
-		download_abort.Disable();
-		download_abort.Hide();
-		download_ok.Enable();
-		download_ok.Show();
-		download_protocol.Enable();
+		EnableElements(true);
+
+		ToggleAlbum();
 	}
 }
 
 void Rajce::ToggleProtocol(void)
 {
+	if (download_protocol.Get() == 0) {
+		m_http.SSL(false);
+	} else {
+		m_http.SSL(true);
+	}
+
 	String url;
 	bool do_download = HttpCheckAndGetUrl(url);
 	http_uri.SetData(url);
+
 }
 
 void Rajce::HttpUriChange(void)
 {
 	ToggleProtocol();
+}
+
+void Rajce::HttpProxyShow(bool show)
+{
+	http_proxy_label.Show(show);
+	http_proxy_url.Show(show);
+	http_proxy_url_text.Show(show);
+	http_proxy_port.Show(show);
+	http_proxy_user.Show(show);
+	http_proxy_user_text.Show(show);
+	http_proxy_pass.Show(show);
+	http_proxy_pass_text.Show(show);
+	http_proxy_colon.Show(show);
+}
+
+void Rajce::EnableElements(bool enable)
+{
+	download_abort.Enable(!enable);
+	download_abort.Show(!enable);
+	download_ok.Enable(enable);
+	download_ok.Show(enable);
+
+	http_uri.Enable(enable);
+	download_dir.Enable(enable);
+	download_dir_select.Enable(enable);
+
+	append_album_user_name.Enable(enable);
+	album_authorization.Enable(enable);
+	download_protocol.Enable(enable);
+	proxy_enabled.Enable(enable);
+
+	http_proxy_url.Enable(enable);
+	http_proxy_port.Enable(enable);
+	http_proxy_user.Enable(enable);
+	http_proxy_pass.Enable(enable);
 }
 
 // vim: ts=4

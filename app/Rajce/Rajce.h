@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Radek Malcic
+ * Copyright (C) 2016, 2017 Radek Malcic
  *
  * All rights reserved.
  *
@@ -112,7 +112,10 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void ToggleDownload(void);
 	void ToggleLang(void);
 	void ToggleProtocol(void);
+
 	void HttpUriChange(void);
+	void HttpProxyShow(bool show);
+	void EnableElements(bool enable);
 };
 
 #endif
