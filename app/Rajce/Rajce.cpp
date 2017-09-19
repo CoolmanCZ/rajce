@@ -48,6 +48,9 @@ Rajce::Rajce()
 	lang.WhenPush = THISBACK(ToggleLang);
 
 	download_dir_select.WhenPush = THISBACK(SelectDownloadDir);
+	download1_name.SetText("");
+	download1_pi.Set(0,1);
+
 	download_exit.WhenPush = THISBACK(Exit);
 	download_ok.WhenPush = THISBACK(HttpDownload);
 	download_abort.WhenPush = THISBACK1(HttpAbort, true);
@@ -60,27 +63,33 @@ Rajce::Rajce()
 	file_http.WhenWait = file_http.WhenDo = THISBACK(FileProgress);
 
 	album_authorization <<= THISBACK(ToggleAlbum);
-	album_authorization <<= false;
 	album_pass.Password();
 
 	proxy_enabled <<= THISBACK(ToggleProxy);
-	proxy_enabled <<= false;
 	http_proxy_pass.Password();
 
 	download_protocol <<= THISBACK(ToggleProtocol);
-	download_protocol <<= true;
-
-	download_dir <<= Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
-	download1_name.SetText("");
-	download1_pi.Set(0,1);
 
 	http_uri.WhenEnter = THISBACK(HttpUriChange);
-	http_uri.SetText("https://www.rajce.net/");
 
 	homepage.SetQTF("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]");
 
 	start_sz = GetMinSize();
 	proxy_sz = http_proxy_label.GetSize();
+
+	LoadCfg();
+	http_uri.SetData(m_cfg_album_url);
+	album_user.SetData(m_cfg_album_user);
+	download_dir.SetData(m_cfg_download_dir);
+	append_album_user_name.SetData(m_cfg_append_user_name);
+	album_authorization.SetData(m_cfg_enable_user_auth);
+	download_protocol.SetData(m_cfg_use_https);
+	proxy_enabled.SetData(m_cfg_use_https_proxy);
+	http_proxy_url.SetData(m_cfg_https_proxy_url);
+	http_proxy_port.SetData(m_cfg_https_proxy_port);
+
+	if (http_uri.GetData().IsNull())
+		http_uri.SetData("https://www.rajce.net");
 
 	ToggleLang();
 	ToggleProxy();
@@ -101,6 +110,7 @@ void Rajce::Exit(void)
 {
 	if (PromptOKCancel(Format("%s %s?", t_("Exit "), t_(m_title_name)))) {
 		HttpAbort(false);
+		SaveCfg();
 		Close();
 	}
 }
@@ -633,6 +643,69 @@ void Rajce::EnableElements(bool enable)
 	http_proxy_port.Enable(enable);
 	http_proxy_user.Enable(enable);
 	http_proxy_pass.Enable(enable);
+}
+
+void Rajce::LoadCfg(void)
+{
+	String cfg_file = GetCfgFileName();
+	VectorMap<String, String> cfg_data_in = LoadIniFile(cfg_file);
+
+	String dir = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
+
+	m_cfg_download_dir = cfg_data_in.Get("DOWNLOAD_DIR", dir);
+	m_cfg_album_url = cfg_data_in.Get("ALBUM_URL", Null);
+	m_cfg_album_user = cfg_data_in.Get("ALBUM_USER", Null);
+	m_cfg_append_user_name = cfg_data_in.Get("APPEND_USER_NAME", Null) == "true" ? true : false;
+	m_cfg_enable_user_auth = cfg_data_in.Get("ENABLE_USER_AUTH", Null) == "true" ? true : false;
+	m_cfg_use_https = cfg_data_in.Get("USE_HTTPS", Null) == "true" ? true : false;
+	m_cfg_use_https_proxy = cfg_data_in.Get("USE_HTTP_PROXY", Null) == "true" ? true : false;
+	m_cfg_https_proxy_url = cfg_data_in.Get("HTTP_PROXY_URL", Null);
+	m_cfg_https_proxy_port =  cfg_data_in.Get("HTTP_PROXY_PORT", Null);
+}
+
+void Rajce::SaveCfg(void)
+{
+	String cfg_file = GetCfgFileName();;
+
+	String cfg_data_out;
+	cfg_data_out
+		<< m_title_name << ": Configuration Text File" << "\n\n"
+		<< "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
+		<< "ALBUM_URL = " << http_uri.GetData() << "\n"
+		<< "ALBUM_USER = " << album_user.GetData() << "\n"
+		<< "APPEND_USER_NAME = " << (append_album_user_name.GetData() ? "true" : "false") << "\n"
+		<< "ENABLE_USER_AUTH = " << (album_authorization.GetData() ? "true" : "false") << "\n"
+		<< "USE_HTTPS = " << (download_protocol.GetData() ? "true" : "false") << "\n"
+		<< "USE_HTTP_PROXY = " << (proxy_enabled.GetData() ? "true" : "false") << "\n"
+		<< "HTTP_PROXY_URL = " << http_proxy_url.GetData() << "\n"
+		<< "HTTP_PROXY_PORT = " << http_proxy_port.GetData() << "\n"
+		;
+
+	if(!FileExists(cfg_file))
+		RealizePath(cfg_file);
+
+	if(!SaveFile(cfg_file, cfg_data_out))
+		Exclamation(t_("Error saving configuration!"));
+}
+
+String Rajce::GetCfgFileName(void)
+{
+
+#if defined(PLATFORM_WIN32)
+	String local = GetEnv("LOCALAPPDATA");
+	String p = AppendFileName(local, "rad");
+	ONCELOCK
+		RealizeDirectory(p);
+	return AppendFileName(p, m_cfg_name);
+#elif defined(PLATFORM_POSIX)
+	String p = AppendFileName(GetHomeDirectory(), ".rad");
+	ONCELOCK
+		RealizeDirectory(p);
+	return AppendFileName(p, m_cfg_name);
+#else
+	Exclamation("Configuration is not implemented for this platform");
+	return (m_cfg_name);
+#endif
 }
 
 // vim: ts=4

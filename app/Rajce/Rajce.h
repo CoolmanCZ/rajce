@@ -68,6 +68,17 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	Rajce();
 
  private:
+	String m_cfg_name = "rad.ini";
+	String m_cfg_download_dir;
+	String m_cfg_album_url;
+	String m_cfg_album_user;
+	bool m_cfg_append_user_name;
+	bool m_cfg_enable_user_auth;
+	bool m_cfg_use_https;
+	bool m_cfg_use_https_proxy;
+	String m_cfg_https_proxy_url;
+	String m_cfg_https_proxy_port;
+
 	String m_title_name;
 	String m_download_text;
 
@@ -116,6 +127,10 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void HttpUriChange(void);
 	void HttpProxyShow(bool show);
 	void EnableElements(bool enable);
+
+	void LoadCfg(void);
+	void SaveCfg(void);
+	String GetCfgFileName(void);
 };
 
 #endif
