@@ -38,6 +38,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
+	m_version = "v1.2.4";
 	m_title_name = "Rajce album download";
 	m_download_text = "Download progress";
 	m_http_started = false;
@@ -71,8 +72,6 @@ Rajce::Rajce()
 	download_protocol <<= THISBACK(ToggleProtocol);
 
 	http_uri.WhenEnter = THISBACK(HttpUriChange);
-
-	homepage.SetQTF("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]");
 
 	start_sz = GetMinSize();
 	proxy_sz = http_proxy_label.GetSize();
@@ -424,6 +423,12 @@ void Rajce::FileDownload(void)
 		RealizeDirectory(file_http_out_string);
 		file_http_out_string = AppendFileName(file_http_out_string, file_base_name);
 
+		// Check if the file is already downloaded
+		if (download_new_only.GetData() != 0 && FileExists(file_http_out_string)) {
+			continue;
+		}
+
+		// Download the file
 		file_http.New();
 
 		if (~album_authorization) {
@@ -498,13 +503,14 @@ void Rajce::FileStart(void)
 
 void Rajce::InitText(void)
 {
-	Title(t_(m_title_name));
+	Title(Format("%s - %s", t_(m_title_name), m_version));
 
 	http_label.SetLabel(t_("Album settings"));
 	http_uri_text.SetText(t_("Album URL:"));
 	album_user_text.SetText(t_("Album user:"));
 	album_pass_text.SetText(t_("Album password:"));
 	download_text.SetText(t_("Download directory:"));
+	download_new_only.SetLabel(t_("Download new files only"));
 	append_album_user_name.SetLabel(t_("Append album user name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
 	download_protocol.SetLabel(t_("Use https protocol for autorization and download"));
@@ -518,6 +524,8 @@ void Rajce::InitText(void)
 	download_ok.SetLabel(t_("Download"));
 	download_abort.SetLabel(t_("Abort"));
 	download_exit.SetLabel(t_("Exit"));
+
+	homepage.SetQTF(t_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]"));
 }
 
 void Rajce::ToggleLang(void)
@@ -633,6 +641,7 @@ void Rajce::EnableElements(bool enable)
 	http_uri.Enable(enable);
 	download_dir.Enable(enable);
 	download_dir_select.Enable(enable);
+	download_new_only.Enable(enable);
 
 	append_album_user_name.Enable(enable);
 	album_authorization.Enable(enable);
@@ -685,7 +694,7 @@ void Rajce::SaveCfg(void)
 		RealizePath(cfg_file);
 
 	if(!SaveFile(cfg_file, cfg_data_out))
-		Exclamation(t_("Error saving configuration!"));
+		Exclamation(t_("Saving configuration file has failed!"));
 }
 
 String Rajce::GetCfgFileName(void)

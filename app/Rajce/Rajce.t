@@ -3,6 +3,10 @@
 #endif
 // Rajce.cpp
 
+T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
+csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
+     "Raj\304\215e album download]]")
+
 T_("Exit ")
 csCZ("Ukon\304\215it ")
 
@@ -59,6 +63,9 @@ csCZ("U\305\276ivatelsk\303\251 heslo:")
 T_("Download directory:")
 csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255:")
 
+T_("Download new files only")
+csCZ("St\303\241hnout pouze nov\303\251 soubory")
+
 T_("Append album user name to download directory")
 csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
      "pro ulo\305\276en\303\255")
@@ -99,13 +106,13 @@ csCZ("Zru\305\241it")
 T_("Exit")
 csCZ("Ukon\304\215it")
 
+T_("Saving configuration file has failed!")
+csCZ("Ukl\303\241d\303\241n\303\255 konfigura\304\215n\303\255ho souboru selhalo!")
+
 
 // Rajce.lay
 
 T_("...")
-csCZ("")
-
-T_("Use https protocol for autorization and download ")
 csCZ("")
 
 T_(":")

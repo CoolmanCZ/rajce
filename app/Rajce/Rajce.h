@@ -79,6 +79,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String m_cfg_https_proxy_url;
 	String m_cfg_https_proxy_port;
 
+	String m_version;
 	String m_title_name;
 	String m_download_text;
 
