@@ -14,6 +14,7 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Changelog
 
+* 1.2.4 - store settings to the configuration file, new option - download new files only
 * 1.2.3 - hide the http proxy settings if not used
 * 1.2.2 - new option - http/https download protocol
 * 1.2.1 - correction of the runtime translation
