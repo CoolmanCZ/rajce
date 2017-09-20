@@ -549,23 +549,25 @@ void Rajce::ToggleProxy(void)
 	Size main_sz = main_rc.GetSize();
 
 	if (~proxy_enabled) {
-		main_sz.cy += proxy_sz.cy;
-		main_rc.InflateVert(proxy_sz.cy / 2);
-		main_rc.SetSize(main_sz);
+		if (main_sz.cy < start_sz.cy) {
+			main_sz.cy += proxy_sz.cy;
+			main_rc.InflateVert(proxy_sz.cy / 2);
+			main_rc.SetSize(main_sz);
 
-		SetMinSize(start_sz);
-
+			SetMinSize(start_sz);
+		}
 		HttpProxyShow(true);
 
 	} else {
-		main_sz.cy -= proxy_sz.cy;
-		main_rc.DeflateVert(proxy_sz.cy / 2);
-		main_rc.SetSize(main_sz);
+		if (main_sz.cy >= start_sz.cy) {
+			main_sz.cy -= proxy_sz.cy;
+			main_rc.DeflateVert(proxy_sz.cy / 2);
+			main_rc.SetSize(main_sz);
 
-		Size sz = start_sz;
-		sz.cy -= proxy_sz.cy;
-		SetMinSize(sz);
-
+			Size sz = start_sz;
+			sz.cy -= proxy_sz.cy;
+			SetMinSize(sz);
+		}
 		HttpProxyShow(false);
 	}
 
