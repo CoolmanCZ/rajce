@@ -14,8 +14,8 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Screenshot
 
-![img1](https://github.com/CoolmanCZ/rajce/images/img1.png "image 1")
-![img2](https://github.com/CoolmanCZ/rajce/images/img2.png "image 2")
+![img1](https://github.com/CoolmanCZ/rajce/raw/master/images/img1.png "screenshot 1")
+![img2](https://github.com/CoolmanCZ/rajce/raw/master/images/img2.png "screenshot 2")
 
 
 # Changelog
