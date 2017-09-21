@@ -12,6 +12,12 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 * [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.2.4-64bit.zip)
 * [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.2.4.tar.bz2)
 
+# Screenshot
+
+![img1](https://github.com/CoolmanCZ/rajce/images/img1.png "image 1")
+![img2](https://github.com/CoolmanCZ/rajce/images/img2.png "image 2")
+
+
 # Changelog
 
 * 1.2.4 - store settings to the configuration file, new option - download new files only
