@@ -1,8 +1,8 @@
 5551 ICON DISCARDABLE "Rajce.ico"
 
 1 VERSIONINFO
-FILEVERSION     1,2,4,0
-PRODUCTVERSION  1,2,4,0
+FILEVERSION     1,3,0,0
+PRODUCTVERSION  1,3,0,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
@@ -10,23 +10,23 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "Radek Malcic"
       VALUE "FileDescription", "Rajce album downloader"
-      VALUE "FileVersion", "1.2.4"
+      VALUE "FileVersion", "1.3.0"
       VALUE "InternalName", "Rajce"
-      VALUE "LegalCopyright", "Copyright (c) 2017,2016 Radek Malcic"
+      VALUE "LegalCopyright", "Copyright (c) 2016, 2017 Radek Malcic"
       VALUE "OriginalFilename", "Rajce.exe"
       VALUE "ProductName", "Rajce"
-      VALUE "ProductVersion", "1.2.4"
+      VALUE "ProductVersion", "1.3.0"
     END
     BLOCK "040504B0"
     BEGIN
       VALUE "CompanyName", "Radek Malčic"
       VALUE "FileDescription", "Rajče album downloader"
-      VALUE "FileVersion", "1.2.4"
+      VALUE "FileVersion", "1.3.0"
       VALUE "InternalName", "Rajče"
-      VALUE "LegalCopyright", "Copyright (c) 2017,2016 Radek Malčic"
+      VALUE "LegalCopyright", "Copyright (c) 2016, 2017 Radek Malčic"
       VALUE "OriginalFilename", "Rajce.exe"
       VALUE "ProductName", "Rajče"
-      VALUE "ProductVersion", "1.2.4"
+      VALUE "ProductVersion", "1.3.0"
     END
   END
 

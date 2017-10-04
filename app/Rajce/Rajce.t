@@ -3,10 +3,6 @@
 #endif
 // Rajce.cpp
 
-T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
-csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
-     "Raj\304\215e album download]]")
-
 T_("Exit ")
 csCZ("Ukon\304\215it ")
 
@@ -19,12 +15,15 @@ csCZ("[= Adresa alba je \305\241patn\304\233!]")
 T_("Abort download?")
 csCZ("Zru\305\241it stahov\303\241n\303\255?")
 
-T_("[= Download has failed.&\001")
-csCZ("[= Stahov\303\241n\303\255 selhalo.&\001")
+T_("[= Download directory doesn't exist!]")
+csCZ("[= Adres\303\241\305\231 pro ulo\305\276en\303\255 soubor\305\257 neexistuje!]")
 
 T_("[= Http parse error!&& Files can't be downloaded!]")
 csCZ("[= Chyba p\305\231i zpracov\303\241n\303\255 HTTP po\305\276adavku!&& "
      "Soubory nelze st\303\241hnout!]")
+
+T_("[= Download has failed.&\001")
+csCZ("[= Stahov\303\241n\303\255 selhalo.&\001")
 
 T_("[= Error opening input file:&& %s!]")
 csCZ("[= Chyba p\305\231i otev\303\255r\303\241n\303\255 souboru:&& %s!]")
@@ -64,7 +63,10 @@ T_("Download directory:")
 csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255:")
 
 T_("Download new files only")
-csCZ("St\303\241hnout pouze nov\303\251 soubory")
+csCZ("Stahovat pouze nov\303\251 soubory")
+
+T_("Download video files")
+csCZ("Stahovat video soubory")
 
 T_("Append album user name to download directory")
 csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
@@ -105,6 +107,10 @@ csCZ("Zru\305\241it")
 
 T_("Exit")
 csCZ("Ukon\304\215it")
+
+T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
+csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
+     "Raj\304\215e album download]]")
 
 T_("Saving configuration file has failed!")
 csCZ("Ukl\303\241d\303\241n\303\255 konfigura\304\215n\303\255ho souboru selhalo!")

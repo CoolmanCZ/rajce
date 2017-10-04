@@ -38,7 +38,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	m_version = "v1.2.4";
+	m_version = "v1.3.0";
 	m_title_name = "Rajce album download";
 	m_download_text = "Download progress";
 	m_http_started = false;
@@ -80,6 +80,8 @@ Rajce::Rajce()
 	http_uri.SetData(m_cfg_album_url);
 	album_user.SetData(m_cfg_album_user);
 	download_dir.SetData(m_cfg_download_dir);
+	download_new_only.SetData(m_cfg_download_new_only);
+	download_video.Set(m_cfg_download_video);
 	append_album_user_name.SetData(m_cfg_append_user_name);
 	album_authorization.SetData(m_cfg_enable_user_auth);
 	download_protocol.SetData(m_cfg_use_https);
@@ -173,15 +175,21 @@ bool Rajce::HttpProxy(void)
 
 bool Rajce::HttpCheckAndGetUrl(String &url)
 {
-	int url_len = http_uri.GetLength();
-
-	if (url_len == 0) {
+	if (http_uri.GetLength() == 0) {
 		Exclamation(t_("[= Album URL is not valid!]"));
 		http_uri.SetFocus();
 		return (false);
 	}
 
-	url = ~http_uri;
+	url = http_uri.GetData();
+	HttpPrependProtocol(url);
+
+	return (true);
+}
+
+void Rajce::HttpPrependProtocol(String &url)
+{
+	int url_len = url.GetLength();
 
 	// remove last '/' from url
 	while ((url_len > 0) && (url[url_len - 1] == '/')) {
@@ -199,8 +207,6 @@ bool Rajce::HttpCheckAndGetUrl(String &url)
 	} else {
 		url = protocol + url.Mid(https_pos + 2);
 	}
-
-	return (true);
 }
 
 void Rajce::HttpAbort(bool ask)
@@ -232,59 +238,70 @@ void Rajce::HttpAbort(bool ask)
 
 void Rajce::HttpDownload(void)
 {
+	if (!DirectoryExists(download_dir.GetData().ToString())) {
+		Exclamation(t_("[= Download directory doesn't exist!]"));
+		return;
+	}
+
 	m_http_started = true;
 	ToggleDownload();
 
-	String download_url;
-	bool do_download = HttpCheckAndGetUrl(download_url);
+	String download_url, tmp_file;
+	if (HttpCheckAndGetUrl(download_url) && (ERR_NO_ERROR == HttpDownloadPage(download_url))) {
+		tmp_file = m_http_file_out_string;
+		if (HttpParse() != ERR_NO_ERROR) {
+			Exclamation(t_("[= Http parse error!&& Files can't be downloaded!]"));
+		} else {
+			FileDownload();
+		}
+	}
+
+	if (FileExists(tmp_file))
+		DeleteFile(tmp_file);
+
+	m_http_started = false;
+	ToggleDownload();
+}
+
+int Rajce::HttpDownloadPage(String url)
+{
+	String download_url = url;
 
 	// prepare download directory and file name
 	if ((download_dir.GetLength() == 0) || (m_http_file_out_string.IsEmpty())) {
 		m_http_file_out_string = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
 	} else {
-		m_http_file_out_string = ~download_dir;
+		m_http_file_out_string = download_dir.GetData();
 	}
-	m_http_file_out_string = AppendFileName(m_http_file_out_string, "rajce.html");
+	m_http_file_out_string = GetTempFileName("rajce");
 
-	if (do_download) {
-		// prepare download statement
-		m_http.New();
+	// prepare download statement
+	m_http.New();
 
-		if (~album_authorization) {
-			m_http.Post("login", ~album_user);
-			m_http.Post("password", ~album_pass);
-		}
-
-		// HTTP proxy setting
-		do_download = HttpProxy();
-
-		// begin download statement
-		if (do_download) {
-			m_http.Url(download_url).Execute();
-		}
-
-		if (m_http_file_out.IsOpen()) {
-			m_http_file_out.Close();
-		}
+	if (~album_authorization) {
+		m_http.Post("login", ~album_user);
+		m_http.Post("password", ~album_pass);
 	}
 
-	if (do_download) {
-		if (!m_http.IsSuccess()) {
-			Exclamation(t_("[= Download has failed.&\1") +
-				    (m_http.IsError()? m_http.GetErrorDesc() : AsString(m_http.GetStatusCode()) + ' ' +
-				     m_http.GetReasonPhrase()));
-		} else {
-			if (HttpParse() != ERR_NO_ERROR) {
-				Exclamation(t_("[= Http parse error!&& Files can't be downloaded!]"));
-			} else {
-				FileDownload();
-			}
-		}
+	// begin download statement
+	if (HttpProxy()) {
+		m_http.Url(download_url).Execute();
 	}
 
-	DeleteFile(m_http_file_out_string);
-	m_http_started = false;
-	ToggleDownload();
+	if (m_http_file_out.IsOpen()) {
+		m_http_file_out.Close();
+	}
+
+	int result = ERR_NO_ERROR;
+
+	if (!m_http.IsSuccess()) {
+		Exclamation(t_("[= Download has failed.&\1") +
+			    (m_http.IsError()? m_http.GetErrorDesc() : AsString(m_http.GetStatusCode()) + ' ' +
+			     m_http.GetReasonPhrase()));
+		result = ERR_DOWNLOAD;
+	}
+
+	return (result);
 }
 
 String Rajce::HttpGetParameterValue(String param, String &txt, bool is_quotes)
@@ -332,6 +349,7 @@ int Rajce::HttpParse(void)
 	String album_storage;
 	String album_server_dir;
 	String album_user_name;
+	String domain;
 
 	while (!in.IsEof()) {
 		txt = in.GetLine();
@@ -350,6 +368,10 @@ int Rajce::HttpParse(void)
 				Exclamation(t_("[= Authorization is required!&& Enable album authorization.]"));
 			}
 			break;
+		}
+
+		if (txt.Find("domain") > 0) {
+			domain = HttpGetParameterValue("domain", txt, true);
 		}
 
 		if (txt.Find("storage") > 0) {
@@ -377,34 +399,91 @@ int Rajce::HttpParse(void)
 				String is_video = photos[i]["isVideo"].ToString();
 				String file_name = photos[i]["fileName"].ToString();
 
-				String dir_param = "images";
-				if (is_video.Find("false") > 0) {
-					dir_param = "video";
+				String full_path;
+
+				if (is_video.Compare("true") == 0) {
+					if (download_video.GetData()) {
+						String file_id = photos[i]["photoID"].ToString();
+						full_path = HttpGetVideoUrl(domain, file_id);
+						int len = photos[i]["info"].ToString().Find(" ");
+						file_name = photos[i]["info"].ToString().Mid(0, len);
+					}
+				} else {
+					full_path = AppendFileName(album_storage, "images");
+					full_path = UnixPath(AppendFileName(full_path, file_name));
 				}
 
-				String full_path = AppendFileName(album_storage, dir_param);
-				full_path = UnixPath(AppendFileName(full_path, file_name));
+				if (full_path.GetCount() > 0) {
+					int start = full_path.Find("://") + 2;
+					while (full_path.Find("//", start) != -1) {
+						int pos = full_path.Find("//", start);
+						full_path.Remove(pos);
+					}
 
-				int start = full_path.Find("://") + 2;
-				while (full_path.Find("//", start) != -1) {
-					int pos = full_path.Find("//", start);
-					full_path.Remove(pos);
+					QueueData queue_data;
+					queue_data.download_url = full_path;
+					queue_data.download_dir = download_dir.GetData();
+					queue_data.download_name = file_name;
+
+					if (~append_album_user_name)
+						queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user_name);
+					queue_data.album_server_dir = album_server_dir;
+
+					// Check if the file is already downloaded
+					String test = AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
+					test = AppendFileName(test, queue_data.download_name);
+					if (download_new_only.GetData() != 0 && FileExists(test)) {
+						continue;
+					} else {
+						q.Push(queue_data);
+					}
 				}
-
-				QueueData queue_data;
-				queue_data.download_url = full_path;
-				queue_data.download_dir = GetFileDirectory(m_http_file_out_string);
-
-				if (~append_album_user_name)
-					queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user_name);
-				queue_data.album_server_dir = album_server_dir;
-				q.Push(queue_data);
 			}
 		}
 	}
 
-	DeleteFile(NativePath(m_http_file_out_string));
 	return (ERR_NO_ERROR);
+}
+
+String Rajce::HttpGetVideoUrl(const String domain, const String id)
+{
+	String url = "//" + domain + "/ajax/videoxml.php?id=" + id;
+	HttpPrependProtocol(url);
+	HttpDownloadPage(url);
+
+	String server, path, file;
+	String txt = LoadFile(m_http_file_out_string);
+	XmlParser p(txt);
+
+	while (!p.IsTag())
+		p.Skip();
+	p.PassTag("root");
+	while (!p.End())
+		if (p.Tag("items"))
+			while (!p.End())
+				if (p.Tag("item"))
+					while(!p.End())
+						if (p.Tag("linkvideo"))
+							while (!p.End()) {
+								while (p.LoopTag("server"))
+									server = p.ReadText();
+								while (p.LoopTag("path"))
+									path = p.ReadText();
+								while (p.LoopTag("file"))
+									file = p.ReadText();
+							}
+						else
+							p.Skip();
+				else
+					p.Skip();
+		else
+			p.Skip();
+
+	DeleteFile(m_http_file_out_string);
+
+	url = server + path + file;
+	HttpPrependProtocol(url);
+	return (url);
 }
 
 void Rajce::FileDownload(void)
@@ -417,16 +496,9 @@ void Rajce::FileDownload(void)
 
 		QueueData queue_data = q.Pop();;
 		String file_download = UnixPath(queue_data.download_url);
-		String file_base_name = GetFileName(file_download);
 
 		file_http_out_string = AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
-		RealizeDirectory(file_http_out_string);
-		file_http_out_string = AppendFileName(file_http_out_string, file_base_name);
-
-		// Check if the file is already downloaded
-		if (download_new_only.GetData() != 0 && FileExists(file_http_out_string)) {
-			continue;
-		}
+		file_http_out_string = AppendFileName(file_http_out_string, queue_data.download_name);
 
 		// Download the file
 		file_http.New();
@@ -441,7 +513,7 @@ void Rajce::FileDownload(void)
 
 		// begin download statement
 		if (do_download) {
-			download1_name.SetText(file_base_name);
+			download1_name.SetText(queue_data.download_name);
 			file_http.Url(file_download).Execute();
 		}
 
@@ -511,6 +583,7 @@ void Rajce::InitText(void)
 	album_pass_text.SetText(t_("Album password:"));
 	download_text.SetText(t_("Download directory:"));
 	download_new_only.SetLabel(t_("Download new files only"));
+	download_video.SetLabel(t_("Download video files"));
 	append_album_user_name.SetLabel(t_("Append album user name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
 	download_protocol.SetLabel(t_("Use https protocol for autorization and download"));
@@ -642,6 +715,7 @@ void Rajce::EnableElements(bool enable)
 
 	http_uri.Enable(enable);
 	download_dir.Enable(enable);
+	download_video.Enable(enable);
 	download_dir_select.Enable(enable);
 	download_new_only.Enable(enable);
 
@@ -664,6 +738,8 @@ void Rajce::LoadCfg(void)
 	String dir = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
 
 	m_cfg_download_dir = cfg_data_in.Get("DOWNLOAD_DIR", dir);
+	m_cfg_download_new_only = cfg_data_in.Get("DOWNLOAD_NEW_ONLY", Null) == "true" ? true : false;
+	m_cfg_download_video = cfg_data_in.Get("DOWNLOAD_VIDEO", Null) == "true" ? true : false;
 	m_cfg_album_url = cfg_data_in.Get("ALBUM_URL", Null);
 	m_cfg_album_user = cfg_data_in.Get("ALBUM_USER", Null);
 	m_cfg_append_user_name = cfg_data_in.Get("APPEND_USER_NAME", Null) == "true" ? true : false;
@@ -682,6 +758,8 @@ void Rajce::SaveCfg(void)
 	cfg_data_out
 		<< m_title_name << ": Configuration Text File" << "\n\n"
 		<< "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
+		<< "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
+		<< "DOWNLOAD_VIDEO = " << (download_video.GetData() ? "true" : "false") << "\n"
 		<< "ALBUM_URL = " << http_uri.GetData() << "\n"
 		<< "ALBUM_USER = " << album_user.GetData() << "\n"
 		<< "APPEND_USER_NAME = " << (append_album_user_name.GetData() ? "true" : "false") << "\n"

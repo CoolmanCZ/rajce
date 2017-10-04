@@ -55,10 +55,12 @@ using namespace Upp;
 #define ERR_SAVE     -7
 #define ERR_SELECT   -8
 #define ERR_PARSE    -9
+#define ERR_DOWNLOAD -10
 
 struct QueueData {
 	String download_url;
 	String download_dir;
+	String download_name;
 	String album_server_dir;
 };
 
@@ -72,6 +74,8 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String m_cfg_download_dir;
 	String m_cfg_album_url;
 	String m_cfg_album_user;
+	bool m_cfg_download_new_only;
+	bool m_cfg_download_video;
 	bool m_cfg_append_user_name;
 	bool m_cfg_enable_user_auth;
 	bool m_cfg_use_https;
@@ -107,11 +111,15 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	bool HttpProxy(void);
 	void HttpAuthorization(void);
 	bool HttpCheckAndGetUrl(String &url);
+	void HttpPrependProtocol(String &url);
 	void HttpAbort(bool ask);
 	void HttpDownload(void);
+	int  HttpDownloadPage(String url);
 
 	String HttpGetParameterValue(String param, String &txt, bool is_quotes);
-	int HttpParse(void);
+	int  HttpParse(void);
+	String HttpGetVideoUrl(const String domain, const String id);
+	void HttpGetVideoUrl(const String domain, const String id, String &url) { url = HttpGetVideoUrl(domain, id); };
 
 	void FileDownload(void);
 	void FileContent(const void *ptr, int size);
