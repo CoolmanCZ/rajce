@@ -405,7 +405,7 @@ int Rajce::HttpParse(void)
 					if (download_video.GetData()) {
 						String file_id = photos[i]["photoID"].ToString();
 						full_path = HttpGetVideoUrl(domain, file_id);
-						int len = photos[i]["info"].ToString().Find(" ");
+						int len = photos[i]["info"].ToString().Find(" |");
 						file_name = photos[i]["info"].ToString().Mid(0, len);
 					}
 				} else {
