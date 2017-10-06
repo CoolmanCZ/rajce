@@ -8,12 +8,13 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Download
 
-* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.3.0-32bit.zip)
-* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.3.0-64bit.zip)
-* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.3.0.tar.bz2)
+* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.3.1-32bit.zip)
+* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.3.1-64bit.zip)
+* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.3.1.tar.bz2)
 
 # Changelog
 
+* 1.3.1 - Fix of the #6 - downloaded videos do not have their full name
 * 1.3.0 - new option - download video files
 * 1.2.4 - store settings to the configuration file, new option - download new files only
 * 1.2.3 - hide the http proxy settings if not used

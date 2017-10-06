@@ -38,7 +38,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	m_version = "v1.3.0";
+	m_version = "v1.3.1";
 	m_title_name = "Rajce album download";
 	m_download_text = "Download progress";
 	m_http_started = false;
