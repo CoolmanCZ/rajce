@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016, 2017 Radek Malcic
+ * Copyright (C) 2016-2018 Radek Malcic
  *
  * All rights reserved.
  *
@@ -31,7 +31,6 @@
 #define _Rajce_Rajce_h
 
 #include <CtrlLib/CtrlLib.h>
-#include "ThreadSafeQueue.h"
 
 using namespace Upp;
 
@@ -90,7 +89,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	Size start_sz;
 	Size proxy_sz;
 
-	ThreadSafeQueue < QueueData > q;
+	Array<QueueData> q;
 
 	HttpRequest file_http;
 	FileOut		file_http_out;
@@ -116,10 +115,8 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void HttpDownload(void);
 	int  HttpDownloadPage(String url);
 
-	String HttpGetParameterValue(String param, String &txt, bool is_quotes);
+	String HttpGetParameterValue(const String param, const String &txt);
 	int  HttpParse(void);
-	String HttpGetVideoUrl(const String domain, const String id);
-	void HttpGetVideoUrl(const String domain, const String id, String &url) { url = HttpGetVideoUrl(domain, id); };
 
 	void FileDownload(void);
 	void FileContent(const void *ptr, int size);
@@ -133,7 +130,6 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void ToggleLang(void);
 	void ToggleProtocol(void);
 
-	void HttpUriChange(void);
 	void HttpProxyShow(bool show);
 	void EnableElements(bool enable);
 
