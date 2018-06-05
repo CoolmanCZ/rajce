@@ -8,12 +8,13 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Download
 
-* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.0-32bit.zip)
-* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.0-64bit.zip)
-* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.4.0.tar.bz2)
+* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.1-32bit.zip)
+* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.1-64bit.zip)
+* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.4.1.tar.bz2)
 
 # Changelog
 
+* 1.4.1 - Fix of the #9 - new request and connection timeout options
 * 1.4.0 - Fix of the #8 - new url parsing of video files
 * 1.3.1 - Fix of the #6 - downloaded video files do not have full name
 * 1.3.0 - new option - download video files

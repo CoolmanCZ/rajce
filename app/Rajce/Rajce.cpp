@@ -38,7 +38,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	m_version = "v1.4.0";
+	m_version = "v1.4.1";
 	m_title_name = "Rajce album download";
 	m_download_text = "Download progress";
 	m_http_started = false;
@@ -66,6 +66,9 @@ Rajce::Rajce()
 	album_authorization <<= THISBACK(ToggleAlbum);
 	album_pass.Password();
 
+	timeout_req_text <<= THISBACK(ToggleTimeoutReq);
+	timeout_con_text <<= THISBACK(ToggleTimeoutCon);
+
 	proxy_enabled <<= THISBACK(ToggleProxy);
 	http_proxy_pass.Password();
 
@@ -88,7 +91,8 @@ Rajce::Rajce()
 	proxy_enabled.SetData(m_cfg_use_https_proxy);
 	http_proxy_url.SetData(m_cfg_https_proxy_url);
 	http_proxy_port.SetData(m_cfg_https_proxy_port);
-
+	timeout_req.SetData(m_cfg_http_timeout_req);
+	timeout_con.SetData(m_cfg_http_timeout_con);
 	if (http_uri.GetData().IsNull())
 		http_uri.SetData("https://www.rajce.net");
 
@@ -96,6 +100,8 @@ Rajce::Rajce()
 	ToggleProxy();
 	ToggleAlbum();
 	ToggleDownload();
+	ToggleTimeoutReq();
+	ToggleTimeoutCon();
 }
 
 void Rajce::SelectDownloadDir(void)
@@ -137,6 +143,16 @@ bool Rajce::HttpProxy(void)
 {
 	bool result = true;
 
+	m_http.CommonProxy("",0);
+	m_http.CommonProxyAuth("","");
+	m_http.SSLProxy("",0);
+	m_http.SSLProxyAuth("","");
+
+	if (timeout_req.IsEnabled())
+		m_http.RequestTimeout(timeout_req.GetData());
+	if (timeout_con.IsEnabled())
+		m_http.Timeout(timeout_con.GetData());
+
 	if (proxy_enabled) {
 		String proxy_url = ~http_proxy_url;
 		int proxy_port = ~http_proxy_port;
@@ -159,15 +175,6 @@ bool Rajce::HttpProxy(void)
 			Exclamation(t_("[= HTTP proxy settings is wrong!]"));
 			result = false;
 		}
-
-		m_http.RequestTimeout(6000);
-	} else {
-		m_http.CommonProxy("",0);
-		m_http.CommonProxyAuth("","");
-		m_http.SSLProxy("",0);
-		m_http.SSLProxyAuth("","");
-
-		m_http.RequestTimeout(1000);
 	}
 
 	return (result);
@@ -240,6 +247,20 @@ void Rajce::HttpDownload(void)
 		return;
 	}
 
+	int64 min = timeout_req.GetMin();
+	int64 cur = timeout_req.GetData();
+	if (timeout_req.IsEnabled() && min > cur) {
+		Exclamation(Format("%s %d ms", t_("Request timeout must be greater than"), min));
+		return;
+	}
+
+	min = timeout_con.GetMin();
+	cur = timeout_con.GetData();
+	if (timeout_con.IsEnabled() && min > cur) {
+		Exclamation(Format("%s %d ms", t_("Connection timeout must be greater than"), min));
+		return;
+	}
+
 	m_http_started = true;
 	ToggleDownload();
 	SaveCfg();
@@ -247,11 +268,10 @@ void Rajce::HttpDownload(void)
 	String download_url, tmp_file;
 	if (HttpCheckAndGetUrl(download_url) && (ERR_NO_ERROR == HttpDownloadPage(download_url))) {
 		tmp_file = m_http_file_out_string;
-		if (HttpParse() != ERR_NO_ERROR) {
+		if (HttpParse() != ERR_NO_ERROR)
 			Exclamation(t_("[= Http parse error!&& Files can't be downloaded!]"));
-		} else {
+		else
 			FileDownload();
-		}
 	}
 
 	if (FileExists(tmp_file))
@@ -266,11 +286,11 @@ int Rajce::HttpDownloadPage(String url)
 	String download_url = url;
 
 	// prepare download directory and file name
-	if ((download_dir.GetLength() == 0) || (m_http_file_out_string.IsEmpty())) {
+	if ((download_dir.GetLength() == 0) || (m_http_file_out_string.IsEmpty()))
 		m_http_file_out_string = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
-	} else {
+	else
 		m_http_file_out_string = download_dir.GetData();
-	}
+
 	m_http_file_out_string = GetTempFileName("rajce");
 
 	// prepare download statement
@@ -282,13 +302,11 @@ int Rajce::HttpDownloadPage(String url)
 	}
 
 	// begin download statement
-	if (HttpProxy()) {
+	if (HttpProxy())
 		m_http.Url(download_url).Execute();
-	}
 
-	if (m_http_file_out.IsOpen()) {
+	if (m_http_file_out.IsOpen())
 		m_http_file_out.Close();
-	}
 
 	int result = ERR_NO_ERROR;
 
@@ -339,7 +357,8 @@ int Rajce::HttpParse(void)
 	String album_storage;
 	String album_server_dir;
 	String album_user_name;
-	String domain;
+
+	q.Clear();
 
 	while (!in.IsEof()) {
 		txt = in.GetLine();
@@ -358,10 +377,6 @@ int Rajce::HttpParse(void)
 				Exclamation(t_("[= Authorization is required!&& Enable album authorization.]"));
 			}
 			break;
-		}
-
-		if (txt.Find("domain") > 0) {
-			domain = HttpGetParameterValue("domain", txt);
 		}
 
 		if (txt.Find("storage") > 0) {
@@ -526,7 +541,7 @@ void Rajce::InitText(void)
 {
 	Title(Format("%s - %s", t_(m_title_name), m_version));
 
-	http_label.SetLabel(t_("Album settings"));
+	http_label.SetLabel(t_("Album"));
 	http_uri_text.SetText(t_("Album URL:"));
 	album_user_text.SetText(t_("Album user:"));
 	album_pass_text.SetText(t_("Album password:"));
@@ -535,8 +550,11 @@ void Rajce::InitText(void)
 	download_video.SetLabel(t_("Download video files"));
 	append_album_user_name.SetLabel(t_("Append album user name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
+	timeout_req_text.SetLabel(t_("Request timeout (ms)"));
+	timeout_con_text.SetLabel(t_("Connection timeout (ms)"));
 	download_protocol.SetLabel(t_("Use https protocol for autorization and download"));
 	download_protocol.Tip(t_("HTTPS is used for authentication of the visited website and protection of the privacy and integrity of the exchanged data."));
+	settings.SetLabel(t_("Settings"));
 	http_proxy_label.SetLabel(t_("HTTP proxy setting"));
 	http_proxy_url_text.SetText(t_("Proxy URL:"));
 	http_proxy_user_text.SetText(t_("Proxy user:"));
@@ -632,9 +650,25 @@ void Rajce::ToggleProtocol(void)
 	}
 
 	String url;
-	bool do_download = HttpCheckAndGetUrl(url);
+	HttpCheckAndGetUrl(url);
 	http_uri.SetData(url);
 
+}
+
+void Rajce::ToggleTimeoutReq()
+{
+	if (~timeout_req_text)
+		timeout_req.Enable();
+	else
+		timeout_req.Disable();
+}
+
+void Rajce::ToggleTimeoutCon()
+{
+	if (~timeout_con_text)
+		timeout_con.Enable();
+	else
+		timeout_con.Disable();
 }
 
 void Rajce::HttpProxyShow(bool show)
@@ -662,6 +696,11 @@ void Rajce::EnableElements(bool enable)
 	download_video.Enable(enable);
 	download_dir_select.Enable(enable);
 	download_new_only.Enable(enable);
+
+	timeout_req_text.Enable(enable);
+	timeout_req.Enable(enable);
+	timeout_con_text.Enable(enable);
+	timeout_con.Enable(enable);
 
 	append_album_user_name.Enable(enable);
 	album_authorization.Enable(enable);
@@ -692,6 +731,10 @@ void Rajce::LoadCfg(void)
 	m_cfg_use_https_proxy = cfg_data_in.Get("USE_HTTP_PROXY", Null) == "true" ? true : false;
 	m_cfg_https_proxy_url = cfg_data_in.Get("HTTP_PROXY_URL", Null);
 	m_cfg_https_proxy_port =  cfg_data_in.Get("HTTP_PROXY_PORT", Null);
+	int tmp = ScanInt64(cfg_data_in.Get("HTTP_TIMEOUT_REQUEST", Null));
+	m_cfg_http_timeout_req = tmp < 999 ? 1000 : tmp;
+	tmp = ScanInt64(cfg_data_in.Get("HTTP_TIMEOUT_CONNECTION", Null));
+	m_cfg_http_timeout_con = tmp < 999 ? 1000 : tmp;
 }
 
 void Rajce::SaveCfg(void)
@@ -712,6 +755,8 @@ void Rajce::SaveCfg(void)
 		<< "USE_HTTP_PROXY = " << (proxy_enabled.GetData() ? "true" : "false") << "\n"
 		<< "HTTP_PROXY_URL = " << http_proxy_url.GetData() << "\n"
 		<< "HTTP_PROXY_PORT = " << http_proxy_port.GetData() << "\n"
+		<< "HTTP_TIMEOUT_REQUEST = " << timeout_req.GetData() << "\n"
+		<< "HTTP_TIMEOUT_CONNECTION = " << timeout_con.GetData() << "\n"
 		;
 
 	if(!FileExists(cfg_file))

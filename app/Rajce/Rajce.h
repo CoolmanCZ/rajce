@@ -73,14 +73,16 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String m_cfg_download_dir;
 	String m_cfg_album_url;
 	String m_cfg_album_user;
-	bool m_cfg_download_new_only;
-	bool m_cfg_download_video;
-	bool m_cfg_append_user_name;
-	bool m_cfg_enable_user_auth;
-	bool m_cfg_use_https;
-	bool m_cfg_use_https_proxy;
+	bool   m_cfg_download_new_only;
+	bool   m_cfg_download_video;
+	bool   m_cfg_append_user_name;
+	bool   m_cfg_enable_user_auth;
+	bool   m_cfg_use_https;
+	bool   m_cfg_use_https_proxy;
 	String m_cfg_https_proxy_url;
 	String m_cfg_https_proxy_port;
+	int    m_cfg_http_timeout_req;
+	int    m_cfg_http_timeout_con;
 
 	String m_version;
 	String m_title_name;
@@ -129,6 +131,8 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void ToggleDownload(void);
 	void ToggleLang(void);
 	void ToggleProtocol(void);
+	void ToggleTimeoutReq(void);
+	void ToggleTimeoutCon(void);
 
 	void HttpProxyShow(bool show);
 	void EnableElements(bool enable);

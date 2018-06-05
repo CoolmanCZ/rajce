@@ -18,6 +18,14 @@ csCZ("Zru\305\241it stahov\303\241n\303\255?")
 T_("[= Download directory doesn't exist!]")
 csCZ("[= Adres\303\241\305\231 pro ulo\305\276en\303\255 soubor\305\257 neexistuje!]")
 
+T_("Request timeout must be greater than")
+csCZ("\304\214asov\303\275 limit po\305\276adavku mus\303\255 b\303\275t v\304\233t\305\241\303\255 "
+     "ne\305\276")
+
+T_("Connection timeout must be greater than")
+csCZ("\304\214asov\303\275 limit p\305\231ipojen\303\255 mus\303\255 b\303\275t "
+     "v\304\233t\305\241\303\255 ne\305\276")
+
 T_("[= Http parse error!&& Files can't be downloaded!]")
 csCZ("[= Chyba p\305\231i zpracov\303\241n\303\255 HTTP po\305\276adavku!&& "
      "Soubory nelze st\303\241hnout!]")
@@ -47,8 +55,8 @@ T_("[= Download complete!&& Files downloaded: ")
 csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
      "soubor\305\257: ")
 
-T_("Album settings")
-csCZ("Nastaven\303\255 alba")
+T_("Album")
+csCZ("")
 
 T_("Album URL:")
 csCZ("Adresa alba:")
@@ -75,6 +83,12 @@ csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231
 T_("Enable album authorization")
 csCZ("Povolit u\305\276ivatelskou autorizaci")
 
+T_("Request timeout (ms)")
+csCZ("\304\214asov\303\275 limit po\305\276adavku (ms)")
+
+T_("Connection timeout (ms)")
+csCZ("\304\214asov\303\275 limit p\305\231ipojen\303\255 (ms)")
+
 T_("Use https protocol for autorization and download")
 csCZ("Pou\305\276\303\255t https protokol pro autorizaci a stahov\303\241n\303\255")
 
@@ -83,6 +97,9 @@ T_("HTTPS is used for authentication of the visited website and protection "
 csCZ("HTTPS je pou\305\276it pro zaji\305\241t\304\233n\303\255 autentizace, "
      "d\305\257v\304\233rnosti p\305\231en\303\241\305\241en\303\275ch dat a "
      "jejich integritu.")
+
+T_("Settings")
+csCZ("Nastaven\303\255")
 
 T_("HTTP proxy setting")
 csCZ("Nastaven\303\255 HTTP proxy")
