@@ -14,7 +14,8 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Changelog
 
-* 1.4.1 - Fix of the #9 - new request and connection timeout options
+* 1.4.1 - Fix of the #9 - clear download list when new URL is set
+*       - new request and connection timeout options
 * 1.4.0 - Fix of the #8 - new url parsing of video files
 * 1.3.1 - Fix of the #6 - downloaded video files do not have full name
 * 1.3.0 - new option - download video files
