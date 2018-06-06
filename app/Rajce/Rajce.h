@@ -34,14 +34,14 @@
 
 using namespace Upp;
 
-#define LAYOUTFILE <app/Rajce/Rajce.lay>
+#define LAYOUTFILE <Rajce/Rajce.lay>
 #include <CtrlCore/lay.h>
 
-#define TFILE <app/Rajce/Rajce.t>
+#define TFILE <Rajce/Rajce.t>
 #include <Core/t.h>
 
 #define IMAGECLASS RajceImg
-#define IMAGEFILE  <app/Rajce/Rajce.iml>
+#define IMAGEFILE  <Rajce/Rajce.iml>
 #include <Draw/iml.h>
 
 #define ERR_NO_ERROR  0
