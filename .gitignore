@@ -7,7 +7,7 @@
 .svn
 
 *.Debug.Debug_Full.*
-Rajce/Rajce
+app/Rajce/Rajce
 
 build.linux
 build.mingw32

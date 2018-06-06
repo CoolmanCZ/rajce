@@ -33,7 +33,7 @@ GENERATE_PACKAGE="1"
 UPP_SRC_BASE="ultimatepp"
 UPP_SRC_DIR="${UPP_SRC_BASE}/uppsrc"
 
-PROJECT_NAME="Rajce/Rajce.upp"
+PROJECT_NAME="app/Rajce/Rajce.upp"
 
 # linux build
 PROJECT_FLAGS="-DflagGUI -DflagMT -DflagGCC -DflagLINUX -DflagPOSIX -DflagSHARED"
