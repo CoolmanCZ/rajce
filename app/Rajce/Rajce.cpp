@@ -196,12 +196,10 @@ bool Rajce::HttpCheckAndGetUrl(String &url)
 
 void Rajce::HttpPrependProtocol(String &url)
 {
-	int url_len = url.GetLength();
-
 	// remove last '/' from url
-	while ((url_len > 0) && (url[url_len - 1] == '/')) {
-		url.Remove(url_len - 1);
-	}
+	int url_len = url.GetLength();
+	while ((url_len > 0) && (url[--url_len] == '/'))
+		url.Remove(url_len);
 
 	// prepend https:// or http:// protocol
 	String protocol = "https://";
