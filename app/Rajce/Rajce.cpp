@@ -38,7 +38,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	m_version = "v1.4.1";
+	m_version = "v1.4.2";
 	m_title_name = "Rajce album download";
 	m_download_text = "Download progress";
 	m_http_started = false;
@@ -385,6 +385,12 @@ int Rajce::HttpParse(void)
 
 		if (txt.Find("albumServerDir") > 0) {
 			album_server_dir = HttpGetParameterValue("albumServerDir", txt);
+#ifdef PLATFORM_WIN32
+			// remove all '.' from the end of the album name
+			int dir_len = album_server_dir.GetCount();
+			while ((dir_len > 0) && (album_server_dir[--dir_len] == '.'))
+				album_server_dir.Remove(dir_len);
+#endif
 			continue;
 		}
 
