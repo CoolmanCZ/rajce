@@ -8,12 +8,13 @@ Simply download and unzip package from the link below and then execute Rajce.exe
 
 # Download
 
-* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.1-32bit.zip)
-* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.1-64bit.zip)
-* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.4.1.tar.bz2)
+* [Windows 32bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.2-32bit.zip)
+* [Windows 64bit](https://github.com/CoolmanCZ/rajce/raw/master/release/rajce-1.4.2-64bit.zip)
+* [Source code package](https://github.com/CoolmanCZ/rajce/raw/master/release/Rajce.upp-1.4.2.tar.bz2)
 
 # Changelog
 
+* 1.4.2 - Fix of the #10 - remove dots from the end of the album name in Windows OS
 * 1.4.1 - Fix of the #9 - clear download list when new URL is set, new request and connection timeout options
 * 1.4.0 - Fix of the #8 - new url parsing of video files
 * 1.3.1 - Fix of the #6 - downloaded video files do not have full name
