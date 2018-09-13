@@ -3,8 +3,11 @@
 #endif
 // Rajce.cpp
 
-T_("Exit ")
-csCZ("Ukon\304\215it ")
+T_("Exit")
+csCZ("Ukon\304\215it")
+
+T_("Delete url:")
+csCZ("Smazat url:")
 
 T_("[= HTTP proxy settings is wrong!]")
 csCZ("[= \305\240patn\303\251 nastaven\303\255 HTTP proxy!]")
@@ -38,6 +41,9 @@ csCZ("[= Chyba p\305\231i otev\303\255r\303\241n\303\255 souboru:&& %s!]")
 
 T_("[= Error reading input file:&& %s!]")
 csCZ("[= Chyba p\305\231i \304\215ten\303\255 souboru:&& %s!]")
+
+T_("[= Too many unsuccessful attempts - try this in a moment!]")
+csCZ("[= P\305\231\303\255li\305\241 mnoho ne\303\272sp\304\233\305\241n\303\275ch pokus\305\257 - zkuste to za chv\303\255li!]")
 
 T_("[= Authorization is required!&& Fill the album authorization data.]")
 csCZ("[= Je vy\305\276adov\303\241na autorizace!&& Vypl\305\210te autoriza\304\215n\303\255 "
@@ -121,9 +127,6 @@ csCZ("St\303\241hnout")
 
 T_("Abort")
 csCZ("Zru\305\241it")
-
-T_("Exit")
-csCZ("Ukon\304\215it")
 
 T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
 csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "

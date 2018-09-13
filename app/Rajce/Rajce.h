@@ -56,6 +56,14 @@ using namespace Upp;
 #define ERR_PARSE    -9
 #define ERR_DOWNLOAD -10
 
+struct UserData {
+	String url;
+	String user;
+	bool authorization;
+	void Jsonize(JsonIO &jio) { jio("url", url)("user", user)("authorization", authorization); }
+	void Xmlize(XmlIO& xio)   { XmlizeByJsonize(xio, *this); }
+};
+
 struct QueueData {
 	String download_url;
 	String download_dir;
@@ -69,50 +77,64 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	Rajce();
 
  private:
-	String m_cfg_name = "rad.ini";
-	String m_cfg_download_dir;
-	String m_cfg_album_url;
-	String m_cfg_album_user;
-	bool   m_cfg_download_new_only;
-	bool   m_cfg_download_video;
-	bool   m_cfg_append_user_name;
-	bool   m_cfg_enable_user_auth;
-	bool   m_cfg_use_https;
-	bool   m_cfg_use_https_proxy;
-	String m_cfg_https_proxy_url;
-	String m_cfg_https_proxy_port;
-	int    m_cfg_http_timeout_req;
-	int    m_cfg_http_timeout_con;
+	String cfg_name = "rad.ini";
+	String cfg_download_dir;
+	String cfg_album_url;
+	String cfg_album_user;
+	bool   cfg_download_new_only;
+	bool   cfg_download_video;
+	bool   cfg_append_user_name;
+	bool   cfg_enable_user_auth;
+	bool   cfg_use_https;
+	bool   cfg_use_https_proxy;
+	String cfg_https_proxy_url;
+	String cfg_https_proxy_port;
+	int    cfg_http_timeout_req;
+	int    cfg_http_timeout_con;
 
-	String m_version;
-	String m_title_name;
-	String m_download_text;
+	String version;
+	String title_name;
+	String download_str;
+	bool   init_done;
 
 	Size start_sz;
 	Size proxy_sz;
 
+	Array<UserData> userdata;
 	Array<QueueData> q;
+
+	FrameRight<Button> del;
 
 	HttpRequest file_http;
 	FileOut		file_http_out;
 	String		file_http_out_string;
 	int64		file_http_loaded;
 
-	HttpRequest m_http;
-	FileOut		m_http_file_out;		// download directory with filename
-	String		m_http_file_out_string;	// download directory with filename
-	bool		m_http_started;
-	int			m_current_lang;
+	HttpRequest http;
+	FileOut		http_file_out;        // download directory with filename
+	String		http_file_out_string; // download directory with filename
+	bool		http_started;
+	int			current_lang;
 
 	void SelectDownloadDir(void);
 	void Exit(void);
+
+	int  UserDataFind(const String& url);
+	void UserDataLoad(void);
+	void UserDataAdd(void);
+	void UserDataDel(const String& url);
+	void UserDataSet(void);
+	void UserDataSelect(const String& url);
+
+	void AlbumUrlAdd(const String url);
+	void AlbumUrlDel(void);
 
 	void HttpContent(const void *ptr, int size);
 	void HttpStart(void);
 	bool HttpProxy(void);
 	void HttpAuthorization(void);
-	bool HttpCheckAndGetUrl(String &url);
-	void HttpPrependProtocol(String &url);
+	bool HttpCheckUrl(void);
+	void HttpPrependProtocol(void);
 	void HttpAbort(bool ask);
 	void HttpDownload(void);
 	int  HttpDownloadPage(String url);
@@ -127,12 +149,13 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	void InitText(void);
 	void ToggleProxy(void);
-	void ToggleAlbum(void);
+	void ToggleAuthorization(void);
 	void ToggleDownload(void);
 	void ToggleLang(void);
 	void ToggleProtocol(void);
 	void ToggleTimeoutReq(void);
 	void ToggleTimeoutCon(void);
+	void ToggleUserDataSelect(void);
 
 	void HttpProxyShow(bool show);
 	void EnableElements(bool enable);
