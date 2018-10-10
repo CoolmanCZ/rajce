@@ -71,6 +71,8 @@ after_build:
   - cmd: mv %APPVEYOR_BUILD_FOLDER%\Rajce.upp.tar.bz2 %APPVEYOR_BUILD_FOLDER%\Rajce.upp-%APP_VERSION%.tar.bz2
   - cmd: cp %APPVEYOR_BUILD_FOLDER%\app\Rajce\Copying %APPVEYOR_BUILD_FOLDER%\build.%MSYSTEM%\LICENSE
   - cmd: 7z a rajce-%APP_VERSION%-%BIT%.zip %APPVEYOR_BUILD_FOLDER%\build.%MSYSTEM%\bin\Rajce.exe %APPVEYOR_BUILD_FOLDER%\build.%MSYSTEM%\LICENSE
+  - cmd: sha256sum rajce-%APP_VERSION%-%BIT%.zip > rajce-%APP_VERSION%-%BIT%.zip.sha256
+  - cmd: sha256sum %APPVEYOR_BUILD_FOLDER%\Rajce.upp-%APP_VERSION%.tar.bz2 > %APPVEYOR_BUILD_FOLDER%\Rajce.upp-%APP_VERSION%.tar.bz2.sha256
 
 # scripts to run *after* solution is built and *before* automatic packaging occurs (web apps, NuGet packages, Azure Cloud Services)
 before_package:
@@ -86,7 +88,9 @@ test: off
 #---------------------------------#
 artifacts:
   - path: rajce-*.zip
+  - path: rajce-*.zip.sha256
   - path: Rajce.upp-*.bz2
+  - path: Rajce.upp-*.bz2.sha256
 
 #---------------------------------#
 #     deployment configuration    #
@@ -101,7 +105,7 @@ deploy:
     description: Version %APP_VERSION% release
     auth_token:
       secure: wh3ED4YJRCP43Gof1rcKwswYGYPtLefhiHE5cvdxLXWklCsDTKynKpEWItug1MU6
-    artifact: /.*\.zip/, /.*\.bz2/
+    artifact: /.*\.zip/, /.*\.bz2/, /.*\.sha256/
     draft: false
     prerelease: false
     on:
