@@ -9,9 +9,7 @@
 *.Debug.Debug_Full.*
 app/Rajce/Rajce
 
-build.linux
-build.mingw32
-build.mingw64
+build.*
 
 CMakeLists.txt
 ~

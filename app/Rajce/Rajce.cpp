@@ -41,6 +41,7 @@ Rajce::Rajce()
 	Icon(RajceImg::AppLogo());
 
 	version = "v1.5.0";
+	internal_name = "rad";
 	title_name = "Rajce album download";
 	download_str = "Download progress";
 	http_started = false;
@@ -819,35 +820,35 @@ void Rajce::EnableElements(bool enable)
 void Rajce::LoadCfg(void)
 {
 	String cfg_file = GetCfgFileName();
-	VectorMap<String, String> cfg_data_in = LoadIniFile(cfg_file);
+	VectorMap<String, String> data = LoadIniFile(cfg_file);
 
 	String dir = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
 
-	cfg_download_dir = cfg_data_in.Get("DOWNLOAD_DIR", dir);
-	cfg_download_new_only = cfg_data_in.Get("DOWNLOAD_NEW_ONLY", Null) == "true" ? true : false;
-	cfg_download_video = cfg_data_in.Get("DOWNLOAD_VIDEO", Null) == "true" ? true : false;
-	cfg_album_url = cfg_data_in.Get("ALBUM_URL", Null);
-	cfg_album_user = cfg_data_in.Get("ALBUM_USER", Null);
-	cfg_append_user_name = cfg_data_in.Get("APPEND_USER_NAME", Null) == "true" ? true : false;
-	cfg_enable_user_auth = cfg_data_in.Get("ENABLE_USER_AUTH", Null) == "true" ? true : false;
-	cfg_use_https = cfg_data_in.Get("USE_HTTPS", Null) == "true" ? true : false;
-	cfg_use_https_proxy = cfg_data_in.Get("USE_HTTP_PROXY", Null) == "true" ? true : false;
-	cfg_https_proxy_url = cfg_data_in.Get("HTTP_PROXY_URL", Null);
-	cfg_https_proxy_port =  cfg_data_in.Get("HTTP_PROXY_PORT", Null);
-	int tmp = ScanInt64(cfg_data_in.Get("HTTP_TIMEOUT_REQUEST", Null));
+	cfg_download_dir = data.Get("DOWNLOAD_DIR", dir);
+	cfg_download_new_only = data.Get("DOWNLOAD_NEW_ONLY", Null) == "true" ? true : false;
+	cfg_download_video = data.Get("DOWNLOAD_VIDEO", Null) == "true" ? true : false;
+	cfg_album_url = data.Get("ALBUM_URL", Null);
+	cfg_album_user = data.Get("ALBUM_USER", Null);
+	cfg_append_user_name = data.Get("APPEND_USER_NAME", Null) == "true" ? true : false;
+	cfg_enable_user_auth = data.Get("ENABLE_USER_AUTH", Null) == "true" ? true : false;
+	cfg_use_https = data.Get("USE_HTTPS", Null) == "true" ? true : false;
+	cfg_use_https_proxy = data.Get("USE_HTTP_PROXY", Null) == "true" ? true : false;
+	cfg_https_proxy_url = data.Get("HTTP_PROXY_URL", Null);
+	cfg_https_proxy_port =  data.Get("HTTP_PROXY_PORT", Null);
+	int tmp = ScanInt64(data.Get("HTTP_TIMEOUT_REQUEST", Null));
 	cfg_http_timeout_req = tmp < 999 ? 1000 : tmp;
-	tmp = ScanInt64(cfg_data_in.Get("HTTP_TIMEOUT_CONNECTION", Null));
+	tmp = ScanInt64(data.Get("HTTP_TIMEOUT_CONNECTION", Null));
 	cfg_http_timeout_con = tmp < 999 ? 1000 : tmp;
 
-	LoadFromJson(userdata, cfg_data_in.Get("USER_DATA", Null));
+	LoadFromJson(userdata, data.Get("USER_DATA", Null));
 }
 
 void Rajce::SaveCfg(void)
 {
-	String cfg_file = GetCfgFileName();;
-	String cfg_data_out;
+	String cfg_file = GetCfgFileName();
+	String data;
 
-	cfg_data_out
+	data
 		<< title_name << ": Configuration Text File" << "\n\n"
 		<< "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
 		<< "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
@@ -868,28 +869,29 @@ void Rajce::SaveCfg(void)
 	if(!FileExists(cfg_file))
 		RealizePath(cfg_file);
 
-	if(!SaveFile(cfg_file, cfg_data_out))
-		Exclamation(t_("Saving configuration file has failed!"));
+	if(!SaveFile(cfg_file, data))
+		Exclamation(t_("Configuration file saving has failed!"));
+}
+
+String Rajce::GetAppDirectory(void)
+{
+	String p;
+#if defined(PLATFORM_WIN32)
+	p = AppendFileName(GetEnv("LOCALAPPDATA"), internal_name);
+	ONCELOCK
+	RealizeDirectory(p);
+#elif defined(PLATFORM_POSIX)
+	p = AppendFileName(GetHomeDirectory(), "." + internal_name);
+	ONCELOCK
+	RealizeDirectory(p);
+#else
+	Exclamation("Configuration is not implemented for this platform");
+#endif
+	return (p);
 }
 
 String Rajce::GetCfgFileName(void)
 {
-
-#if defined(PLATFORM_WIN32)
-	String local = GetEnv("LOCALAPPDATA");
-	String p = AppendFileName(local, "rad");
-	ONCELOCK
-		RealizeDirectory(p);
-	return AppendFileName(p, cfg_name);
-#elif defined(PLATFORM_POSIX)
-	String p = AppendFileName(GetHomeDirectory(), ".rad");
-	ONCELOCK
-		RealizeDirectory(p);
-	return AppendFileName(p, cfg_name);
-#else
-	Exclamation("Configuration is not implemented for this platform");
-	return (cfg_name);
-#endif
+	return (AppendFileName(GetAppDirectory(), internal_name + ".ini"));
 }
-
 // vim: ts=4

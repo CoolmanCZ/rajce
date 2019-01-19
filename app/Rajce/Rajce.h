@@ -75,9 +75,9 @@ class Rajce:public WithRajceLayout < TopWindow > {
  public:
 	typedef Rajce CLASSNAME;
 	Rajce();
+    virtual ~Rajce() {};
 
  private:
-	String cfg_name = "rad.ini";
 	String cfg_download_dir;
 	String cfg_album_url;
 	String cfg_album_user;
@@ -93,6 +93,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	int    cfg_http_timeout_con;
 
 	String version;
+	String internal_name;
 	String title_name;
 	String download_str;
 	bool   init_done;
@@ -162,6 +163,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	void LoadCfg(void);
 	void SaveCfg(void);
+	String GetAppDirectory(void);
 	String GetCfgFileName(void);
 };
 

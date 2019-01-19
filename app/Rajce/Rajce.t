@@ -132,7 +132,7 @@ T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
 csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
      "Raj\304\215e album download]]")
 
-T_("Saving configuration file has failed!")
+T_("Configuration file saving has failed!")
 csCZ("Ukl\303\241d\303\241n\303\255 konfigura\304\215n\303\255ho souboru selhalo!")
 
 
