@@ -132,7 +132,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	void HttpContent(const void *ptr, int size);
 	void HttpStart(void);
-	bool HttpProxy(void);
+	bool HttpProxy(HttpRequest& request);
 	void HttpAuthorization(void);
 	bool HttpCheckUrl(void);
 	void HttpPrependProtocol(void);

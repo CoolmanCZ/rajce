@@ -242,19 +242,19 @@ void Rajce::HttpStart(void)
 	}
 }
 
-bool Rajce::HttpProxy(void)
+bool Rajce::HttpProxy(HttpRequest& request)
 {
 	bool result = true;
 
-	http.CommonProxy("",0);
-	http.CommonProxyAuth("","");
-	http.SSLProxy("",0);
-	http.SSLProxyAuth("","");
+	request.CommonProxy("",0);
+	request.CommonProxyAuth("","");
+	request.SSLProxy("",0);
+	request.SSLProxyAuth("","");
 
 	if (timeout_req.IsEnabled())
-		http.RequestTimeout(timeout_req.GetData());
+		request.RequestTimeout(timeout_req.GetData());
 	if (timeout_con.IsEnabled())
-		http.Timeout(timeout_con.GetData());
+		request.Timeout(timeout_con.GetData());
 
 	if (proxy_enabled) {
 		String proxy_url = ~http_proxy_url;
@@ -264,14 +264,14 @@ bool Rajce::HttpProxy(void)
 
 		if ((!proxy_url.IsEmpty()) && (proxy_port > 0)) {
 			if (download_protocol.Get() == 0) {
-				http.CommonProxy(proxy_url, proxy_port);
+				request.CommonProxy(proxy_url, proxy_port);
 				if (!proxy_user.IsEmpty()) {
-					http.CommonProxyAuth(proxy_user, proxy_pass);
+					request.CommonProxyAuth(proxy_user, proxy_pass);
 				}
 			} else {
-				http.SSLProxy(proxy_url, proxy_port);
+				request.SSLProxy(proxy_url, proxy_port);
 				if (!proxy_user.IsEmpty()) {
-					http.SSLProxyAuth(proxy_user, proxy_pass);
+					request.SSLProxyAuth(proxy_user, proxy_pass);
 				}
 			}
 		} else {
@@ -409,7 +409,7 @@ int Rajce::HttpDownloadPage(String url)
 	}
 
 	// begin download statement
-	if (HttpProxy())
+	if (HttpProxy(http))
 		http.Url(download_url).Execute();
 
 	if (http_file_out.IsOpen())
@@ -588,7 +588,7 @@ void Rajce::FileDownload(void)
 			}
 
 			// HTTP proxy setting
-			bool do_download = HttpProxy();
+			bool do_download = HttpProxy(file_http);
 
 			// begin download statement
 			if (do_download) {
