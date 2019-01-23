@@ -101,7 +101,7 @@ deploy:
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     # description is mandatory. If not specified, GitHub returns 422: Unprocessable entity error.
-    description: Version %APP_VERSION% release
+    description: $(APPVEYOR_REPO_COMMIT_MESSAGE) $(APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED)
     auth_token:
       secure: wh3ED4YJRCP43Gof1rcKwswYGYPtLefhiHE5cvdxLXWklCsDTKynKpEWItug1MU6
     artifact: /App.*/
