@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Radek Malcic
+ * Copyright (C) 2016-2019 Radek Malcic
  *
  * All rights reserved.
  *
@@ -95,7 +95,6 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String version;
 	String internal_name;
 	String title_name;
-	String download_str;
 	bool   init_done;
 
 	Size start_sz;
@@ -106,15 +105,26 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	FrameRight<Button> del;
 
+	HttpRequest http;
+	FileOut		http_file_out;        // download directory with filename
+	String		http_file_out_string; // download directory with filename
+	bool		http_started;
+
 	HttpRequest file_http;
 	FileOut		file_http_out;
 	String		file_http_out_string;
 	int64		file_http_loaded;
 
-	HttpRequest http;
-	FileOut		http_file_out;        // download directory with filename
-	String		http_file_out_string; // download directory with filename
-	bool		http_started;
+	WithUpgradeLayout<TopWindow> upgrade;
+	String upgrade_url;
+	String upgrade_version;
+	int64  upgrade_size;
+
+	HttpRequest upgrade_http;
+	FileOut		upgrade_http_out;
+	String		upgrade_http_out_string;
+	int64		upgrade_http_loaded;
+
 	int			current_lang;
 
 	void SelectDownloadDir(void);
@@ -130,29 +140,39 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void AlbumUrlAdd(const String url);
 	void AlbumUrlDel(void);
 
-	void HttpContent(const void *ptr, int size);
 	void HttpStart(void);
+	void HttpContent(const void *ptr, int size);
 	bool HttpProxy(HttpRequest& request);
 	void HttpAuthorization(void);
 	bool HttpCheckUrl(void);
+	bool HttpCheckParameters(void);
 	void HttpPrependProtocol(void);
 	void HttpAbort(bool ask);
 	void HttpDownload(void);
-	int  HttpDownloadPage(String url);
+	int  HttpDownloadPage(String url, HttpRequest& request, FileOut& file, String& file_name, bool authorize = true);
 
 	String HttpGetParameterValue(const String param, const String &txt);
 	int  HttpParse(void);
 
 	void FileDownload(void);
+	void FileStart(void);
 	void FileContent(const void *ptr, int size);
 	void FileProgress(void);
-	void FileStart(void);
+
+	void UpgradeCheck(void);
+	void UpgradeSelectDirectory(void);
+	void UpgradeDownloadVersion(const String bite_size);
+	void UpgradeDownload(const String download_path, const String download_file);
+	void UpgradeStart(void);
+	void UpgradeContent(const void *ptr, int size);
+	void UpgradeProgress(void);
+	void UpgradeAbort(void);
 
 	void InitText(void);
+	void ToggleLang(void);
 	void ToggleProxy(void);
 	void ToggleAuthorization(void);
 	void ToggleDownload(void);
-	void ToggleLang(void);
 	void ToggleProtocol(void);
 	void ToggleTimeoutReq(void);
 	void ToggleTimeoutCon(void);
@@ -165,6 +185,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void SaveCfg(void);
 	String GetAppDirectory(void);
 	String GetCfgFileName(void);
+	String GetOS(void);
 };
 
 #endif

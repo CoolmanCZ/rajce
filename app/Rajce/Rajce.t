@@ -6,6 +6,9 @@
 T_("Exit")
 csCZ("Ukon\304\215it")
 
+T_("Rajce album download")
+csCZ("Raj\304\215e album download")
+
 T_("Delete url:")
 csCZ("Smazat url:")
 
@@ -14,9 +17,6 @@ csCZ("[= \305\240patn\303\251 nastaven\303\255 HTTP proxy!]")
 
 T_("[= Album URL is not valid!]")
 csCZ("[= Adresa alba je \305\241patn\304\233!]")
-
-T_("Abort download?")
-csCZ("Zru\305\241it stahov\303\241n\303\255?")
 
 T_("[= Download directory doesn't exist!]")
 csCZ("[= Adres\303\241\305\231 pro ulo\305\276en\303\255 soubor\305\257 neexistuje!]")
@@ -28,6 +28,9 @@ csCZ("\304\214asov\303\275 limit po\305\276adavku mus\303\255 b\303\275t v\304\2
 T_("Connection timeout must be greater than")
 csCZ("\304\214asov\303\275 limit p\305\231ipojen\303\255 mus\303\255 b\303\275t "
      "v\304\233t\305\241\303\255 ne\305\276")
+
+T_("Abort download?")
+csCZ("Zru\305\241it stahov\303\241n\303\255?")
 
 T_("[= Http parse error!&& Files can't be downloaded!]")
 csCZ("[= Chyba p\305\231i zpracov\303\241n\303\255 HTTP po\305\276adavku!&& "
@@ -43,7 +46,8 @@ T_("[= Error reading input file:&& %s!]")
 csCZ("[= Chyba p\305\231i \304\215ten\303\255 souboru:&& %s!]")
 
 T_("[= Too many unsuccessful attempts - try this in a moment!]")
-csCZ("[= P\305\231\303\255li\305\241 mnoho ne\303\272sp\304\233\305\241n\303\275ch pokus\305\257 - zkuste to za chv\303\255li!]")
+csCZ("[= P\305\231\303\255li\305\241 mnoho ne\303\272sp\304\233\305\241n\303\275ch "
+     "pokus\305\257 - zkuste to za chv\303\255li!]")
 
 T_("[= Authorization is required!&& Fill the album authorization data.]")
 csCZ("[= Je vy\305\276adov\303\241na autorizace!&& Vypl\305\210te autoriza\304\215n\303\255 "
@@ -57,9 +61,39 @@ T_("[= Authorization is required!&& Enable album authorization.]")
 csCZ("[= Je vy\305\276adov\303\241na autorizace!&& Povolte u\305\276ivatelskou "
      "autorizaci.]")
 
+T_("Download progress")
+csCZ("Status stahov\303\241n\303\255")
+
 T_("[= Download complete!&& Files downloaded: ")
 csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
      "soubor\305\257: ")
+
+T_("Checking latest version")
+csCZ("Kontroluji posledn\303\255 verzi")
+
+T_("Download latest version")
+csCZ("St\303\241hnout posledn\303\255 verzi")
+
+T_("Latest version check failed!")
+csCZ("Kontrola posledn\303\255 verze selhala!")
+
+T_("Download URL is empty!")
+csCZ("Odkaz pro sta\305\276en\303\255 souboru je pr\303\241zdn\303\275!")
+
+T_("Download directory doesn't exist.")
+csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255 souboru neexistuje.")
+
+T_("New version is already downloaded.")
+csCZ("Nov\303\241 verze je ji\305\276 sta\305\276ena.")
+
+T_("Rename file failed!")
+csCZ("P\305\231ejmenov\303\241n\303\255 souboru selhalo!")
+
+T_("New version successfully downloaded.")
+csCZ("Nov\303\241 verze byla \303\272sp\304\233\305\241n\304\233 sta\305\276ena.")
+
+T_("New version download failed!")
+csCZ("Sta\305\276en\303\255 nov\303\251 verze selhalo!")
 
 T_("Album")
 csCZ("")
@@ -132,6 +166,12 @@ T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
 csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
      "Raj\304\215e album download]]")
 
+T_("Switch language")
+csCZ("Zm\304\233nit jazyk")
+
+T_("Check available update")
+csCZ("Zkontrolovat dostupnost aktualizace")
+
 T_("Configuration file saving has failed!")
 csCZ("Ukl\303\241d\303\241n\303\255 konfigura\304\215n\303\255ho souboru selhalo!")
 
@@ -144,11 +184,17 @@ csCZ("")
 T_(":")
 csCZ("")
 
+T_("Current version:")
+csCZ("Aktu\303\241ln\303\255 verze:")
 
-// Obsolete
+T_("Latest version:")
+csCZ("Posledn\303\255 verze:")
 
-T_("Rajce album download")
-csCZ("Raj\304\215e album download")
+T_("Download URL:")
+csCZ("Odkaz pro sta\305\276en\303\255:")
 
-T_("Download progress")
-csCZ("Status stahov\303\241n\303\255")
+T_("File name:")
+csCZ("N\303\241zev souboru:")
+
+T_("Cancel")
+csCZ("Zru\305\241it")
