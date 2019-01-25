@@ -3,6 +3,11 @@
 #---------------------------------#
 version: 1.0.{build}
 
+# branches to build
+branches:
+  only:
+    - master
+
 # Start builds on tags only (GitHub and BitBucket)
 skip_non_tags: true
 #skip_tags: true
@@ -101,7 +106,7 @@ deploy:
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     # description is mandatory. If not specified, GitHub returns 422: Unprocessable entity error.
-    description: $(APPVEYOR_REPO_COMMIT_MESSAGE) $(APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED)
+    description: "$(APPVEYOR_REPO_COMMIT_MESSAGE)\n\n$(APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED)"
     auth_token:
       secure: wh3ED4YJRCP43Gof1rcKwswYGYPtLefhiHE5cvdxLXWklCsDTKynKpEWItug1MU6
     artifact: /App.*/
