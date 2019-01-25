@@ -57,5 +57,6 @@ LAYOUT(UpgradeLayout, 396, 200)
 	ITEM(ProgressIndicator, pi, HSizePosZ(12, 12).TopPosZ(150, 8))
 	ITEM(Button, ok, SetLabel(t_("Download")).HCenterPosZ(68, 80).VCenterPosZ(20, 82))
 	ITEM(Button, cancel, SetLabel(t_("Cancel")).HCenterPosZ(68, 156).VCenterPosZ(20, 82))
+	ITEM(Option, check_sha256, SetLabel(t_("Check sha256 hash")).LeftPosZ(4, 236).TopPosZ(172, 20))
 END_LAYOUT
 

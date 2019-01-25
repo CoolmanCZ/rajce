@@ -20,7 +20,9 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
-* 1.5.0 - Store multiple album URLs, with corresponding album username and authorization flag, to the configuration file.
+* 1.5.2 - Sha256 hash verification option when downloading a new version of the application
+* 1.5.1 - Check and download a new application version directly from the GitHub
+* 1.5.0 - Store multiple album URLs, with corresponding album username and authorization flag, to the configuration file
 * 1.4.2 - Fix of the #10 - remove dots from the end of the album name in Windows OS
 * 1.4.1 - Fix of the #9 - clear download list when new URL is set, new request and connection timeout options
 * 1.4.0 - Fix of the #8 - new url parsing of video files

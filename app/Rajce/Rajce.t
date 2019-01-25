@@ -30,7 +30,7 @@ csCZ("\304\214asov\303\275 limit p\305\231ipojen\303\255 mus\303\255 b\303\275t 
      "v\304\233t\305\241\303\255 ne\305\276")
 
 T_("Abort download?")
-csCZ("Zru\305\241it stahov\303\241n\303\255?")
+csCZ("P\305\231eru\305\241it stahov\303\241n\303\255?")
 
 T_("[= Http parse error!&& Files can't be downloaded!]")
 csCZ("[= Chyba p\305\231i zpracov\303\241n\303\255 HTTP po\305\276adavku!&& "
@@ -83,16 +83,32 @@ csCZ("Odkaz pro sta\305\276en\303\255 souboru je pr\303\241zdn\303\275!")
 T_("Download directory doesn't exist.")
 csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255 souboru neexistuje.")
 
-T_("New version is already downloaded.")
-csCZ("Nov\303\241 verze je ji\305\276 sta\305\276ena.")
+T_("[= Rename file failed!&\001")
+csCZ("[= P\305\231ejmenov\303\241n\303\255 souboru selhalo!&\001")
 
-T_("Rename file failed!")
-csCZ("P\305\231ejmenov\303\241n\303\255 souboru selhalo!")
+T_("SHA256 hash file download failed!")
+csCZ("Sta\305\276en\303\255 SHA256 hash souboru selhalo!")
 
-T_("New version successfully downloaded.")
+T_("The new version has been already downloaded, but sha256 hash doesn't match!")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241!")
+
+T_("The new version has been already downloaded.")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena.")
+
+T_("The new version has been already downloaded, but file size is wrong!")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale velikost souboru "
+     "je \305\241patn\303\241!")
+
+T_("The new version has been downloaded, but sha256 hash doesn't match!")
+csCZ("Nov\303\241 verze byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241")
+
+T_("The new version successfully downloaded.")
 csCZ("Nov\303\241 verze byla \303\272sp\304\233\305\241n\304\233 sta\305\276ena.")
 
-T_("New version download failed!")
+T_("The new version has been downloaded, but file size is wrong!")
+csCZ("Nov\303\241 verze byla sta\305\276ena, ale velikost souboru je \305\241patn\303\241!")
+
+T_("The new version download failed!")
 csCZ("Sta\305\276en\303\255 nov\303\251 verze selhalo!")
 
 T_("Album")
@@ -160,7 +176,7 @@ T_("Download")
 csCZ("St\303\241hnout")
 
 T_("Abort")
-csCZ("Zru\305\241it")
+csCZ("P\305\231eru\305\241it")
 
 T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
 csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
@@ -198,3 +214,6 @@ csCZ("N\303\241zev souboru:")
 
 T_("Cancel")
 csCZ("Zru\305\241it")
+
+T_("Check sha256 hash")
+csCZ("Kontrolovat sha256 hash")

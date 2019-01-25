@@ -94,7 +94,6 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	String version;
 	String internal_name;
-	String title_name;
 	bool   init_done;
 
 	Size start_sz;
@@ -117,6 +116,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	WithUpgradeLayout<TopWindow> upgrade;
 	String upgrade_url;
+	String upgrade_url_sha256;
 	String upgrade_version;
 	int64  upgrade_size;
 
@@ -167,6 +167,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void UpgradeContent(const void *ptr, int size);
 	void UpgradeProgress(void);
 	void UpgradeAbort(void);
+	void UpgradeToggleElements(bool enable);
 
 	void InitText(void);
 	void ToggleLang(void);
@@ -186,6 +187,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String GetAppDirectory(void);
 	String GetCfgFileName(void);
 	String GetOS(void);
+	String sha256sum(const String filename);
 };
 
 #endif
