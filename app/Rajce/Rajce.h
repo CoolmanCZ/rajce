@@ -42,7 +42,7 @@ using namespace Upp;
 
 #define IMAGECLASS RajceImg
 #define IMAGEFILE  <Rajce/Rajce.iml>
-#include <Draw/iml.h>
+#include <Draw/iml_header.h>
 
 #define ERR_NO_ERROR  0
 #define ERR_NO_DATA  -1
@@ -114,10 +114,14 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	String		file_http_out_string;
 	int64		file_http_loaded;
 
+	Size upgrade_sz;
+	Size release_sz;
+
 	WithUpgradeLayout<TopWindow> upgrade;
 	String upgrade_url;
 	String upgrade_url_sha256;
 	String upgrade_version;
+	String upgrade_release;
 	int64  upgrade_size;
 
 	HttpRequest upgrade_http;
@@ -168,6 +172,7 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void UpgradeProgress(void);
 	void UpgradeAbort(void);
 	void UpgradeToggleElements(bool enable);
+	void UpgradeToggleRelease(bool enable);
 
 	void InitText(void);
 	void ToggleLang(void);
@@ -184,6 +189,9 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	void LoadCfg(void);
 	void SaveCfg(void);
+
+	int VersionToInt(const String version);
+
 	String GetAppDirectory(void);
 	String GetCfgFileName(void);
 	String GetOS(void);

@@ -68,49 +68,6 @@ T_("[= Download complete!&& Files downloaded: ")
 csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
      "soubor\305\257: ")
 
-T_("Checking latest version")
-csCZ("Kontroluji posledn\303\255 verzi")
-
-T_("Download latest version")
-csCZ("St\303\241hnout posledn\303\255 verzi")
-
-T_("Latest version check failed!")
-csCZ("Kontrola posledn\303\255 verze selhala!")
-
-T_("Download URL is empty!")
-csCZ("Odkaz pro sta\305\276en\303\255 souboru je pr\303\241zdn\303\275!")
-
-T_("Download directory doesn't exist.")
-csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255 souboru neexistuje.")
-
-T_("[= Rename file failed!&\001")
-csCZ("[= P\305\231ejmenov\303\241n\303\255 souboru selhalo!&\001")
-
-T_("SHA256 hash file download failed!")
-csCZ("Sta\305\276en\303\255 SHA256 hash souboru selhalo!")
-
-T_("The new version has been already downloaded, but sha256 hash doesn't match!")
-csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241!")
-
-T_("The new version has been already downloaded.")
-csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena.")
-
-T_("The new version has been already downloaded, but file size is wrong!")
-csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale velikost souboru "
-     "je \305\241patn\303\241!")
-
-T_("The new version has been downloaded, but sha256 hash doesn't match!")
-csCZ("Nov\303\241 verze byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241")
-
-T_("The new version successfully downloaded.")
-csCZ("Nov\303\241 verze byla \303\272sp\304\233\305\241n\304\233 sta\305\276ena.")
-
-T_("The new version has been downloaded, but file size is wrong!")
-csCZ("Nov\303\241 verze byla sta\305\276ena, ale velikost souboru je \305\241patn\303\241!")
-
-T_("The new version download failed!")
-csCZ("Sta\305\276en\303\255 nov\303\251 verze selhalo!")
-
 T_("Album")
 csCZ("")
 
@@ -192,6 +149,52 @@ T_("Configuration file saving has failed!")
 csCZ("Ukl\303\241d\303\241n\303\255 konfigura\304\215n\303\255ho souboru selhalo!")
 
 
+// RajceUpgrade.cpp
+
+T_("Checking latest version")
+csCZ("Kontroluji posledn\303\255 verzi")
+
+T_("Download latest version")
+csCZ("St\303\241hnout posledn\303\255 verzi")
+
+T_("Latest version check failed!")
+csCZ("Kontrola posledn\303\255 verze selhala!")
+
+T_("Download URL is empty!")
+csCZ("Odkaz pro sta\305\276en\303\255 souboru je pr\303\241zdn\303\275!")
+
+T_("Download directory doesn't exist.")
+csCZ("Adres\303\241\305\231 pro ulo\305\276en\303\255 souboru neexistuje.")
+
+T_("[= Rename file failed!&\001")
+csCZ("[= P\305\231ejmenov\303\241n\303\255 souboru selhalo!&\001")
+
+T_("SHA256 hash file download failed!")
+csCZ("Sta\305\276en\303\255 SHA256 hash souboru selhalo!")
+
+T_("The new version has been already downloaded, but sha256 hash doesn't match!")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241!")
+
+T_("The new version has been already downloaded.")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena.")
+
+T_("The new version has been already downloaded, but file size is wrong!")
+csCZ("Nov\303\241 verze ji\305\276 byla sta\305\276ena, ale velikost souboru "
+     "je \305\241patn\303\241!")
+
+T_("The new version has been downloaded, but sha256 hash doesn't match!")
+csCZ("Nov\303\241 verze byla sta\305\276ena, ale sha256 hash neodpov\303\255d\303\241")
+
+T_("The new version successfully downloaded.")
+csCZ("Nov\303\241 verze byla \303\272sp\304\233\305\241n\304\233 sta\305\276ena.")
+
+T_("The new version has been downloaded, but file size is wrong!")
+csCZ("Nov\303\241 verze byla sta\305\276ena, ale velikost souboru je \305\241patn\303\241!")
+
+T_("The new version download failed!")
+csCZ("Sta\305\276en\303\255 nov\303\251 verze selhalo!")
+
+
 // Rajce.lay
 
 T_("...")
@@ -200,8 +203,8 @@ csCZ("")
 T_(":")
 csCZ("")
 
-T_("Current version:")
-csCZ("Aktu\303\241ln\303\255 verze:")
+T_("Your version:")
+csCZ("Va\305\241e verze:")
 
 T_("Latest version:")
 csCZ("Posledn\303\255 verze:")

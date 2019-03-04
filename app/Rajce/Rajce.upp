@@ -8,6 +8,7 @@ uses
 file
 	"Main package" readonly separator,
 	Rajce.cpp charset "UTF-8",
+	RajceUpgrade.cpp charset "UTF-8",
 	"Header files" readonly separator,
 	Rajce.h charset "UTF-8",
 	Resources readonly separator,
