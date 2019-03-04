@@ -8,7 +8,7 @@ Rajce album downloader is the application to retrieve images/videos from the [ww
 
 |branch  | status|
 |---     |---    |
-|master  |[![Build status](https://ci.appveyor.com/api/projects/status/github/CoolmanCZ/rajce?branch=master&svg=true)](https://ci.appveyor.com/project/CoolmanCZ/rajce/branch/master)|
+|master  |[![Build status](https://ci.appveyor.com/api/projects/status/github/CoolmanCZ/rajce?svg=true)](https://ci.appveyor.com/project/CoolmanCZ/rajce)|
 
 # Installation
 
