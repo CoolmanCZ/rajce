@@ -186,7 +186,12 @@ void Rajce::UpgradeDownload(const String download_path, const String download_fi
 			}
 			FileIn fi(file_path_sha256);
 			String line = fi.GetLine();
-			upgrade_sha256 = line.Mid(1, 64);
+			if (line.GetCount()) {
+				if (line[0] == '\\')
+					upgrade_sha256 = line.Mid(1, 64);
+				else
+					upgrade_sha256 = line.Mid(0, 64);
+			}
 			fi.Close();
 		} else
 			ErrorOK(Format("[= %s&&%s]", t_("SHA256 hash file download failed!"), DeQtf(file_path_sha256)));

@@ -44,7 +44,7 @@ Rajce::Rajce()
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	version = "v1.5.3";
+	version = "v1.5.4";
 	internal_name = "rad";
 	http_started = false;
 
@@ -950,13 +950,12 @@ String Rajce::sha256sum(const String filename)
 	String result;
 	Sha256Stream sha256;
 	FileIn file(filename);
-	int64 size = file.GetSize();
 	int chunk = 1024 * 1024;
 	while (!file.IsError() && !file.IsEof()) {
-		auto buff = file.Get (chunk);
+		auto buff = file.Get(chunk);
 		if (buff.GetCount() <= 0)
 			break;
-		sha256.Put ( buff );
+		sha256.Put(buff);
 	}
 
 	if (!file.IsError())

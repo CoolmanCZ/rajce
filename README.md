@@ -20,6 +20,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.4 - Fix sha256 hash verification when downloading a new version of the application
 * 1.5.3 - Show revision changes in the check and download application window
 * 1.5.2 - Sha256 hash verification option when downloading a new version of the application
 * 1.5.1 - Check and download a new application version directly from the GitHub
