@@ -131,70 +131,70 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	int			current_lang;
 
-	void SelectDownloadDir(void);
-	void Exit(void);
+	void SelectDownloadDir();
+	void Exit();
 
 	int  UserDataFind(const String& url);
-	void UserDataLoad(void);
-	void UserDataAdd(void);
+	void UserDataLoad();
+	void UserDataAdd();
 	void UserDataDel(const String& url);
-	void UserDataSet(void);
+	void UserDataSet();
 	void UserDataSelect(const String& url);
 
 	void AlbumUrlAdd(const String url);
-	void AlbumUrlDel(void);
+	void AlbumUrlDel();
 
-	void HttpStart(void);
+	void HttpStart();
 	void HttpContent(const void *ptr, int size);
 	bool HttpProxy(HttpRequest& request);
-	void HttpAuthorization(void);
-	bool HttpCheckUrl(void);
-	bool HttpCheckParameters(void);
-	void HttpPrependProtocol(void);
+	void HttpAuthorization();
+	bool HttpCheckUrl();
+	bool HttpCheckParameters();
+	void HttpPrependProtocol();
 	void HttpAbort(bool ask);
-	void HttpDownload(void);
+	void HttpDownload();
 	int  HttpDownloadPage(String url, HttpRequest& request, FileOut& file, String& file_name, bool authorize = true);
 
 	String HttpGetParameterValue(const String param, const String &txt);
-	int  HttpParse(void);
+	int  HttpParse();
 
-	void FileDownload(void);
-	void FileStart(void);
+	void FileDownload();
+	void FileStart();
 	void FileContent(const void *ptr, int size);
-	void FileProgress(void);
+	void FileProgress();
 
-	void UpgradeCheck(void);
-	void UpgradeSelectDirectory(void);
+	void UpgradeCheck();
+	void UpgradeSelectDirectory();
 	void UpgradeDownloadVersion(const String bite_size);
 	void UpgradeDownload(const String download_path, const String download_file);
-	void UpgradeStart(void);
+	void UpgradeStart();
 	void UpgradeContent(const void *ptr, int size);
-	void UpgradeProgress(void);
-	void UpgradeAbort(void);
+	void UpgradeProgress();
+	void UpgradeAbort();
 	void UpgradeToggleElements(bool enable);
 	void UpgradeToggleRelease(bool enable);
 
-	void InitText(void);
-	void ToggleLang(void);
-	void ToggleProxy(void);
-	void ToggleAuthorization(void);
-	void ToggleDownload(void);
-	void ToggleProtocol(void);
-	void ToggleTimeoutReq(void);
-	void ToggleTimeoutCon(void);
-	void ToggleUserDataSelect(void);
+	void InitText();
+	void ToggleLang();
+	void ToggleProxy();
+	void ToggleAuthorization();
+	void ToggleDownload();
+	void ToggleProtocol();
+	void ToggleTimeoutReq();
+	void ToggleTimeoutCon();
+	void ToggleUserDataSelect();
 
 	void HttpProxyShow(bool show);
 	void EnableElements(bool enable);
 
-	void LoadCfg(void);
-	void SaveCfg(void);
+	void LoadCfg();
+	void SaveCfg();
 
 	int VersionToInt(const String version);
 
-	String GetAppDirectory(void);
-	String GetCfgFileName(void);
-	String GetOS(void);
+	String GetAppDirectory();
+	String GetCfgFileName();
+	String GetOS();
 	String sha256sum(const String filename);
 };
 

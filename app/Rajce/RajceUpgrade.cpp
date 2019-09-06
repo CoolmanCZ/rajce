@@ -29,20 +29,22 @@
 
 #include "Rajce.h"
 
-void Rajce::UpgradeCheck(void)
+void Rajce::UpgradeCheck()
 {
-	String bite_size = sizeof(void *) == 8 ? "64bit" : "32bit";
+	String bite_size = "64bit";
+	if (sizeof(void *) == 8 )
+		bite_size = "32bit";
+
 	Progress progress(t_("Checking latest version"));
 	progress.Step();
 
 	CtrlLayout(upgrade, t_("Download latest version"));
 
 	upgrade.Rejector(upgrade.cancel, IDCANCEL);
-	upgrade.WhenClose = upgrade.Rejector(IDCANCEL);
 	upgrade.Acceptor(upgrade.ok, IDOK);
 	upgrade.ok.Ok();
 	upgrade.cancel.Cancel();
-	upgrade.cancel.WhenPush = THISBACK(UpgradeAbort);
+	upgrade.cancel.WhenAction = THISBACK(UpgradeAbort);
 	upgrade.Sizeable();
 	upgrade.pi.Set(0, 1);
 	upgrade.check_sha256 <<= 1;
@@ -66,7 +68,7 @@ void Rajce::UpgradeCheck(void)
 	upgrade.download_url.SetText(upgrade_url);
 	upgrade.download_url.SetForeground();
 	upgrade.download_dir.SetText(download_path);
-	upgrade.download_dir_select.WhenPush = THISBACK(UpgradeSelectDirectory);
+	upgrade.download_dir_select.WhenAction = THISBACK(UpgradeSelectDirectory);
 	upgrade.pi.Set(0, 1);
 
 	int tag = VersionToInt(upgrade_version);
@@ -85,7 +87,7 @@ void Rajce::UpgradeCheck(void)
 	upgrade.Close();
 }
 
-void Rajce::UpgradeSelectDirectory(void)
+void Rajce::UpgradeSelectDirectory()
 {
 	SelectDirButton select_download_dir;
 	String active_dir = ~upgrade.download_dir;
@@ -239,7 +241,7 @@ void Rajce::UpgradeDownload(const String download_path, const String download_fi
 		ErrorOK(Format("[= %s&& %s]", t_("The new version download failed!"), DeQtf(file_path)));
 }
 
-void Rajce::UpgradeStart(void)
+void Rajce::UpgradeStart()
 {
 	if (upgrade_http_out.IsOpen()) {
 		upgrade_http_out.Close();
@@ -259,7 +261,7 @@ void Rajce::UpgradeContent(const void *ptr, int size)
 	Ctrl::ProcessEvents();
 }
 
-void Rajce::UpgradeProgress(void)
+void Rajce::UpgradeProgress()
 {
 	if (upgrade_http.GetContentLength() >= 0)
 		upgrade.pi.Set((int)upgrade_http_loaded, (int)upgrade_http.GetContentLength());
@@ -267,13 +269,14 @@ void Rajce::UpgradeProgress(void)
 		upgrade.pi.Set(0, 1);
 }
 
-void Rajce::UpgradeAbort(void)
+void Rajce::UpgradeAbort()
 {
 	int phase = upgrade_http.GetPhase();
 	if (phase > 0 && phase < Upp::HttpRequest::FINISHED && PromptOKCancel(t_("Abort download?"))) {
 		UpgradeToggleElements(true);
 		upgrade_http.Abort();
-	}
+	} else
+		upgrade.Break(IDCANCEL);
 }
 
 void Rajce::UpgradeToggleElements(bool enable)

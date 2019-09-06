@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016-2018 Radek Malcic
+# Copyright (C) 2016-2019 Radek Malcic
 #
 # All rights reserved.
 #

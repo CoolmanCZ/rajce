@@ -20,6 +20,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.5 - U++ framework code update, widget sorting, small code corrections
 * 1.5.4 - Fix sha256 hash verification when downloading a new version of the application
 * 1.5.3 - Show revision changes in the check and download application window
 * 1.5.2 - Sha256 hash verification option when downloading a new version of the application
@@ -29,14 +30,14 @@ Download latest windows binaries and source code from [GitHub releases](https://
 * 1.4.1 - Fix of the #9 - clear download list when new URL is set, new request and connection timeout options
 * 1.4.0 - Fix of the #8 - new url parsing of video files
 * 1.3.1 - Fix of the #6 - downloaded video files do not have full name
-* 1.3.0 - new option - download video files
-* 1.2.4 - store settings to the configuration file, new option - download new files only
-* 1.2.3 - hide the http proxy settings if not used
-* 1.2.2 - new option - http/https download protocol
-* 1.2.1 - correction of the runtime translation
-* 1.2 - new option - append album user name to download directory
-* 1.1 - correction of the url video name, runtime language switch
-* 1.0 - initial version
+* 1.3.0 - New option - download video files
+* 1.2.4 - Store settings to the configuration file, new option - download new files only
+* 1.2.3 - Hide the http proxy settings if not used
+* 1.2.2 - New option - http/https download protocol
+* 1.2.1 - Correction of the runtime translation
+* 1.2 - New option - append album user name to download directory
+* 1.1 - Correction of the url video name, runtime language switch
+* 1.0 - Initial version
 
 # Screenshots
 
