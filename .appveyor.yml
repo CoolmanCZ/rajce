@@ -56,11 +56,12 @@ build_script:
   - cmd: cat %APPVEYOR_BUILD_FOLDER%/app/Rajce/Rajce.rc | grep FILEVERSION_STR | awk -F \x22 'NR==1 { print $2 > APP_VERSION }'
   - cmd: set /p APP_VERSION= < APP_VERSION
   - cmd: echo %APP_VERSION%
+  - cmd: echo %NUMBER_OF_PROCESSORS%
   - cmd: GenerateCMakeFiles.sh "MINGW"
   - cmd: mkdir build.%MSYSTEM%
   - cmd: cd build.%MSYSTEM%
   - cmd: cmake -G "Unix Makefiles" -DOPENSSL_ROOT_DIR=C:\msys64\%MSYSTEM% ..
-  - cmd: mingw32-make -j 2
+  - cmd: mingw32-make -j %NUMBER_OF_PROCESSORS%
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
 
 # To create a single “zip” artifact with multiple files from different locations you can use 7z in “after build” script which is already available in PATH:
