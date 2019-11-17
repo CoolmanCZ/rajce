@@ -32,131 +32,134 @@
 
 #include <CtrlLib/CtrlLib.h>
 
-using namespace Upp;
-
+namespace Upp {
 #define LAYOUTFILE <Rajce/Rajce.lay>
 #include <CtrlCore/lay.h>
+} // namespace Upp
 
 #define TFILE <Rajce/Rajce.t>
 #include <Core/t.h>
 
 #define IMAGECLASS RajceImg
-#define IMAGEFILE  <Rajce/Rajce.iml>
+#define IMAGEFILE <Rajce/Rajce.iml>
 #include <Draw/iml_header.h>
 
-#define ERR_NO_ERROR  0
-#define ERR_NO_DATA  -1
-#define ERR_OPEN     -2
-#define ERR_CLOSE    -3
-#define ERR_READ     -4
-#define ERR_CREATE   -5
-#define ERR_EXIST    -6
-#define ERR_SAVE     -7
-#define ERR_SELECT   -8
-#define ERR_PARSE    -9
+#define ERR_NO_ERROR 0
+#define ERR_NO_DATA -1
+#define ERR_OPEN -2
+#define ERR_CLOSE -3
+#define ERR_READ -4
+#define ERR_CREATE -5
+#define ERR_EXIST -6
+#define ERR_SAVE -7
+#define ERR_SELECT -8
+#define ERR_PARSE -9
 #define ERR_DOWNLOAD -10
 
 struct UserData {
-	String url;
-	String user;
+	Upp::String url;
+	Upp::String user;
 	bool authorization;
-	void Jsonize(JsonIO &jio) { jio("url", url)("user", user)("authorization", authorization); }
-	void Xmlize(XmlIO& xio)   { XmlizeByJsonize(xio, *this); }
+	void Jsonize(Upp::JsonIO &jio) {
+		jio("url", url)("user", user)("authorization", authorization);
+	}
+	void Xmlize(Upp::XmlIO &xio) { Upp::XmlizeByJsonize(xio, *this); }
 };
 
 struct QueueData {
-	String download_url;
-	String download_dir;
-	String download_name;
-	String album_server_dir;
+	Upp::String download_url;
+	Upp::String download_dir;
+	Upp::String download_name;
+	Upp::String album_server_dir;
 };
 
-class Rajce:public WithRajceLayout < TopWindow > {
- public:
+class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
+  public:
 	typedef Rajce CLASSNAME;
 	Rajce();
-    virtual ~Rajce() {};
+	virtual ~Rajce(){};
 
- private:
-	String cfg_download_dir;
-	String cfg_album_url;
-	String cfg_album_user;
-	bool   cfg_download_new_only;
-	bool   cfg_download_video;
-	bool   cfg_append_user_name;
-	bool   cfg_enable_user_auth;
-	bool   cfg_use_https;
-	bool   cfg_use_https_proxy;
-	String cfg_https_proxy_url;
-	String cfg_https_proxy_port;
-	int    cfg_http_timeout_req;
-	int    cfg_http_timeout_con;
+  private:
+	Upp::String cfg_download_dir;
+	Upp::String cfg_album_url;
+	Upp::String cfg_album_user;
+	bool cfg_download_new_only;
+	bool cfg_download_video;
+	bool cfg_append_user_name;
+	bool cfg_enable_user_auth;
+	bool cfg_use_https;
+	bool cfg_use_https_proxy;
+	Upp::String cfg_https_proxy_url;
+	Upp::String cfg_https_proxy_port;
+	int cfg_http_timeout_req;
+	int cfg_http_timeout_con;
 
-	String version;
-	String internal_name;
-	bool   init_done;
+	Upp::String version;
+	Upp::String internal_name;
+	bool init_done;
 
-	Size start_sz;
-	Size proxy_sz;
+	Upp::Size start_sz;
+	Upp::Size proxy_sz;
 
-	Array<UserData> userdata;
-	Array<QueueData> q;
+	Upp::Array<UserData> userdata;
+	Upp::Array<QueueData> q;
 
-	FrameRight<Button> del;
+	Upp::FrameRight<Upp::Button> del;
 
-	HttpRequest http;
-	FileOut		http_file_out;        // download directory with filename
-	String		http_file_out_string; // download directory with filename
-	bool		http_started;
+	Upp::HttpRequest http;
+	Upp::FileOut http_file_out;		  // download directory with filename
+	Upp::String http_file_out_string; // download directory with filename
+	bool http_started;
 
-	HttpRequest file_http;
-	FileOut		file_http_out;
-	String		file_http_out_string;
-	int64		file_http_loaded;
+	Upp::HttpRequest file_http;
+	Upp::FileOut file_http_out;
+	Upp::String file_http_out_string;
+	Upp::int64 file_http_loaded;
 
-	Size upgrade_sz;
-	Size release_sz;
+	Upp::Size upgrade_sz;
+	Upp::Size release_sz;
 
-	WithUpgradeLayout<TopWindow> upgrade;
-	String upgrade_url;
-	String upgrade_url_sha256;
-	String upgrade_version;
-	String upgrade_release;
-	int64  upgrade_size;
+	Upp::WithUpgradeLayout<Upp::TopWindow> upgrade;
+	Upp::String upgrade_url;
+	Upp::String upgrade_url_sha256;
+	Upp::String upgrade_version;
+	Upp::String upgrade_release;
+	Upp::int64 upgrade_size;
 
-	HttpRequest upgrade_http;
-	FileOut		upgrade_http_out;
-	String		upgrade_http_out_string;
-	int64		upgrade_http_loaded;
+	Upp::HttpRequest upgrade_http;
+	Upp::FileOut upgrade_http_out;
+	Upp::String upgrade_http_out_string;
+	Upp::int64 upgrade_http_loaded;
 
-	int			current_lang;
+	int current_lang;
 
 	void SelectDownloadDir();
 	void Exit();
 
-	int  UserDataFind(const String& url);
+	int UserDataFind(const Upp::String &url);
 	void UserDataLoad();
 	void UserDataAdd();
-	void UserDataDel(const String& url);
+	void UserDataDel(const Upp::String &url);
 	void UserDataSet();
-	void UserDataSelect(const String& url);
+	void UserDataSelect(const Upp::String &url);
 
-	void AlbumUrlAdd(const String url);
+	void AlbumUrlAdd(const Upp::String &url);
 	void AlbumUrlDel();
 
 	void HttpStart();
 	void HttpContent(const void *ptr, int size);
-	bool HttpProxy(HttpRequest& request);
+	bool HttpProxy(Upp::HttpRequest &request);
 	void HttpAuthorization();
 	bool HttpCheckUrl();
 	bool HttpCheckParameters();
 	void HttpPrependProtocol();
 	void HttpAbort(bool ask);
 	void HttpDownload();
-	int  HttpDownloadPage(String url, HttpRequest& request, FileOut& file, String& file_name, bool authorize = true);
+	int HttpDownloadPage(const Upp::String &url, Upp::HttpRequest &request, Upp::FileOut &file,
+						 Upp::String &file_name, bool authorize = true);
 
-	String HttpGetParameterValue(const String param, const String &txt);
-	int  HttpParse();
+	Upp::String HttpGetParameterValue(const Upp::String &param, const Upp::String &txt);
+	int HttpParse();
 
 	void FileDownload();
 	void FileStart();
@@ -165,8 +168,8 @@ class Rajce:public WithRajceLayout < TopWindow > {
 
 	void UpgradeCheck();
 	void UpgradeSelectDirectory();
-	void UpgradeDownloadVersion(const String bite_size);
-	void UpgradeDownload(const String download_path, const String download_file);
+	void UpgradeDownloadVersion(const Upp::String &bite_size);
+	void UpgradeDownload(const Upp::String &download_path, const Upp::String &download_file);
 	void UpgradeStart();
 	void UpgradeContent(const void *ptr, int size);
 	void UpgradeProgress();
@@ -190,12 +193,12 @@ class Rajce:public WithRajceLayout < TopWindow > {
 	void LoadCfg();
 	void SaveCfg();
 
-	int VersionToInt(const String version);
+	int VersionToInt(const Upp::String &version);
 
-	String GetAppDirectory();
-	String GetCfgFileName();
-	String GetOS();
-	String sha256sum(const String filename);
+	Upp::String GetAppDirectory();
+	Upp::String GetCfgFileName();
+	Upp::String GetOS();
+	Upp::String sha256sum(const Upp::String &filename);
 };
 
 #endif

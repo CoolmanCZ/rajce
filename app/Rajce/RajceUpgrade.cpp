@@ -29,10 +29,11 @@
 
 #include "Rajce.h"
 
-void Rajce::UpgradeCheck()
-{
+using namespace Upp;
+
+void Rajce::UpgradeCheck() {
 	String bite_size = "64bit";
-	if (sizeof(void *) == 8 )
+	if (sizeof(void *) == 8)
 		bite_size = "32bit";
 
 	Progress progress(t_("Checking latest version"));
@@ -87,8 +88,7 @@ void Rajce::UpgradeCheck()
 	upgrade.Close();
 }
 
-void Rajce::UpgradeSelectDirectory()
-{
+void Rajce::UpgradeSelectDirectory() {
 	SelectDirButton select_download_dir;
 	String active_dir = ~upgrade.download_dir;
 	select_download_dir.ActiveDir(active_dir);
@@ -96,12 +96,12 @@ void Rajce::UpgradeSelectDirectory()
 	upgrade.download_dir <<= select_download_dir.GetActiveDir();
 }
 
-void Rajce::UpgradeDownloadVersion(const String bite_size)
-{
+void Rajce::UpgradeDownloadVersion(const String &bite_size) {
 	String check_url = "https://api.github.com/repos/coolmancz/rajce/releases";
 	upgrade_release.Clear();
 
-	if (ERR_NO_ERROR == HttpDownloadPage(check_url, upgrade_http, upgrade_http_out, upgrade_http_out_string, false)) {
+	if (ERR_NO_ERROR == HttpDownloadPage(check_url, upgrade_http, upgrade_http_out,
+										 upgrade_http_out_string, false)) {
 		String tmp_file = upgrade_http_out_string;
 		Value data = ParseJSON(LoadFile(tmp_file));
 		String os = GetOS();
@@ -127,25 +127,29 @@ void Rajce::UpgradeDownloadVersion(const String bite_size)
 					int len = tmp.GetLength();
 
 					String test = bite_size + ".zip";
-					if (os.Compare("windows") == 0 && tmp.Mid(len - test.GetLength()).Find(test) == 0) {
+					if (os.Compare("windows") == 0 &&
+						tmp.Mid(len - test.GetLength()).Find(test) == 0) {
 						upgrade_size = assets[i]["size"];
 						upgrade_url = tmp;
 						continue;
 					}
 					test += ".sha256";
-					if (os.Compare("windows") == 0 && tmp.Mid(len - test.GetLength()).Find(test) == 0) {
+					if (os.Compare("windows") == 0 &&
+						tmp.Mid(len - test.GetLength()).Find(test) == 0) {
 						upgrade_url_sha256 = tmp;
 						continue;
 					}
 
 					test = "tar.bz2";
-					if (os.Compare("unix") == 0 && tmp.Mid(len - test.GetLength()).Find(test) == 0) {
+					if (os.Compare("unix") == 0 &&
+						tmp.Mid(len - test.GetLength()).Find(test) == 0) {
 						upgrade_size = assets[i]["size"];
 						upgrade_url = tmp;
 						continue;
 					}
 					test += ".sha256";
-					if (os.Compare("unix") == 0 && tmp.Mid(len - test.GetLength()).Find(test) == 0) {
+					if (os.Compare("unix") == 0 &&
+						tmp.Mid(len - test.GetLength()).Find(test) == 0) {
 						upgrade_url_sha256 = tmp;
 						continue;
 					}
@@ -159,18 +163,18 @@ void Rajce::UpgradeDownloadVersion(const String bite_size)
 		ErrorOK(t_("Latest version check failed!"));
 
 	upgrade.release.SetQTF(DeQtf(upgrade_release), Zoom(96, 600));
-	upgrade.release.SetZoom(Zoom(1,1));
+	upgrade.release.SetZoom(Zoom(1, 1));
 }
 
-void Rajce::UpgradeDownload(const String download_path, const String download_file)
-{
+void Rajce::UpgradeDownload(const String &download_path, const String &download_file) {
 	if (upgrade_url.IsEmpty()) {
 		ErrorOK(t_("Download URL is empty!"));
 		return;
 	}
 
 	if (!DirectoryExists(download_path)) {
-		ErrorOK(Format("[= %s&& %s]", t_("Download directory doesn't exist."), DeQtf(download_path)));
+		ErrorOK(
+			Format("[= %s&& %s]", t_("Download directory doesn't exist."), DeQtf(download_path)));
 		return;
 	}
 	String file_path = AppendFileName(download_path, download_file);
@@ -178,11 +182,12 @@ void Rajce::UpgradeDownload(const String download_path, const String download_fi
 
 	String upgrade_sha256;
 	if (upgrade.check_sha256.Get() && upgrade_url_sha256.GetCount()) {
-		if (ERR_NO_ERROR == HttpDownloadPage(upgrade_url_sha256, upgrade_http, upgrade_http_out, upgrade_http_out_string, false)) {
+		if (ERR_NO_ERROR == HttpDownloadPage(upgrade_url_sha256, upgrade_http, upgrade_http_out,
+											 upgrade_http_out_string, false)) {
 			String tmp_file = upgrade_http_out_string;
 
 			if (FileExists(tmp_file)) {
-				if(!FileCopy(tmp_file, file_path_sha256))
+				if (!FileCopy(tmp_file, file_path_sha256))
 					ErrorOK(t_("[= Rename file failed!&\1") + file_path_sha256);
 				DeleteFile(tmp_file);
 			}
@@ -196,29 +201,39 @@ void Rajce::UpgradeDownload(const String download_path, const String download_fi
 			}
 			fi.Close();
 		} else
-			ErrorOK(Format("[= %s&&%s]", t_("SHA256 hash file download failed!"), DeQtf(file_path_sha256)));
+			ErrorOK(Format("[= %s&&%s]", t_("SHA256 hash file download failed!"),
+						   DeQtf(file_path_sha256)));
 	}
 
 	if (FileExists(file_path)) {
 		if (upgrade.check_sha256.Get() && upgrade_sha256.GetCount()) {
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
-				ErrorOK(Format("[= %s&&%s]", t_("The new version has been already downloaded, but sha256 hash doesn't match!"), DeQtf(file_path)));
+				ErrorOK(Format("[= %s&&%s]",
+							   t_("The new version has been already downloaded, but sha256 hash "
+								  "doesn't match!"),
+							   DeQtf(file_path)));
 				return;
 			}
 		}
 		if (upgrade_size == GetFileLength(file_path))
-			Exclamation(Format("[= %s&&%s]", t_("The new version has been already downloaded."), DeQtf(file_path)));
+			Exclamation(Format("[= %s&&%s]", t_("The new version has been already downloaded."),
+							   DeQtf(file_path)));
 		else
-			ErrorOK(Format("[= %s&&%s]", t_("The new version has been already downloaded, but file size is wrong!"), DeQtf(file_path)));
+			ErrorOK(
+				Format("[= %s&&%s]",
+					   t_("The new version has been already downloaded, but file size is wrong!"),
+					   DeQtf(file_path)));
 		return;
 	}
 
-	if (upgrade_url.GetCount() && ERR_NO_ERROR == HttpDownloadPage(upgrade_url, upgrade_http, upgrade_http_out, upgrade_http_out_string, false)) {
+	if (upgrade_url.GetCount() &&
+		ERR_NO_ERROR == HttpDownloadPage(upgrade_url, upgrade_http, upgrade_http_out,
+										 upgrade_http_out_string, false)) {
 		String tmp_file = upgrade_http_out_string;
 
 		if (FileExists(tmp_file)) {
-			if(!FileCopy(tmp_file, file_path))
+			if (!FileCopy(tmp_file, file_path))
 				ErrorOK(t_("[= Rename file failed!&\1") + file_path);
 			DeleteFile(tmp_file);
 		}
@@ -226,23 +241,28 @@ void Rajce::UpgradeDownload(const String download_path, const String download_fi
 		if (upgrade.check_sha256.Get() && upgrade_sha256.GetCount()) {
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
-				ErrorOK(Format("[= %s&&%s]", t_("The new version has been downloaded, but sha256 hash doesn't match!"), DeQtf(file_path)));
+				ErrorOK(Format(
+					"[= %s&&%s]",
+					t_("The new version has been downloaded, but sha256 hash doesn't match!"),
+					DeQtf(file_path)));
 				return;
 			}
 		}
 
 		if (FileExists(file_path)) {
 			if (upgrade_size == GetFileLength(file_path))
-				Exclamation(Format("[= %s&& %s]", t_("The new version successfully downloaded."), DeQtf(file_path)));
+				Exclamation(Format("[= %s&& %s]", t_("The new version successfully downloaded."),
+								   DeQtf(file_path)));
 			else
-				ErrorOK(Format("[= %s&&%s]", t_("The new version has been downloaded, but file size is wrong!"), DeQtf(file_path)));
+				ErrorOK(Format("[= %s&&%s]",
+							   t_("The new version has been downloaded, but file size is wrong!"),
+							   DeQtf(file_path)));
 		}
 	} else
 		ErrorOK(Format("[= %s&& %s]", t_("The new version download failed!"), DeQtf(file_path)));
 }
 
-void Rajce::UpgradeStart()
-{
+void Rajce::UpgradeStart() {
 	if (upgrade_http_out.IsOpen()) {
 		upgrade_http_out.Close();
 		DeleteFile(upgrade_http_out_string);
@@ -250,8 +270,7 @@ void Rajce::UpgradeStart()
 	upgrade_http_loaded = 0;
 }
 
-void Rajce::UpgradeContent(const void *ptr, int size)
-{
+void Rajce::UpgradeContent(const void *ptr, int size) {
 	upgrade_http_loaded += size;
 	if (!upgrade_http_out.IsOpen()) {
 		RealizePath(upgrade_http_out_string);
@@ -261,16 +280,14 @@ void Rajce::UpgradeContent(const void *ptr, int size)
 	Ctrl::ProcessEvents();
 }
 
-void Rajce::UpgradeProgress()
-{
+void Rajce::UpgradeProgress() {
 	if (upgrade_http.GetContentLength() >= 0)
 		upgrade.pi.Set((int)upgrade_http_loaded, (int)upgrade_http.GetContentLength());
 	else
 		upgrade.pi.Set(0, 1);
 }
 
-void Rajce::UpgradeAbort()
-{
+void Rajce::UpgradeAbort() {
 	int phase = upgrade_http.GetPhase();
 	if (phase > 0 && phase < Upp::HttpRequest::FINISHED && PromptOKCancel(t_("Abort download?"))) {
 		UpgradeToggleElements(true);
@@ -279,8 +296,7 @@ void Rajce::UpgradeAbort()
 		upgrade.Break(IDCANCEL);
 }
 
-void Rajce::UpgradeToggleElements(bool enable)
-{
+void Rajce::UpgradeToggleElements(bool enable) {
 	upgrade.file_name.Enable(enable);
 	upgrade.download_dir.Enable(enable);
 	upgrade.download_dir_select.Enable(enable);
@@ -289,8 +305,7 @@ void Rajce::UpgradeToggleElements(bool enable)
 	UpgradeToggleRelease(enable);
 }
 
-void Rajce::UpgradeToggleRelease(bool enable)
-{
+void Rajce::UpgradeToggleRelease(bool enable) {
 	Rect main_rc = upgrade.GetRect();
 	Size main_sz = main_rc.GetSize();
 
@@ -318,4 +333,3 @@ void Rajce::UpgradeToggleRelease(bool enable)
 	upgrade.SetRect(main_rc);
 	UpdateLayout();
 }
-
