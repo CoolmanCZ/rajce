@@ -181,7 +181,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 	String file_path_sha256 = file_path + ".sha256";
 
 	String upgrade_sha256;
-	if (upgrade.check_sha256.Get() && upgrade_url_sha256.GetCount()) {
+	if (upgrade.check_sha256.Get() > 0 && upgrade_url_sha256.GetCount() > 0) {
 		if (ERR_NO_ERROR == HttpDownloadPage(upgrade_url_sha256, upgrade_http, upgrade_http_out,
 											 upgrade_http_out_string, false)) {
 			String tmp_file = upgrade_http_out_string;
@@ -193,7 +193,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 			}
 			FileIn fi(file_path_sha256);
 			String line = fi.GetLine();
-			if (line.GetCount()) {
+			if (line.GetCount() > 0) {
 				if (line[0] == '\\')
 					upgrade_sha256 = line.Mid(1, 64);
 				else
@@ -206,7 +206,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 	}
 
 	if (FileExists(file_path)) {
-		if (upgrade.check_sha256.Get() && upgrade_sha256.GetCount()) {
+		if (upgrade.check_sha256.Get() > 0 && upgrade_sha256.GetCount() > 0) {
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
 				ErrorOK(Format("[= %s&&%s]",
@@ -227,7 +227,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 		return;
 	}
 
-	if (upgrade_url.GetCount() &&
+	if (upgrade_url.GetCount() > 0 &&
 		ERR_NO_ERROR == HttpDownloadPage(upgrade_url, upgrade_http, upgrade_http_out,
 										 upgrade_http_out_string, false)) {
 		String tmp_file = upgrade_http_out_string;
@@ -238,7 +238,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 			DeleteFile(tmp_file);
 		}
 
-		if (upgrade.check_sha256.Get() && upgrade_sha256.GetCount()) {
+		if (upgrade.check_sha256.Get() > 0 && upgrade_sha256.GetCount() > 0) {
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
 				ErrorOK(Format(
@@ -289,7 +289,7 @@ void Rajce::UpgradeProgress() {
 
 void Rajce::UpgradeAbort() {
 	int phase = upgrade_http.GetPhase();
-	if (phase > 0 && phase < Upp::HttpRequest::FINISHED && PromptOKCancel(t_("Abort download?"))) {
+	if (phase > 0 && phase < Upp::HttpRequest::FINISHED && PromptOKCancel(t_("Abort download?")) == 1) {
 		UpgradeToggleElements(true);
 		upgrade_http.Abort();
 	} else

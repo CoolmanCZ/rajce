@@ -10,6 +10,8 @@ Rajce album downloader is the application to retrieve images/videos from the [ww
 |---     |---    |
 |master  |[![Build status](https://ci.appveyor.com/api/projects/status/github/CoolmanCZ/rajce?svg=true)](https://ci.appveyor.com/project/CoolmanCZ/rajce)|
 
+*The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.*
+
 # Installation
 
 Simply download and unzip package from the link below and then execute Rajce.exe binary.
@@ -20,6 +22,8 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.7 - Submodules update, small code corrections
+* 1.5.6 - Submodule path changed, small code corrections
 * 1.5.5 - U++ framework code update, widget sorting, small code corrections
 * 1.5.4 - Fix sha256 hash verification when downloading a new version of the application
 * 1.5.3 - Show revision changes in the check and download application window
