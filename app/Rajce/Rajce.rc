@@ -17,7 +17,7 @@ BEGIN
       VALUE "FileDescription", "Rajce album downloader"
       VALUE "FileVersion", FILEVERSION_STR
       VALUE "InternalName", "Rajce"
-      VALUE "LegalCopyright", "Copyright (c) 2016-2019 Radek Malcic"
+      VALUE "LegalCopyright", "Copyright (c) 2016-2020 Radek Malcic"
       VALUE "OriginalFilename", "Rajce.exe"
       VALUE "ProductName", "Rajce"
       VALUE "ProductVersion", PRODUCTVERSION_STR
@@ -28,7 +28,7 @@ BEGIN
       VALUE "FileDescription", "Rajče album downloader"
       VALUE "FileVersion", FILEVERSION_STR
       VALUE "InternalName", "Rajče"
-      VALUE "LegalCopyright", "Copyright (c) 2016-2019 Radek Malčic"
+      VALUE "LegalCopyright", "Copyright (c) 2016-2020 Radek Malčic"
       VALUE "OriginalFilename", "Rajce.exe"
       VALUE "ProductName", "Rajče"
       VALUE "ProductVersion", PRODUCTVERSION_STR
