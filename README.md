@@ -22,6 +22,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.8 - Fix of #11 - video files download
 * 1.5.7 - Submodules update, small code corrections
 * 1.5.6 - Submodule path changed, small code corrections
 * 1.5.5 - U++ framework code update, widget sorting, small code corrections

@@ -14,7 +14,7 @@ Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	version = "v1.5.6";
+	version = "v1.5.8";
 	internal_name = "rad";
 	cfg_download_new_only = true;
 	cfg_download_video = true;
@@ -505,7 +505,7 @@ int Rajce::HttpParse() {
 						int len = photos[i]["info"].ToString().Find(" |");
 						file_name = photos[i]["info"].ToString().Mid(0, len);
 						full_path = UnixPath(
-							photos[i]["videoStructure"]["items"][0]["video"][0]["file"].ToString());
+							photos[i]["videoStructure"]["items"][1]["video"][0]["file"].ToString());
 					}
 				} else {
 					full_path = AppendFileName(album_storage, "images");
