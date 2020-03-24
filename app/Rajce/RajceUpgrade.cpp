@@ -4,7 +4,7 @@ using namespace Upp;
 
 void Rajce::UpgradeCheck() {
 	String bite_size = "64bit";
-	if (sizeof(void *) == 8)
+	if (sizeof(void *) == 4)
 		bite_size = "32bit";
 
 	Progress progress(t_("Checking latest version"));
