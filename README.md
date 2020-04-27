@@ -22,6 +22,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.9 - Fix of #12 - album authorization is not working, submodules update
 * 1.5.8 - Fix of #11 - video files download
 * 1.5.7 - Submodules update, small code corrections
 * 1.5.6 - Submodule path changed, small code corrections

@@ -260,7 +260,8 @@ void Rajce::UpgradeProgress() {
 
 void Rajce::UpgradeAbort() {
 	int phase = upgrade_http.GetPhase();
-	if (phase > 0 && phase < Upp::HttpRequest::FINISHED && PromptOKCancel(t_("Abort download?")) == 1) {
+	if (phase > 0 && phase < Upp::HttpRequest::FINISHED &&
+		PromptOKCancel(t_("Abort download?")) == 1) {
 		UpgradeToggleElements(true);
 		upgrade_http.Abort();
 	} else

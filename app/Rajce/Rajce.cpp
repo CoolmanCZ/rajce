@@ -14,7 +14,7 @@ Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	version = "v1.5.8";
+	version = "v1.5.9";
 	internal_name = "rad";
 	cfg_download_new_only = true;
 	cfg_download_video = true;
@@ -381,7 +381,7 @@ int Rajce::HttpDownloadPage(const String &url, HttpRequest &request, FileOut &fi
 
 	if (authorize && ~album_authorization) {
 		request.Post("login", ~album_user);
-		request.Post("password", ~album_pass);
+		request.Post("code", ~album_pass);
 	}
 
 	// HTTP proxy setting
@@ -449,18 +449,21 @@ int Rajce::HttpParse() {
 		txt = in.GetLine();
 
 		if (txt.Find("Album s přístupem na kód") > -1) {
-			if (txt.Find("Příliš mnoho neúspěšných pokusů") > -1)
+			if (txt.Find("Příliš mnoho neúspěšných pokusů") > -1) {
 				ErrorOK(t_("[= Too many unsuccessful attempts - try this in a moment!]"));
+				break;
+			}
 
 			if (~album_authorization) {
 				String user = ~album_user;
 				String pass = ~album_pass;
 
-				if ((user.IsEmpty()) || (pass.IsEmpty()))
+				if ((user.IsEmpty()) || (pass.IsEmpty())) {
 					ErrorOK(
 						t_("[= Authorization is required!&& Fill the album authorization data.]"));
-				else
+				} else {
 					ErrorOK(t_("[= Authorization is required!&& Wrong album authorization.]"));
+				}
 			} else {
 				ErrorOK(t_("[= Authorization is required!&& Enable album authorization.]"));
 			}
