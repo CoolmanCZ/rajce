@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016-2019 Radek Malcic
+# Copyright (C) 2016-2020 Radek Malcic
 #
 # All rights reserved.
 #
@@ -27,13 +27,16 @@
 source upp_cmake/GenerateCMakeFiles-lib.sh
 
 GENERATE_VERBOSE="1"
-GENERATE_DEBUG="1"
+GENERATE_DEBUG="0"
 GENERATE_PACKAGE="1"
 
 UPP_SRC_BASE="ultimatepp"
 UPP_SRC_DIR="${UPP_SRC_BASE}/uppsrc"
 
 PROJECT_NAME="app/Rajce/Rajce.upp"
+
+PROJECT_EXTRA_COMPILE_FLAGS=""
+PROJECT_EXTRA_LINK_FLAGS=""
 
 if [ $# -lt 1 ]; then
   echo "# linux build"

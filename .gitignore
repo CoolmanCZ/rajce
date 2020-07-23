@@ -7,9 +7,10 @@
 .svn
 
 *.Debug.Debug_Full.*
-app/Rajce/Rajce
+logs_*
 
 build.*
+tags
 
 CMakeLists.txt
 ~
