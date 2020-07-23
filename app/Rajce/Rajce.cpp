@@ -851,7 +851,7 @@ void Rajce::SaveCfg() {
 
 int Rajce::VersionToInt(const String &version) {
 	String v = version;
-	int pos;
+	int pos = -1;
 	while ((pos = v.Find(".")) > -1)
 		v.Remove(pos);
 
@@ -865,9 +865,12 @@ String Rajce::GetAppDirectory() {
 	ONCELOCK
 	RealizeDirectory(p);
 #elif defined(PLATFORM_POSIX)
-	p = AppendFileName(GetHomeDirectory(), "." + internal_name);
+	p = AppendFileName(GetHomeDirectory(), ".config/" + internal_name);
 	ONCELOCK
 	RealizeDirectory(p);
+	String old = AppendFileName(GetHomeDirectory(), "." + internal_name);
+	if (DirectoryExists(old))
+		FileMove(old, p);
 #else
 	Exclamation("Configuration is not implemented for this platform");
 #endif
