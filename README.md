@@ -14,7 +14,28 @@ Rajce album downloader is the application to retrieve images/videos from the [ww
 
 # Installation
 
-Simply download and unzip package from the link below and then execute Rajce.exe binary.
+## Windows
+Simply download and unzip appropriate package for your windows version from the link below and then execute Rajce binary.
+
+## Linux
+The linux binary is not available. You have to build the binary manually and this requires some development tools installed in your linux distribution.
+
+### Linux Build
+Execute following commands to build linux binary
+
+```bash
+git clone https://github.com/CoolmanCZ/rajce.git
+cd rajce
+git submodule update --init --recursive
+./GenerateCMakeFiles.sh
+mkdir -p build
+cd build
+cmake .. && make
+```
+
+After successfull build the binary is stored in the ```build/bin``` directory
+
+*Note: For clang build replace ```cmake .. && make``` with ```cmake -DCMAKE_TOOLCHAIN_FILE=../upp_cmake/utils/toolchain-clang.cmake .. && make```*
 
 # Download
 
@@ -22,6 +43,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.10 - Submodules update, small code corrections
 * 1.5.9 - Fix of #12 - album authorization is not working, submodules update
 * 1.5.8 - Fix of #11 - video files download
 * 1.5.7 - Submodules update, small code corrections

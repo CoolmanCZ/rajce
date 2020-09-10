@@ -2,6 +2,6 @@
 
 #git submodule add https://github.com/CoolmanCZ/upp_cmake.git
 #git submodule add https://github.com/CoolmanCZ/ultimatepp.git
-git submodule init
-git submodule update --remote
+git submodule update --init --recursive
+#git submodule update --remote
 
