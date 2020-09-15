@@ -14,7 +14,7 @@ Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	version = "v1.5.9";
+	version = "v1.5.11";
 	internal_name = "rad";
 	cfg_download_new_only = true;
 	cfg_download_video = true;
