@@ -11,6 +11,7 @@ file
 	RajceUpgrade.cpp charset "UTF-8",
 	"Header files" readonly separator,
 	Rajce.h charset "UTF-8",
+	Version.h charset "UTF-8",
 	Resources readonly separator,
 	Rajce.t charset "UTF-8",
 	Rajce.iml,

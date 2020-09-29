@@ -1,42 +1,41 @@
+#include "Version.h"
+
 5551 ICON DISCARDABLE "Rajce.ico"
 
 1 VERSIONINFO
 
-FILEVERSION     1,5,11,0
-PRODUCTVERSION  1,5,11,0
-
-#define FILEVERSION_STR    "1.5.11\0"
-#define PRODUCTVERSION_STR "1.5.11\0"
+FILEVERSION    APP_FILEVERSION
+PRODUCTVERSION APP_PRODUCTVERSION
 
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
     BLOCK "080904B0"
     BEGIN
-      VALUE "CompanyName", "Radek Malcic"
-      VALUE "FileDescription", "Rajce album downloader"
-      VALUE "FileVersion", FILEVERSION_STR
-      VALUE "InternalName", "Rajce"
-      VALUE "LegalCopyright", "Copyright (c) 2016-2020 Radek Malcic"
-      VALUE "OriginalFilename", "Rajce.exe"
-      VALUE "ProductName", "Rajce"
-      VALUE "ProductVersion", PRODUCTVERSION_STR
+      VALUE "CompanyName", "Radek Malcic" "\0"
+      VALUE "FileDescription", APP_TITLE "\0"
+      VALUE "FileVersion", APP_FILEVERSION_STR "\0"
+      VALUE "InternalName", APP_NAME "\0"
+      VALUE "LegalCopyright",  APP_COPYRIGHT " Radek Malcic\0"
+      VALUE "OriginalFilename", "Rajce.exe" "\0"
+      VALUE "ProductName", APP_NAME "\0"
+      VALUE "ProductVersion", APP_PRODUCTVERSION_STR "\0"
     END
     BLOCK "040504B0"
     BEGIN
-      VALUE "CompanyName", "Radek Malčic"
-      VALUE "FileDescription", "Rajče album downloader"
-      VALUE "FileVersion", FILEVERSION_STR
-      VALUE "InternalName", "Rajče"
-      VALUE "LegalCopyright", "Copyright (c) 2016-2020 Radek Malčic"
-      VALUE "OriginalFilename", "Rajce.exe"
-      VALUE "ProductName", "Rajče"
-      VALUE "ProductVersion", PRODUCTVERSION_STR
+      VALUE "CompanyName", "Radek Malčic" "\0"
+      VALUE "FileDescription", "Rajče album downloader" "\0"
+      VALUE "FileVersion", APP_FILEVERSION_STR "\0"
+      VALUE "InternalName", APP_NAME_CZ "\0"
+      VALUE "LegalCopyright", APP_COPYRIGHT " Radek Malčic\0"
+      VALUE "OriginalFilename", "Rajce.exe" "\0"
+      VALUE "ProductName", APP_NAME_CZ "\0"
+      VALUE "ProductVersion", APP_PRODUCTVERSION_STR "\0"
     END
   END
 
   BLOCK "VarFileInfo"
   BEGIN
-    VALUE "Translation", 0x809, 1200, 0x405, 1200
+    VALUE "Translation", 0x0809, 0x04b0, 0x0405, 0x04b0
   END
 END

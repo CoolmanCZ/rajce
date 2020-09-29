@@ -6,8 +6,8 @@
 T_("Exit")
 csCZ("Ukon\304\215it")
 
-T_("Rajce album download")
-csCZ("Raj\304\215e album download")
+T_("Rajce album downloader")
+csCZ("Raj\304\215e album downloader")
 
 T_("Delete url:")
 csCZ("Smazat url:")

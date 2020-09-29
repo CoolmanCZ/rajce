@@ -2,6 +2,46 @@
 
 using namespace Upp;
 
+Vector<int> Rajce::VersionSplit(const String &s) {
+	Vector<int> result;
+	Vector<String> v = Split(s, ".");
+	for (int i = 0; i < v.GetCount(); ++i) {
+		for (int j = 0; j < v[i].GetCount(); ++j) {
+			if (!IsDigit(v[i][j])) {
+				continue;
+			}
+			result.Add(ScanInt(v[i].Mid(j)));
+			break;
+		}
+	}
+	while (result.GetCount() < version_numbers) {
+		result.Add(0);
+	}
+	return result;
+}
+
+// Returns
+//  1 if v2 is smaller,
+// -1 if v1 is smaller,
+//  0 if equal
+int Rajce::VersionCompare(const String &s1, const String &s2) {
+	Vector<int> ver1 = VersionSplit(s1);
+	Vector<int> ver2 = VersionSplit(s2);
+	int64 ver1_num = TO_NUMBER(ver1[0], ver1[1], ver1[2], ver1[3]);
+	int64 ver2_num = TO_NUMBER(ver2[0], ver2[1], ver2[2], ver2[3]);
+	int result = 0;
+
+	if (ver1_num > ver2_num) {
+		result = 1;
+	}
+
+	if (ver1_num < ver2_num) {
+		result = -1;
+	}
+
+	return result;
+}
+
 void Rajce::UpgradeCheck() {
 	String bite_size = "64bit";
 	if (sizeof(void *) == 4)
@@ -34,7 +74,7 @@ void Rajce::UpgradeCheck() {
 	if (download_dir.GetLength() == 0)
 		download_path = Nvl(GetDownloadFolder(), GetHomeDirFile("downloads"));
 
-	upgrade.actual.SetText(version);
+	upgrade.actual.SetText("v" + AsString(APP_VERSION_STR));
 	upgrade.latest.SetText(upgrade_version);
 	upgrade.file_name.SetText(file_name);
 	upgrade.download_url.SetText(upgrade_url);
@@ -43,10 +83,7 @@ void Rajce::UpgradeCheck() {
 	upgrade.download_dir_select.WhenAction = THISBACK(UpgradeSelectDirectory);
 	upgrade.pi.Set(0, 1);
 
-	int tag = VersionToInt(upgrade_version);
-	int ver = VersionToInt(version);
-
-	UpgradeToggleElements(tag > ver);
+	UpgradeToggleElements(VersionCompare(upgrade_version, APP_VERSION_STR) == 1);
 
 	progress.Close();
 
@@ -77,21 +114,13 @@ void Rajce::UpgradeDownloadVersion(const String &bite_size) {
 		Value data = ParseJSON(LoadFile(tmp_file));
 		String os = GetOS();
 
-		String version_last;
-		int tag = VersionToInt(upgrade_version);
-		int ver = VersionToInt(version);
-		int tag_last = tag;
-
 		for (int j = 0; j < data.GetCount(); ++j) {
-			int tag_cur = VersionToInt(data[j]["tag_name"]);
-
-			if (tag_cur > ver)
+			if (VersionCompare(data[j]["tag_name"], APP_VERSION_STR) == 1)
 				upgrade_release += "\n\n" + data[j]["body"].ToString();
 
-			if (tag_cur > tag_last) {
-				tag_last = tag_cur;
+			if (upgrade_version.GetCount() == 0 ||
+				VersionCompare(data[j]["tag_name"].ToString(), upgrade_version) == 1) {
 				upgrade_version = data[j]["tag_name"].ToString();
-
 				Value assets = data[j]["assets"];
 				for (int i = 0; i < assets.GetCount(); ++i) {
 					String tmp = assets[i]["browser_download_url"].ToString();
@@ -133,7 +162,7 @@ void Rajce::UpgradeDownloadVersion(const String &bite_size) {
 	} else
 		ErrorOK(t_("Latest version check failed!"));
 
-	upgrade.release.SetQTF(DeQtf(upgrade_release), Zoom(96, 600));
+	upgrade.release.SetQTF(DeQtf(upgrade_release), Zoom(96, 600)); // NOLINT
 	upgrade.release.SetZoom(Zoom(1, 1));
 }
 
@@ -166,9 +195,9 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 			String line = fi.GetLine();
 			if (line.GetCount() > 0) {
 				if (line[0] == '\\')
-					upgrade_sha256 = line.Mid(1, 64);
+					upgrade_sha256 = line.Mid(1, sha256_size);
 				else
-					upgrade_sha256 = line.Mid(0, 64);
+					upgrade_sha256 = line.Mid(0, sha256_size);
 			}
 			fi.Close();
 		} else

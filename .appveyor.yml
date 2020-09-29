@@ -53,8 +53,8 @@ before_build:
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - cmd: set PATH=C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%
-  - cmd: grep '#define FILEVERSION_STR' %APPVEYOR_BUILD_FOLDER%/app/Rajce/Rajce.rc > APP_VERSION
-  - cmd: sed -i -e 's/.*"\([0-9\.]*\)\\\0.*/\1/' APP_VERSION
+  - cmd: grep '#define APP_VERSION_STR' %APPVEYOR_BUILD_FOLDER%/app/Rajce/Version.h > APP_VERSION
+  - cmd: sed -i -e 's/.*"\([0-9\.]*\)".*/\1/' APP_VERSION
   - cmd: set /p APP_VERSION= < APP_VERSION
   - cmd: echo %APP_VERSION%
   - cmd: echo %NUMBER_OF_PROCESSORS%

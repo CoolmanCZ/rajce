@@ -15,6 +15,8 @@ namespace Upp {
 #define IMAGEFILE <Rajce/Rajce.iml>
 #include <Draw/iml_header.h>
 
+#include "Version.h"
+
 #define ERR_NO_ERROR 0
 #define ERR_NO_DATA -1
 #define ERR_OPEN -2
@@ -51,6 +53,14 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	virtual ~Rajce(){};
 
   private:
+	const int version_numbers = 4;
+	const int default_http_timeout_req = 120000;
+	const int min_http_timeout_req = 1000;
+	const int default_http_timeout_con = 1000;
+	const int min_http_timeout_con = 0;
+	const int buffer_size = 1024;
+	const int sha256_size = 64;
+
 	Upp::String cfg_download_dir;
 	Upp::String cfg_album_url;
 	Upp::String cfg_album_user;
@@ -65,7 +75,6 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	int cfg_http_timeout_req;
 	int cfg_http_timeout_con;
 
-	Upp::String version;
 	Upp::String internal_name;
 	bool init_done;
 
@@ -137,6 +146,9 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	void FileContent(const void *ptr, int size);
 	void FileProgress();
 
+	Upp::Vector<int> VersionSplit(const Upp::String &s);
+	int VersionCompare(const Upp::String &s1, const Upp::String &s2);
+
 	void UpgradeCheck();
 	void UpgradeSelectDirectory();
 	void UpgradeDownloadVersion(const Upp::String &bite_size);
@@ -163,8 +175,6 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 
 	void LoadCfg();
 	void SaveCfg();
-
-	int VersionToInt(const Upp::String &version);
 
 	Upp::String GetAppDirectory();
 	Upp::String GetCfgFileName();

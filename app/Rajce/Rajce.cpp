@@ -14,7 +14,6 @@ Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
-	version = "v1.5.11";
 	internal_name = "rad";
 	cfg_download_new_only = true;
 	cfg_download_video = true;
@@ -22,8 +21,8 @@ Rajce::Rajce() {
 	cfg_enable_user_auth = false;
 	cfg_use_https = true;
 	cfg_use_https_proxy = false;
-	cfg_http_timeout_req = 120000;
-	cfg_http_timeout_con = 1000;
+	cfg_http_timeout_req = default_http_timeout_req;
+	cfg_http_timeout_con = default_http_timeout_con;
 	http_started = false;
 	file_http_loaded = 0;
 	upgrade_size = 0;
@@ -118,7 +117,7 @@ void Rajce::SelectDownloadDir() {
 }
 
 void Rajce::Exit() {
-	if (PromptOKCancel(Format("%s %s?", t_("Exit"), t_("Rajce album download"))) == 1) {
+	if (PromptOKCancel(Format("%s %s?", t_("Exit"), t_(APP_TITLE))) == 1) {
 		HttpAbort(false);
 		UserDataSet();
 		SaveCfg();
@@ -231,7 +230,7 @@ bool Rajce::HttpProxy(HttpRequest &request) {
 	request.SSLProxy("", 0);
 	request.SSLProxyAuth("", "");
 
-	request.RequestTimeout(120000);
+	request.RequestTimeout(default_http_timeout_req);
 	if (timeout_req_text.Get() == 1)
 		request.RequestTimeout(timeout_req.GetData());
 	request.Timeout(Null);
@@ -425,7 +424,7 @@ String Rajce::HttpGetParameterValue(const String &param, const String &txt) {
 int Rajce::HttpParse() {
 	int64 l = GetFileLength(http_file_out_string);
 
-	if (l < 0 || l > 16000000) {
+	if (l < 0) {
 		ErrorOK(Format(t_("[= Error opening input file:&& %s!]"), DeQtf(http_file_out_string)));
 		return (ERR_OPEN);
 	}
@@ -635,7 +634,7 @@ void Rajce::FileProgress() {
 }
 
 void Rajce::InitText() {
-	Title(Format("%s - %s", t_("Rajce album download"), version));
+	Title(Format("%s - v%s", t_(APP_TITLE), APP_VERSION_STR));
 
 	album_label.SetLabel(t_("Album"));
 	album_url_text.SetText(t_("Album URL:"));
@@ -662,8 +661,8 @@ void Rajce::InitText() {
 	download_abort.SetLabel(t_("Abort"));
 	download_exit.SetLabel(t_("Exit"));
 
-	homepage.SetQTF(t_("[^https://github.com/CoolmanCZ/rajce^ Rajce album download homepage]"),
-					Zoom(64, 600));
+	homepage.SetQTF(t_("[^https://github.com/CoolmanCZ/rajce^ Rajce album downloader homepage]"),
+					Zoom(64, 600)); // NOLINT
 	homepage.SetZoom(Zoom(1, 1));
 
 	lang.Tip(t_("Switch language"));
@@ -813,9 +812,9 @@ void Rajce::LoadCfg() {
 	cfg_https_proxy_url = data.Get("HTTP_PROXY_URL", Null);
 	cfg_https_proxy_port = data.Get("HTTP_PROXY_PORT", Null);
 	int tmp = ScanInt64(data.Get("HTTP_TIMEOUT_REQUEST", Null));
-	cfg_http_timeout_req = tmp < 1001 ? 120000 : tmp;
+	cfg_http_timeout_req = tmp <= min_http_timeout_req ? default_http_timeout_req : tmp;
 	tmp = ScanInt64(data.Get("HTTP_TIMEOUT_CONNECTION", Null));
-	cfg_http_timeout_con = tmp < 0 ? 1000 : tmp;
+	cfg_http_timeout_con = tmp < min_http_timeout_con ? default_http_timeout_con : tmp;
 
 	LoadFromJson(userdata, data.Get("USER_DATA", Null));
 }
@@ -824,8 +823,7 @@ void Rajce::SaveCfg() {
 	String cfg_file = GetCfgFileName();
 	String data;
 
-	data << "Rajce album download"
-		 << ": Configuration Text File"
+	data << APP_TITLE << ": Configuration Text File"
 		 << "\n\n"
 		 << "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
 		 << "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
@@ -847,15 +845,6 @@ void Rajce::SaveCfg() {
 
 	if (!SaveFile(cfg_file, data))
 		ErrorOK(t_("Configuration file saving has failed!"));
-}
-
-int Rajce::VersionToInt(const String &version) {
-	String v = version;
-	int pos = -1;
-	while ((pos = v.Find(".")) > -1)
-		v.Remove(pos);
-
-	return v.GetCount() > 1 ? ScanInt(v.Mid(1)) : 0;
 }
 
 String Rajce::GetAppDirectory() {
@@ -893,7 +882,7 @@ String Rajce::sha256sum(const String &filename) {
 	String result;
 	Sha256Stream sha256;
 	FileIn file(filename);
-	int chunk = 1024 * 1024;
+	int chunk = buffer_size * buffer_size;
 	while (!file.IsError() && !file.IsEof()) {
 		auto buff = file.Get(chunk);
 		if (buff.GetCount() <= 0)
