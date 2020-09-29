@@ -51,14 +51,7 @@ PROJECT_NAME="app/Rajce/Rajce.upp"
 
 PROJECT_EXTRA_COMPILE_FLAGS=""
 PROJECT_EXTRA_LINK_FLAGS=""
-
-if [ $# -lt 1 ]; then
-  echo "# POSIX build"
-  PROJECT_FLAGS="-DflagGUI -DflagMT -DflagGCC -DflagLINUX -DflagPOSIX -DflagSHARED"
-else
-  echo "# WINDOWS build"
-  PROJECT_FLAGS="-DflagGUI -DflagMT -DflagGCC -DflagPOSIX"
-fi
+PROJECT_FLAGS="-DflagGUI -DflagMT -DflagGCC"
 
 generate_main_cmake_file "${PROJECT_NAME}" "${PROJECT_FLAGS}"
 
