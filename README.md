@@ -1,6 +1,8 @@
 # Rajce album downloader - Ultimate++ application
 
-Rajce album downloader is the application to retrieve images/videos from the [www.rajce.net](http://www.rajce.net) (Czech social network and photo album). It supports downloading from password protected albums of the user.
+Rajce album downloader is the Ultimate++ GUI application to retrieve images/videos from the [www.rajce.net](http://www.rajce.net) (Czech social network and photo album). It supports downloading from password protected albums of the user.
+
+[Ultimate++](http://www.ultimatepp.org/) is a C++ cross-platform rapid application development framework focused on programmers productivity. It includes a set of libraries (GUI, SQL, etc.), and an integrated development environment.
 
 # AppVeyor build status
 
