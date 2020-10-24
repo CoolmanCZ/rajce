@@ -30,54 +30,54 @@ Rajce::Rajce() {
 	current_lang = LNG_('E', 'N', 'U', 'S');
 
 	CtrlLayout(*this);
-	this->WhenClose = THISBACK(Exit);
+	this->WhenClose = [=] { Exit(); };
 
-	lang.WhenAction = THISBACK(ToggleLang);
+	lang.WhenAction = [=] { ToggleLang(); };
 
-	download_dir_select.WhenAction = THISBACK(SelectDownloadDir);
+	download_dir_select.WhenAction = [=] { SelectDownloadDir(); };
 	download1_name.SetText("");
 	download1_pi.Set(0, 1);
 
-	download_exit.WhenAction = THISBACK(Exit);
+	download_exit.WhenAction = [=] { Exit(); };
 	download_exit.Exit();
-	download_ok.WhenAction = THISBACK(HttpDownload);
+	download_ok.WhenAction = [=] { HttpDownload(); };
 	download_ok.Ok();
-	download_abort.WhenAction = THISBACK1(HttpAbort, true);
+	download_abort.WhenAction = [=] { HttpAbort(true); };
 	download_abort.Cancel();
 
-	check_latest.WhenAction = THISBACK(UpgradeCheck);
+	check_latest.WhenAction = [=] { UpgradeCheck(); };
 
-	http.WhenContent = THISBACK(HttpContent);
-	http.WhenStart = THISBACK(HttpStart);
+	http.WhenContent = [=](auto ptr, auto size) { HttpContent(ptr, size); };
+	http.WhenStart = [=] { HttpStart(); };
 
-	file_http.WhenContent = THISBACK(FileContent);
-	file_http.WhenStart = THISBACK(FileStart);
-	file_http.WhenWait = file_http.WhenDo = THISBACK(FileProgress);
+	file_http.WhenContent = [=](auto ptr, auto size) { FileContent(ptr, size); };
+	file_http.WhenStart = [=] { FileStart(); };
+	file_http.WhenWait = file_http.WhenDo = [=] { FileProgress(); };
 
-	upgrade_http.WhenContent = THISBACK(UpgradeContent);
-	upgrade_http.WhenStart = THISBACK(UpgradeStart);
-	upgrade_http.WhenWait = upgrade_http.WhenDo = THISBACK(UpgradeProgress);
+	upgrade_http.WhenContent = [=](auto ptr, auto size) { UpgradeContent(ptr, size); };
+	upgrade_http.WhenStart = [=] { UpgradeStart(); };
+	upgrade_http.WhenWait = upgrade_http.WhenDo = [=] { UpgradeProgress(); };
 
-	album_authorization <<= THISBACK(ToggleAuthorization);
+	album_authorization.WhenAction = [=] { ToggleAuthorization(); };
 	album_pass.Password();
 
-	timeout_req_text <<= THISBACK(ToggleTimeoutReq);
-	timeout_con_text <<= THISBACK(ToggleTimeoutCon);
+	timeout_req_text.WhenAction = [=] { ToggleTimeoutReq(); };
+	timeout_con_text.WhenAction = [=] { ToggleTimeoutCon(); };
 
-	proxy_enabled <<= THISBACK(ToggleProxy);
+	proxy_enabled.WhenAction = [=] { ToggleProxy(); };
 	http_proxy_pass.Password();
 
-	download_protocol <<= THISBACK(ToggleProtocol);
+	download_protocol.WhenAction = [=] { ToggleProtocol(); };
 
 	del.SetLabel("X");
-	del.WhenAction = THISBACK(AlbumUrlDel);
+	del.WhenAction = [=] { AlbumUrlDel(); };
 	album_url.AddFrame(del);
-	album_url.WhenAction = THISBACK(ToggleDownload);
-	album_url.WhenEnter = THISBACK(ToggleProtocol);
-	album_url.WhenSelect = THISBACK(ToggleUserDataSelect);
+	album_url.WhenAction = [=] { ToggleDownload(); };
+	album_url.WhenEnter = [=] { ToggleProtocol(); };
+	album_url.WhenSelect = [=] { ToggleUserDataSelect(); };
 	album_url.NullText("https://www.rajce.net");
 
-	album_user.WhenAction = THISBACK(UserDataSet);
+	album_user.WhenAction = [=] { UserDataSet(); };
 
 	start_sz = GetMinSize();
 	proxy_sz = http_proxy_label.GetSize();

@@ -24,7 +24,7 @@ BEGIN
     BLOCK "040504B0"
     BEGIN
       VALUE "CompanyName", "Radek Malčic" "\0"
-      VALUE "FileDescription", "Rajče album downloader" "\0"
+      VALUE "FileDescription", APP_TITLE_CZ "\0"
       VALUE "FileVersion", APP_FILEVERSION_STR "\0"
       VALUE "InternalName", APP_NAME_CZ "\0"
       VALUE "LegalCopyright", APP_COPYRIGHT " Radek Malčic\0"

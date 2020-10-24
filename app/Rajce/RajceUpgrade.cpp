@@ -56,7 +56,7 @@ void Rajce::UpgradeCheck() {
 	upgrade.Acceptor(upgrade.ok, IDOK);
 	upgrade.ok.Ok();
 	upgrade.cancel.Cancel();
-	upgrade.cancel.WhenAction = THISBACK(UpgradeAbort);
+	upgrade.cancel.WhenAction = [=] { UpgradeAbort(); };
 	upgrade.Sizeable();
 	upgrade.pi.Set(0, 1);
 	upgrade.check_sha256 <<= 1;
@@ -80,7 +80,7 @@ void Rajce::UpgradeCheck() {
 	upgrade.download_url.SetText(upgrade_url);
 	upgrade.download_url.SetForeground();
 	upgrade.download_dir.SetText(download_path);
-	upgrade.download_dir_select.WhenAction = THISBACK(UpgradeSelectDirectory);
+	upgrade.download_dir_select.WhenAction = [=] { UpgradeSelectDirectory(); };
 	upgrade.pi.Set(0, 1);
 
 	UpgradeToggleElements(VersionCompare(upgrade_version, APP_VERSION_STR) == 1);

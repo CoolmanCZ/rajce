@@ -48,7 +48,6 @@ struct QueueData {
 
 class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
   public:
-	typedef Rajce CLASSNAME;
 	Rajce();
 	virtual ~Rajce(){};
 
