@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2016-2020 Radek Malcic
+# Copyright (C) 2016-2021 Radek Malcic
 #
 # All rights reserved.
 #
@@ -23,7 +23,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-OS=`uname -a | cut -d ' ' -f 1`
+OS=$(uname -a | cut -d ' ' -f 1)
 if [ "${OS}" == "Linux" ]; then
   START=$(date +%s.%N)
 fi

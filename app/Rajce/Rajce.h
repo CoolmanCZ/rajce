@@ -1,5 +1,5 @@
-#ifndef _Rajce_Rajce_h
-#define _Rajce_Rajce_h
+#ifndef Rajce_Rajce_h
+#define Rajce_Rajce_h
 
 #include <CtrlLib/CtrlLib.h>
 

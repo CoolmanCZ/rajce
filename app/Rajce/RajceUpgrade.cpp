@@ -334,3 +334,5 @@ void Rajce::UpgradeToggleRelease(bool enable) {
 	upgrade.SetRect(main_rc);
 	UpdateLayout();
 }
+
+// vim: ts=4

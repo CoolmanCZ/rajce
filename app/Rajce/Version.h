@@ -32,3 +32,5 @@
 // clang-format on
 
 #endif // APP_VERSION_H
+
+// vim: ts=4
