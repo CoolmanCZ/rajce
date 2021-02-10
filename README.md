@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.13 - Remove THISBACK() callback, submodules update
 * 1.5.12 - Version handling update, submodules update
 * 1.5.11 - Fix of version information
 * 1.5.10 - Submodules update, small code corrections
