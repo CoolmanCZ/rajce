@@ -504,8 +504,16 @@ int Rajce::HttpParse() {
 
 				if (is_video.Compare("true") == 0) {
 					if (download_video.GetData()) {
-						int len = photos[i]["info"].ToString().Find(" |");
-						file_name = photos[i]["info"].ToString().Mid(0, len);
+						int len = photos[i]["videoStructure"]["items"][1]["length"];
+						String video_id = photos[i]["videoStructure"]["items"][1]["id"].ToString();
+						String video_title =
+							photos[i]["videoStructure"]["items"][1]["title"].ToString();
+						String video_format =
+							photos[i]["videoStructure"]["items"][1]["video"][0]["format"]
+								.ToString();
+						file_name = video_title.GetCount() > 0
+										? String(video_title + '.' + video_format)
+										: String(video_id + '.' + video_format);
 						full_path = UnixPath(
 							photos[i]["videoStructure"]["items"][1]["video"][0]["file"].ToString());
 					}
