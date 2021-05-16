@@ -45,8 +45,9 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.16 - Update of the fix #13 - use filename instead of user description to store video files
 * 1.5.15 - Submodules update to fix ssl linking error
-* 1.5.14 - Fix ov #13 - video files download with empty name
+* 1.5.14 - Fix of #13 - video files download with empty name
 * 1.5.13 - Remove THISBACK() callback, submodules update
 * 1.5.12 - Version handling update, submodules update
 * 1.5.11 - Fix of version information
