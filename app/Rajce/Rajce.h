@@ -49,7 +49,7 @@ struct QueueData {
 class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
   public:
 	Rajce();
-	virtual ~Rajce(){};
+	~Rajce() override{};
 
   private:
 	const int version_numbers = 4;
@@ -65,7 +65,7 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::String cfg_album_user;
 	bool cfg_download_new_only;
 	bool cfg_download_video;
-	bool cfg_append_user_name;
+	bool cfg_append_album_name;
 	bool cfg_enable_user_auth;
 	bool cfg_use_https;
 	bool cfg_use_https_proxy;

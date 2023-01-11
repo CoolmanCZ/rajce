@@ -6,9 +6,6 @@
 T_("Exit")
 csCZ("Ukon\304\215it")
 
-T_("Rajce album downloader")
-csCZ("Raj\304\215e album downloader")
-
 T_("Delete url:")
 csCZ("Smazat url:")
 
@@ -89,9 +86,8 @@ csCZ("Stahovat pouze nov\303\251 soubory")
 T_("Download video files")
 csCZ("Stahovat video soubory")
 
-T_("Append album user name to download directory")
-csCZ("P\305\231ipojit jm\303\251no vlastn\303\255ka alba k adres\303\241\305\231i "
-     "pro ulo\305\276en\303\255")
+T_("Append album name to download directory")
+csCZ("P\305\231ipojit jm\303\251no alba k adres\303\241\305\231i pro ulo\305\276en\303\255")
 
 T_("Enable album authorization")
 csCZ("Povolit u\305\276ivatelskou autorizaci")
@@ -135,9 +131,9 @@ csCZ("St\303\241hnout")
 T_("Abort")
 csCZ("P\305\231eru\305\241it")
 
-T_("[^https://github.com/CoolmanCZ/rajce^ [4 Rajce album download homepage]]")
-csCZ("[^https://github.com/CoolmanCZ/rajce^ [4 Dom\303\241c\303\255 str\303\241nka "
-     "Raj\304\215e album download]]")
+T_("[^https://github.com/CoolmanCZ/rajce^ Rajce album downloader homepage]")
+csCZ("[^https://github.com/CoolmanCZ/rajce^  Dom\303\241c\303\255 str\303\241nka "
+     "Raj\304\215e album downloader]")
 
 T_("Switch language")
 csCZ("Zm\304\233nit jazyk")
@@ -201,7 +197,7 @@ T_("...")
 csCZ("")
 
 T_(":")
-csCZ("")
+csCZ(":")
 
 T_("Your version:")
 csCZ("Va\305\241e verze:")

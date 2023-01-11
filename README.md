@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.17 - Fix of #16 - album name variable changed, submodules update, small code corrections
 * 1.5.16 - Update of the fix #13 - use filename instead of user description to store video files
 * 1.5.15 - Submodules update to fix ssl linking error
 * 1.5.14 - Fix of #13 - video files download with empty name
