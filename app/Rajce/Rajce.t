@@ -66,7 +66,7 @@ csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
      "soubor\305\257: ")
 
 T_("Album")
-csCZ("")
+csCZ("Album")
 
 T_("Album URL:")
 csCZ("Adresa alba:")
@@ -85,6 +85,9 @@ csCZ("Stahovat pouze nov\303\251 soubory")
 
 T_("Download video files")
 csCZ("Stahovat video soubory")
+
+T_("Append user name to download directory")
+csCZ("P\305\231ipojit u\305\276ivatelsk\303\251 jm\303\251no k adres\303\241\305\231i pro ulo\305\276en\303\255")
 
 T_("Append album name to download directory")
 csCZ("P\305\231ipojit jm\303\251no alba k adres\303\241\305\231i pro ulo\305\276en\303\255")
@@ -194,7 +197,7 @@ csCZ("Sta\305\276en\303\255 nov\303\251 verze selhalo!")
 // Rajce.lay
 
 T_("...")
-csCZ("")
+csCZ("...")
 
 T_(":")
 csCZ(":")
