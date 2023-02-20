@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.19 - Enable append of album user name to the download directory for authorized album only
 * 1.5.18 - Fix of #17 - decode escaped UTF, submodules update, new option to append album user name to download directory
 * 1.5.17 - Fix of #16 - album name variable changed, submodules update, small code corrections
 * 1.5.16 - Update of the fix #13 - use filename instead of user description to store video files

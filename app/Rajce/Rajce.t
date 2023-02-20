@@ -87,7 +87,8 @@ T_("Download video files")
 csCZ("Stahovat video soubory")
 
 T_("Append user name to download directory")
-csCZ("P\305\231ipojit u\305\276ivatelsk\303\251 jm\303\251no k adres\303\241\305\231i pro ulo\305\276en\303\255")
+csCZ("P\305\231ipojit u\305\276ivatelsk\303\251 jm\303\251no k adres\303\241\305\231i "
+     "pro ulo\305\276en\303\255")
 
 T_("Append album name to download directory")
 csCZ("P\305\231ipojit jm\303\251no alba k adres\303\241\305\231i pro ulo\305\276en\303\255")

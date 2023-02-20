@@ -792,6 +792,7 @@ void Rajce::ToggleProxy() {
 void Rajce::ToggleAuthorization() {
 	album_user.Enable(~album_authorization);
 	album_pass.Enable(~album_authorization);
+	append_user_name.Enable(~album_authorization);
 	UserDataSet();
 }
 
