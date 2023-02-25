@@ -32,10 +32,8 @@ namespace Upp {
 struct UserData {
 	Upp::String url;
 	Upp::String user;
-	bool authorization;
-	void Jsonize(Upp::JsonIO &jio) {
-		jio("url", url)("user", user)("authorization", authorization);
-	}
+	bool authorization = false;
+	void Jsonize(Upp::JsonIO &jio) { jio("url", url)("user", user)("authorization", authorization); }
 	void Xmlize(Upp::XmlIO &xio) { Upp::XmlizeByJsonize(xio, *this); }
 };
 
@@ -63,20 +61,20 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::String cfg_download_dir;
 	Upp::String cfg_album_url;
 	Upp::String cfg_album_user;
-	bool cfg_download_new_only;
-	bool cfg_download_video;
-	bool cfg_append_user_name;
-	bool cfg_append_album_name;
-	bool cfg_enable_user_auth;
-	bool cfg_use_https;
-	bool cfg_use_https_proxy;
+	bool cfg_download_new_only = true;
+	bool cfg_download_video = true;
+	bool cfg_append_user_name = true;
+	bool cfg_append_album_name = true;
+	bool cfg_enable_user_auth = false;
+	bool cfg_use_https = true;
+	bool cfg_use_https_proxy = true;
 	Upp::String cfg_https_proxy_url;
 	Upp::String cfg_https_proxy_port;
-	int cfg_http_timeout_req;
-	int cfg_http_timeout_con;
+	int cfg_http_timeout_req = default_http_timeout_req;
+	int cfg_http_timeout_con = default_http_timeout_con;
 
-	Upp::String internal_name;
-	bool init_done;
+	Upp::String internal_name = "rad";
+	bool init_done = false;
 
 	Upp::Size start_sz;
 	Upp::Size proxy_sz;
@@ -89,12 +87,12 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::HttpRequest http;
 	Upp::FileOut http_file_out;		  // download directory with filename
 	Upp::String http_file_out_string; // download directory with filename
-	bool http_started;
+	bool http_started = false;
 
 	Upp::HttpRequest file_http;
 	Upp::FileOut file_http_out;
 	Upp::String file_http_out_string;
-	Upp::int64 file_http_loaded;
+	Upp::int64 file_http_loaded = 0;
 
 	Upp::Size upgrade_sz;
 	Upp::Size release_sz;
@@ -104,14 +102,14 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::String upgrade_url_sha256;
 	Upp::String upgrade_version;
 	Upp::String upgrade_release;
-	Upp::int64 upgrade_size;
+	Upp::int64 upgrade_size = 0;
 
 	Upp::HttpRequest upgrade_http;
 	Upp::FileOut upgrade_http_out;
 	Upp::String upgrade_http_out_string;
-	Upp::int64 upgrade_http_loaded;
+	Upp::int64 upgrade_http_loaded = 0;
 
-	int current_lang;
+	int current_lang = LNG_('E', 'N', 'U', 'S');
 
 	void SelectDownloadDir();
 	void Exit();
@@ -135,8 +133,8 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	void HttpPrependProtocol();
 	void HttpAbort(bool ask);
 	void HttpDownload();
-	int HttpDownloadPage(const Upp::String &url, Upp::HttpRequest &request, Upp::FileOut &file,
-						 Upp::String &file_name, bool authorize = true);
+	int HttpDownloadPage(const Upp::String &url, Upp::HttpRequest &request, Upp::FileOut &file, Upp::String &file_name,
+						 bool authorize = true);
 
 	Upp::String HttpGetParameterValue(const Upp::String &param, const Upp::String &txt);
 	int HttpParse();
@@ -146,7 +144,7 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	void FileContent(const void *ptr, int size);
 	void FileProgress();
 
-	Upp::Vector<int> VersionSplit(const Upp::String &s);
+	Upp::Vector<int> VersionSplit(const Upp::String &s) const;
 	int VersionCompare(const Upp::String &s1, const Upp::String &s2);
 
 	void UpgradeCheck();
@@ -179,9 +177,9 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::String GetAppDirectory();
 	Upp::String GetCfgFileName();
 	Upp::String GetOS();
-	Upp::String sha256sum(const Upp::String &filename);
+	Upp::String sha256sum(const Upp::String &filename) const;
 };
 
 #endif
 
-// vim: ts=4
+// vim: ts=4 sw=4 expandtab

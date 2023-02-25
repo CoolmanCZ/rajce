@@ -33,4 +33,4 @@
 
 #endif // APP_VERSION_H
 
-// vim: ts=4
+// vim: ts=4 sw=4 expandtab

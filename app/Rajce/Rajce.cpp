@@ -8,12 +8,14 @@ using namespace Upp;
 
 static bool ReadHex(StringStream &in, dword &hex, int n) {
 	hex = 0;
-	while (n--) {
-		if (in.IsEof())
+	while (n-- != 0) {
+		if (in.IsEof()) {
 			return false;
+		}
 		int c = in.Get();
-		if (!IsXDigit(c))
+		if (!IsXDigit(c)) {
 			return false;
+		}
 		hex = (hex << 4) + ctoi(c);
 	}
 	return true;
@@ -23,17 +25,17 @@ static String GetUtfSmall(StringStream &in) {
 	String result;
 	dword hex = 0;
 	if (ReadHex(in, hex, 4)) {
-		if (hex >= 0xD800 && hex < 0xDBFF) {
+		if (hex >= 0xD800 && hex < 0xDBFF) { // NOLINT (readability-magic-numbers)
 			int c = in.Get();
 			int next = in.Get();
 			if (c == '\\' && next == 'u') {
-				dword hex2;
-				if (ReadHex(in, hex2, 4) && hex2 >= 0xDC00 && hex2 <= 0xDFFF) {
-					result.Cat(ToUtf8(((hex & 0x3ff) << 10) | (hex2 & 0x3ff) + 0x10000));
+				dword hex2 = 0;
+				if (ReadHex(in, hex2, 4) && hex2 >= 0xDC00 && hex2 <= 0xDFFF) {			  // NOLINT (readability-magic-numbers)
+					result.Cat(ToUtf8(((hex & 0x3ff) << 10) | (hex2 & 0x3ff) + 0x10000)); // NOLINT (readability-magic-numbers)
 				}
 			}
 		} else {
-			if (hex > 0 && hex < 0xDC00) {
+			if (hex > 0 && hex < 0xDC00) { // NOLINT (readability-magic-numbers)
 				result.Cat(ToUtf8(hex));
 			}
 		}
@@ -44,7 +46,7 @@ static String GetUtfSmall(StringStream &in) {
 static String GetUtfCapital(StringStream &in) {
 	String result;
 	dword hex = 0;
-	if (ReadHex(in, hex, 8) && hex > 0 && hex < 0x10ffff) {
+	if (ReadHex(in, hex, 8) && hex > 0 && hex < 0x10ffff) { // NOLINT (readability-magic-numbers)
 		result.Cat(ToUtf8(hex));
 	}
 	return result;
@@ -86,14 +88,7 @@ static String DecodeEscapedUtf(const String &s) {
 
 GUI_APP_MAIN { Rajce().Sizeable().Zoomable().Run(); }
 
-Rajce::Rajce()
-	: init_done(false), internal_name("rad"), cfg_download_new_only(true), cfg_download_video(true),
-	  cfg_append_user_name(true), cfg_append_album_name(true), cfg_enable_user_auth(false),
-	  cfg_use_https(true), cfg_use_https_proxy(false),
-	  cfg_http_timeout_req(default_http_timeout_req),
-	  cfg_http_timeout_con(default_http_timeout_con), http_started(false), file_http_loaded(0),
-	  upgrade_size(0), upgrade_http_loaded(0), current_lang(LNG_('E', 'N', 'U', 'S')) {
-
+Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
 	Icon(RajceImg::AppLogo());
 
@@ -206,8 +201,9 @@ int Rajce::UserDataFind(const String &url) {
 }
 
 void Rajce::UserDataLoad() {
-	for (int i = 0; i < userdata.GetCount(); ++i)
+	for (int i = 0; i < userdata.GetCount(); ++i) {
 		album_url.AddList(userdata[i].url);
+	}
 	UserDataSelect(cfg_album_url);
 }
 
@@ -217,19 +213,22 @@ void Rajce::UserDataAdd() {
 	data.user = album_user.GetData();
 	data.authorization = album_authorization.GetData();
 
-	if (UserDataFind(data.url) == -1)
+	if (UserDataFind(data.url) == -1) {
 		userdata.Add(data);
+	}
 }
 
 void Rajce::UserDataDel(const String &url) {
 	int i = UserDataFind(url);
-	if (i > -1)
+	if (i > -1) {
 		userdata.Remove(i);
+	}
 }
 
 void Rajce::UserDataSet() {
-	if (!init_done)
+	if (!init_done) {
 		return;
+	}
 
 	int i = UserDataFind(album_url.GetData());
 	if (i > -1) {
@@ -259,18 +258,21 @@ void Rajce::AlbumUrlAdd(const String &url) {
 void Rajce::AlbumUrlDel() {
 	String url = album_url.GetData();
 
-	if (url.GetCount() == 0)
+	if (url.GetCount() == 0) {
 		return;
+	}
 
-	if (PromptYesNo(DeQtf(Format("%s \"%s\" ?", t_("Delete url:"), url))) != IDOK)
+	if (PromptYesNo(DeQtf(Format("%s \"%s\" ?", t_("Delete url:"), url))) != IDOK) {
 		return;
+	}
 
 	int i = album_url.Find(url);
 	if (i > -1) {
 		album_url.Remove(i);
 		UserDataDel(url);
-		if (album_url.GetCount() > 0)
+		if (album_url.GetCount() > 0) {
 			UserDataSelect(album_url.Get(0));
+		}
 	}
 	album_url.Clear();
 	ToggleDownload();
@@ -300,11 +302,13 @@ bool Rajce::HttpProxy(HttpRequest &request) {
 	request.SSLProxyAuth("", "");
 
 	request.RequestTimeout(default_http_timeout_req);
-	if (timeout_req_text.Get() == 1)
+	if (timeout_req_text.Get() == 1) {
 		request.RequestTimeout(timeout_req.GetData());
+	}
 	request.Timeout(Null);
-	if (timeout_con_text.Get() == 1)
+	if (timeout_con_text.Get() == 1) {
 		request.Timeout(timeout_con.GetData());
+	}
 
 	if (~proxy_enabled) {
 		String proxy_url = ~http_proxy_url;
@@ -315,12 +319,14 @@ bool Rajce::HttpProxy(HttpRequest &request) {
 		if (proxy_url.GetCount() > 0 && proxy_port > 0) {
 			if (download_protocol.Get() == 0) {
 				request.CommonProxy(proxy_url, proxy_port);
-				if (proxy_user.GetCount() > 0)
+				if (proxy_user.GetCount() > 0) {
 					request.CommonProxyAuth(proxy_user, proxy_pass);
+				}
 			} else {
 				request.SSLProxy(proxy_url, proxy_port);
-				if (proxy_user.GetCount() > 0)
+				if (proxy_user.GetCount() > 0) {
 					request.SSLProxyAuth(proxy_user, proxy_pass);
+				}
 			}
 		} else {
 			ErrorOK(t_("[= HTTP proxy settings is wrong!]"));
@@ -332,8 +338,9 @@ bool Rajce::HttpProxy(HttpRequest &request) {
 }
 
 bool Rajce::HttpCheckUrl() {
-	if (!init_done)
+	if (!init_done) {
 		return false;
+	}
 
 	if (album_url.GetLength() == 0) {
 		ErrorOK(t_("[= Album URL is not valid!]"));
@@ -373,13 +380,15 @@ void Rajce::HttpPrependProtocol() {
 	String url = album_url.GetData();
 	// remove last '/' from url
 	int url_len = url.GetLength();
-	while ((url_len > 0) && (url[--url_len] == '/'))
+	while ((url_len > 0) && (url[--url_len] == '/')) {
 		url.Remove(url_len);
+	}
 
 	// prepend https:// or http:// protocol
 	String protocol = "https://";
-	if (download_protocol.Get() == 0)
+	if (download_protocol.Get() == 0) {
 		protocol = "http://";
+	}
 
 	int https_pos = url.FindFirstOf("//");
 	if (https_pos == -1) {
@@ -394,20 +403,24 @@ void Rajce::HttpAbort(bool ask) {
 	if (http_started) {
 		bool abort = !ask;
 
-		if (ask)
+		if (ask) {
 			abort = PromptOKCancel(t_("Abort download?")) == 1;
+		}
 
 		if (abort) {
 			http_started = false;
 
-			if (http.Do())
+			if (http.Do()) {
 				http.Abort();
+			}
 
-			if (file_http.Do())
+			if (file_http.Do()) {
 				file_http.Abort();
+			}
 
-			if (q.GetCount() > 0)
+			if (q.GetCount() > 0) {
 				q.Clear();
+			}
 
 			EnableElements(true);
 		}
@@ -415,8 +428,9 @@ void Rajce::HttpAbort(bool ask) {
 }
 
 void Rajce::HttpDownload() {
-	if (!HttpCheckParameters())
+	if (!HttpCheckParameters()) {
 		return;
+	}
 
 	http_started = true;
 	ToggleProtocol();
@@ -424,24 +438,24 @@ void Rajce::HttpDownload() {
 	SaveCfg();
 
 	String tmp_file;
-	if (HttpCheckUrl() && (ERR_NO_ERROR == HttpDownloadPage(album_url.GetData(), http,
-															http_file_out, http_file_out_string))) {
+	if (HttpCheckUrl() && (ERR_NO_ERROR == HttpDownloadPage(album_url.GetData(), http, http_file_out, http_file_out_string))) {
 		tmp_file = http_file_out_string;
-		if (HttpParse() != ERR_NO_ERROR)
+		if (HttpParse() != ERR_NO_ERROR) {
 			ErrorOK(t_("[= Http parse error!&& Files can't be downloaded!]"));
-		else
+		} else {
 			FileDownload();
+		}
 	}
 
-	if (FileExists(tmp_file))
+	if (FileExists(tmp_file)) {
 		DeleteFile(tmp_file);
+	}
 
 	http_started = false;
 	EnableElements(true);
 }
 
-int Rajce::HttpDownloadPage(const String &url, HttpRequest &request, FileOut &file,
-							String &file_name, bool authorize) {
+int Rajce::HttpDownloadPage(const String &url, HttpRequest &request, FileOut &file, String &file_name, bool authorize) {
 	file_name = GetTempFileName("rajce");
 
 	// prepare download statement
@@ -456,19 +470,19 @@ int Rajce::HttpDownloadPage(const String &url, HttpRequest &request, FileOut &fi
 	bool do_download = HttpProxy(request);
 
 	// begin download statement
-	if (do_download)
+	if (do_download) {
 		request.Url(url).Execute();
+	}
 
-	if (file.IsOpen())
+	if (file.IsOpen()) {
 		file.Close();
+	}
 
 	int result = ERR_NO_ERROR;
 
 	if (!request.IsSuccess()) {
 		ErrorOK(t_("[= Download has failed.&\1") +
-				(request.IsError()
-					 ? request.GetErrorDesc()
-					 : AsString(request.GetStatusCode()) + ' ' + request.GetReasonPhrase()));
+				(request.IsError() ? request.GetErrorDesc() : AsString(request.GetStatusCode()) + ' ' + request.GetReasonPhrase()));
 		result = ERR_DOWNLOAD;
 	}
 
@@ -527,8 +541,7 @@ int Rajce::HttpParse() {
 				String pass = ~album_pass;
 
 				if ((user.IsEmpty()) || (pass.IsEmpty())) {
-					ErrorOK(
-						t_("[= Authorization is required!&& Fill the album authorization data.]"));
+					ErrorOK(t_("[= Authorization is required!&& Fill the album authorization data.]"));
 				} else {
 					ErrorOK(t_("[= Authorization is required!&& Wrong album authorization.]"));
 				}
@@ -573,12 +586,9 @@ int Rajce::HttpParse() {
 
 				if (is_video.Compare("true") == 0) {
 					if (download_video.GetData()) {
-						String video_format =
-							photos[i]["videoStructure"]["items"][1]["video"][0]["format"]
-								.ToString();
+						String video_format = photos[i]["videoStructure"]["items"][1]["video"][0]["format"].ToString();
 						file_name = file_name + '.' + video_format;
-						full_path = UnixPath(
-							photos[i]["videoStructure"]["items"][1]["video"][0]["file"].ToString());
+						full_path = UnixPath(photos[i]["videoStructure"]["items"][1]["video"][0]["file"].ToString());
 					}
 				} else {
 					full_path = AppendFileName(album_storage, "images");
@@ -599,20 +609,18 @@ int Rajce::HttpParse() {
 					queue_data.album_server_dir = album_server_dir;
 
 					if (~append_user_name && ~album_authorization) {
-						queue_data.download_dir = AppendFileName(queue_data.download_dir,
-																 album_user.GetData().ToString());
+						queue_data.download_dir = AppendFileName(queue_data.download_dir, album_user.GetData().ToString());
 					}
 					if (~append_album_name) {
-						queue_data.download_dir =
-							AppendFileName(queue_data.download_dir, album_name);
+						queue_data.download_dir = AppendFileName(queue_data.download_dir, album_name);
 					}
 
 					// Check if the file is already downloaded
-					String test =
-						AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
+					String test = AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
 					test = AppendFileName(test, queue_data.download_name);
-					if (download_new_only.GetData() != 0 && FileExists(test))
+					if (download_new_only.GetData() != 0 && FileExists(test)) {
 						continue;
+					}
 
 					q.Add(queue_data);
 				}
@@ -629,14 +637,12 @@ void Rajce::FileDownload() {
 
 	if (http_started) {
 		for (int i = 0; i < q.GetCount(); ++i) {
-			download_label.SetText(
-				Format("%s %d/%d", t_("Download progress"), processed_files + 1, all_files));
+			download_label.SetText(Format("%s %d/%d", t_("Download progress"), processed_files + 1, all_files));
 
 			QueueData queue_data = q[i];
 			String file_download = UnixPath(queue_data.download_url);
 
-			file_http_out_string =
-				AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
+			file_http_out_string = AppendFileName(queue_data.download_dir, queue_data.album_server_dir);
 			file_http_out_string = AppendFileName(file_http_out_string, queue_data.download_name);
 
 			// Download the file
@@ -656,8 +662,9 @@ void Rajce::FileDownload() {
 				file_http.Url(file_download).Execute();
 			}
 
-			if (file_http_out.IsOpen())
+			if (file_http_out.IsOpen()) {
 				file_http_out.Close();
+			}
 
 			if (do_download) {
 				if (!file_http.IsSuccess()) {
@@ -665,8 +672,7 @@ void Rajce::FileDownload() {
 					Ctrl::ProcessEvents();
 					ErrorOK(t_("[= Download has failed.&\1") +
 							(file_http.IsError() ? file_http.GetErrorDesc()
-												 : AsString(file_http.GetStatusCode()) + ' ' +
-													   file_http.GetReasonPhrase()));
+												 : AsString(file_http.GetStatusCode()) + ' ' + file_http.GetReasonPhrase()));
 					break;
 				}
 				processed_files++;
@@ -738,8 +744,7 @@ void Rajce::InitText() {
 	download_abort.SetLabel(t_("Abort"));
 	download_exit.SetLabel(t_("Exit"));
 
-	homepage.SetQTF(t_("[^https://github.com/CoolmanCZ/rajce^ Rajce album downloader homepage]"),
-					Zoom(64, 600)); // NOLINT
+	homepage.SetQTF(t_("[^https://github.com/CoolmanCZ/rajce^ Rajce album downloader homepage]"), Zoom(64, 600)); // NOLINT
 	homepage.SetZoom(Zoom(1, 1));
 
 	lang.Tip(t_("Switch language"));
@@ -920,11 +925,13 @@ void Rajce::SaveCfg() {
 		 << "HTTP_TIMEOUT_CONNECTION = " << timeout_con.GetData() << "\n"
 		 << "USER_DATA = " << StoreAsJson(userdata) << "\n";
 
-	if (!FileExists(cfg_file))
+	if (!FileExists(cfg_file)) {
 		RealizePath(cfg_file);
+	}
 
-	if (!SaveFile(cfg_file, data))
+	if (!SaveFile(cfg_file, data)) {
 		ErrorOK(t_("Configuration file saving has failed!"));
+	}
 }
 
 String Rajce::GetAppDirectory() {
@@ -938,17 +945,16 @@ String Rajce::GetAppDirectory() {
 	ONCELOCK
 	RealizeDirectory(p);
 	String old = AppendFileName(GetHomeDirectory(), "." + internal_name);
-	if (DirectoryExists(old))
+	if (DirectoryExists(old)) {
 		FileMove(old, p);
+	}
 #else
 	Exclamation("Configuration is not implemented for this platform");
 #endif
 	return (p);
 }
 
-String Rajce::GetCfgFileName() {
-	return (AppendFileName(GetAppDirectory(), internal_name + ".ini"));
-}
+String Rajce::GetCfgFileName() { return (AppendFileName(GetAppDirectory(), internal_name + ".ini")); }
 
 String Rajce::GetOS() {
 	String result = "unix";
@@ -958,22 +964,24 @@ String Rajce::GetOS() {
 	return result;
 }
 
-String Rajce::sha256sum(const String &filename) {
+String Rajce::sha256sum(const String &filename) const {
 	String result;
 	Sha256Stream sha256;
 	FileIn file(filename);
 	int chunk = buffer_size * buffer_size;
 	while (!file.IsError() && !file.IsEof()) {
 		auto buff = file.Get(chunk);
-		if (buff.GetCount() <= 0)
+		if (buff.GetCount() <= 0) {
 			break;
+		}
 		sha256.Put(buff);
 	}
 
-	if (!file.IsError())
+	if (!file.IsError()) {
 		result = sha256.FinishString();
+	}
 
 	return result;
 }
 
-// vim: ts=4
+// vim: ts=4 sw=4 expandtab
