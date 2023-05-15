@@ -3,8 +3,10 @@
     url = https://github.com/CoolmanCZ/ultimatepp.git
     branch = master
     ignore = dirty
+    shallow = true
 [submodule "upp_cmake"]
     path = upp_cmake
     url = https://github.com/CoolmanCZ/upp_cmake.git
     branch = master
     ignore = dirty
+    shallow = true

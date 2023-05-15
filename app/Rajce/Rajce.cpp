@@ -30,7 +30,7 @@ static String GetUtfSmall(StringStream &in) {
 			int next = in.Get();
 			if (c == '\\' && next == 'u') {
 				dword hex2 = 0;
-				if (ReadHex(in, hex2, 4) && hex2 >= 0xDC00 && hex2 <= 0xDFFF) {			  // NOLINT (readability-magic-numbers)
+				if (ReadHex(in, hex2, 4) && hex2 >= 0xDC00 && hex2 <= 0xDFFF) {		      // NOLINT (readability-magic-numbers)
 					result.Cat(ToUtf8(((hex & 0x3ff) << 10) | (hex2 & 0x3ff) + 0x10000)); // NOLINT (readability-magic-numbers)
 				}
 			}
@@ -86,7 +86,9 @@ static String DecodeEscapedUtf(const String &s) {
 	return result;
 }
 
-GUI_APP_MAIN { Rajce().Sizeable().Zoomable().Run(); }
+GUI_APP_MAIN {
+	Rajce().Sizeable().Zoomable().Run();
+}
 
 Rajce::Rajce() {
 	SetLanguage(GetSystemLNG());
@@ -482,7 +484,7 @@ int Rajce::HttpDownloadPage(const String &url, HttpRequest &request, FileOut &fi
 
 	if (!request.IsSuccess()) {
 		ErrorOK(t_("[= Download has failed.&\1") +
-				(request.IsError() ? request.GetErrorDesc() : AsString(request.GetStatusCode()) + ' ' + request.GetReasonPhrase()));
+			(request.IsError() ? request.GetErrorDesc() : AsString(request.GetStatusCode()) + ' ' + request.GetReasonPhrase()));
 		result = ERR_DOWNLOAD;
 	}
 
@@ -671,8 +673,8 @@ void Rajce::FileDownload() {
 					DeleteFile(file_http_out_string);
 					Ctrl::ProcessEvents();
 					ErrorOK(t_("[= Download has failed.&\1") +
-							(file_http.IsError() ? file_http.GetErrorDesc()
-												 : AsString(file_http.GetStatusCode()) + ' ' + file_http.GetReasonPhrase()));
+						(file_http.IsError() ? file_http.GetErrorDesc()
+								     : AsString(file_http.GetStatusCode()) + ' ' + file_http.GetReasonPhrase()));
 					break;
 				}
 				processed_files++;
@@ -732,7 +734,7 @@ void Rajce::InitText() {
 	timeout_con_text.SetLabel(t_("Connection timeout (ms)"));
 	download_protocol.SetLabel(t_("Use https protocol for autorization and download"));
 	download_protocol.Tip(t_("HTTPS is used for authentication of the visited website and "
-							 "protection of the privacy and integrity of the exchanged data."));
+				 "protection of the privacy and integrity of the exchanged data."));
 	settings.SetLabel(t_("Settings"));
 	http_proxy_label.SetLabel(t_("HTTP proxy setting"));
 	http_proxy_url_text.SetText(t_("Proxy URL:"));
@@ -824,11 +826,17 @@ void Rajce::ToggleProtocol() {
 	UserDataSet();
 }
 
-void Rajce::ToggleTimeoutReq() { timeout_req.Enable(~timeout_req_text); }
+void Rajce::ToggleTimeoutReq() {
+	timeout_req.Enable(~timeout_req_text);
+}
 
-void Rajce::ToggleTimeoutCon() { timeout_con.Enable(~timeout_con_text); }
+void Rajce::ToggleTimeoutCon() {
+	timeout_con.Enable(~timeout_con_text);
+}
 
-void Rajce::ToggleUserDataSelect() { UserDataSelect(album_url.GetData()); }
+void Rajce::ToggleUserDataSelect() {
+	UserDataSelect(album_url.GetData());
+}
 
 void Rajce::HttpProxyShow(bool show) {
 	http_proxy_label.Show(show);
@@ -908,22 +916,22 @@ void Rajce::SaveCfg() {
 	String data;
 
 	data << APP_TITLE << ": Configuration Text File"
-		 << "\n\n"
-		 << "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
-		 << "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
-		 << "DOWNLOAD_VIDEO = " << (download_video.GetData() ? "true" : "false") << "\n"
-		 << "ALBUM_URL = " << album_url.GetData() << "\n"
-		 << "ALBUM_USER = " << album_user.GetData() << "\n"
-		 << "APPEND_USER_NAME = " << (append_user_name.GetData() ? "true" : "false") << "\n"
-		 << "APPEND_ALBUM_NAME = " << (append_album_name.GetData() ? "true" : "false") << "\n"
-		 << "ENABLE_USER_AUTH = " << (album_authorization.GetData() ? "true" : "false") << "\n"
-		 << "USE_HTTPS = " << (download_protocol.GetData() ? "true" : "false") << "\n"
-		 << "USE_HTTP_PROXY = " << (proxy_enabled.GetData() ? "true" : "false") << "\n"
-		 << "HTTP_PROXY_URL = " << http_proxy_url.GetData() << "\n"
-		 << "HTTP_PROXY_PORT = " << http_proxy_port.GetData() << "\n"
-		 << "HTTP_TIMEOUT_REQUEST = " << timeout_req.GetData() << "\n"
-		 << "HTTP_TIMEOUT_CONNECTION = " << timeout_con.GetData() << "\n"
-		 << "USER_DATA = " << StoreAsJson(userdata) << "\n";
+	     << "\n\n"
+	     << "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
+	     << "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
+	     << "DOWNLOAD_VIDEO = " << (download_video.GetData() ? "true" : "false") << "\n"
+	     << "ALBUM_URL = " << album_url.GetData() << "\n"
+	     << "ALBUM_USER = " << album_user.GetData() << "\n"
+	     << "APPEND_USER_NAME = " << (append_user_name.GetData() ? "true" : "false") << "\n"
+	     << "APPEND_ALBUM_NAME = " << (append_album_name.GetData() ? "true" : "false") << "\n"
+	     << "ENABLE_USER_AUTH = " << (album_authorization.GetData() ? "true" : "false") << "\n"
+	     << "USE_HTTPS = " << (download_protocol.GetData() ? "true" : "false") << "\n"
+	     << "USE_HTTP_PROXY = " << (proxy_enabled.GetData() ? "true" : "false") << "\n"
+	     << "HTTP_PROXY_URL = " << http_proxy_url.GetData() << "\n"
+	     << "HTTP_PROXY_PORT = " << http_proxy_port.GetData() << "\n"
+	     << "HTTP_TIMEOUT_REQUEST = " << timeout_req.GetData() << "\n"
+	     << "HTTP_TIMEOUT_CONNECTION = " << timeout_con.GetData() << "\n"
+	     << "USER_DATA = " << StoreAsJson(userdata) << "\n";
 
 	if (!FileExists(cfg_file)) {
 		RealizePath(cfg_file);
@@ -954,7 +962,9 @@ String Rajce::GetAppDirectory() {
 	return (p);
 }
 
-String Rajce::GetCfgFileName() { return (AppendFileName(GetAppDirectory(), internal_name + ".ini")); }
+String Rajce::GetCfgFileName() {
+	return (AppendFileName(GetAppDirectory(), internal_name + ".ini"));
+}
 
 String Rajce::GetOS() {
 	String result = "unix";
@@ -984,4 +994,4 @@ String Rajce::sha256sum(const String &filename) const {
 	return result;
 }
 
-// vim: ts=4 sw=4 expandtab
+// vim: ts=4 sw=4

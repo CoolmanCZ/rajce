@@ -209,9 +209,9 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
 				ErrorOK(Format("[= %s&&%s]",
-							   t_("The new version has been already downloaded, but sha256 hash "
-								  "doesn't match!"),
-							   DeQtf(file_path)));
+					       t_("The new version has been already downloaded, but sha256 hash "
+						  "doesn't match!"),
+					       DeQtf(file_path)));
 				return;
 			}
 		}
@@ -224,7 +224,7 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 	}
 
 	if (upgrade_url.GetCount() > 0 &&
-		ERR_NO_ERROR == HttpDownloadPage(upgrade_url, upgrade_http, upgrade_http_out, upgrade_http_out_string, false)) {
+	    ERR_NO_ERROR == HttpDownloadPage(upgrade_url, upgrade_http, upgrade_http_out, upgrade_http_out_string, false)) {
 		String tmp_file = upgrade_http_out_string;
 
 		if (FileExists(tmp_file)) {
@@ -237,7 +237,8 @@ void Rajce::UpgradeDownload(const String &download_path, const String &download_
 		if (upgrade.check_sha256.Get() > 0 && upgrade_sha256.GetCount() > 0) {
 			String sha256 = sha256sum(file_path);
 			if (upgrade_sha256.Compare(sha256) != 0) {
-				ErrorOK(Format("[= %s&&%s]", t_("The new version has been downloaded, but sha256 hash doesn't match!"), DeQtf(file_path)));
+				ErrorOK(Format("[= %s&&%s]", t_("The new version has been downloaded, but sha256 hash doesn't match!"),
+					       DeQtf(file_path)));
 				return;
 			}
 		}
@@ -328,4 +329,4 @@ void Rajce::UpgradeToggleRelease(bool enable) {
 	UpdateLayout();
 }
 
-// vim: ts=4 sw=4 expandtab
+// vim: ts=4 sw=4

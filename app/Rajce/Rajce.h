@@ -33,8 +33,12 @@ struct UserData {
 	Upp::String url;
 	Upp::String user;
 	bool authorization = false;
-	void Jsonize(Upp::JsonIO &jio) { jio("url", url)("user", user)("authorization", authorization); }
-	void Xmlize(Upp::XmlIO &xio) { Upp::XmlizeByJsonize(xio, *this); }
+	void Jsonize(Upp::JsonIO &jio) {
+		jio("url", url)("user", user)("authorization", authorization);
+	}
+	void Xmlize(Upp::XmlIO &xio) {
+		Upp::XmlizeByJsonize(xio, *this);
+	}
 };
 
 struct QueueData {
@@ -45,11 +49,11 @@ struct QueueData {
 };
 
 class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
-  public:
+      public:
 	Rajce();
 	~Rajce() override{};
 
-  private:
+      private:
 	const int version_numbers = 4;
 	const int default_http_timeout_req = 120000;
 	const int min_http_timeout_req = 1000;
@@ -85,7 +89,7 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	Upp::FrameRight<Upp::Button> del;
 
 	Upp::HttpRequest http;
-	Upp::FileOut http_file_out;		  // download directory with filename
+	Upp::FileOut http_file_out;	  // download directory with filename
 	Upp::String http_file_out_string; // download directory with filename
 	bool http_started = false;
 
@@ -133,8 +137,7 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	void HttpPrependProtocol();
 	void HttpAbort(bool ask);
 	void HttpDownload();
-	int HttpDownloadPage(const Upp::String &url, Upp::HttpRequest &request, Upp::FileOut &file, Upp::String &file_name,
-						 bool authorize = true);
+	int HttpDownloadPage(const Upp::String &url, Upp::HttpRequest &request, Upp::FileOut &file, Upp::String &file_name, bool authorize = true);
 
 	Upp::String HttpGetParameterValue(const Upp::String &param, const Upp::String &txt);
 	int HttpParse();
@@ -182,4 +185,4 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 
 #endif
 
-// vim: ts=4 sw=4 expandtab
+// vim: ts=4 sw=4
