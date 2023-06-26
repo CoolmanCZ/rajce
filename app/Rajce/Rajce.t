@@ -61,9 +61,8 @@ csCZ("[= Je vy\305\276adov\303\241na autorizace!&& Povolte u\305\276ivatelskou "
 T_("Download progress")
 csCZ("Status stahov\303\241n\303\255")
 
-T_("[= Download complete!&& Files downloaded: ")
-csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Sta\305\276en\303\275ch "
-     "soubor\305\257: ")
+T_("[= Download complete!&& Files total/downloaded: ")
+csCZ("[= Stahov\303\241n\303\255 dokon\304\215eno!&& Soubor\305\257 celkem/sta\305\276eno: ")
 
 T_("Album")
 csCZ("Album")
@@ -85,6 +84,10 @@ csCZ("Stahovat pouze nov\303\251 soubory")
 
 T_("Download video files")
 csCZ("Stahovat video soubory")
+
+T_("Continue with download in case of error 404 Not Found")
+csCZ("Pokra\304\215ovat ve stahov\303\241n\303\255 v p\305\231\303\255pad\304\233 "
+     "chyby 404 Not Found")
 
 T_("Append user name to download directory")
 csCZ("P\305\231ipojit u\305\276ivatelsk\303\251 jm\303\251no k adres\303\241\305\231i "

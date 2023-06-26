@@ -49,11 +49,11 @@ struct QueueData {
 };
 
 class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
-      public:
+  public:
 	Rajce();
 	~Rajce() override{};
 
-      private:
+  private:
 	const int version_numbers = 4;
 	const int default_http_timeout_req = 120000;
 	const int min_http_timeout_req = 1000;
@@ -61,12 +61,14 @@ class Rajce : public Upp::WithRajceLayout<Upp::TopWindow> {
 	const int min_http_timeout_con = 0;
 	const int buffer_size = 1024;
 	const int sha256_size = 64;
+	const int status_not_found = 404;
 
 	Upp::String cfg_download_dir;
 	Upp::String cfg_album_url;
 	Upp::String cfg_album_user;
 	bool cfg_download_new_only = true;
 	bool cfg_download_video = true;
+	bool cfg_download_continue = false;
 	bool cfg_append_user_name = true;
 	bool cfg_append_album_name = true;
 	bool cfg_enable_user_auth = false;

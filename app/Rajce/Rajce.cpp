@@ -152,6 +152,7 @@ Rajce::Rajce() {
 	download_dir.SetData(cfg_download_dir);
 	download_new_only.SetData(cfg_download_new_only);
 	download_video.Set(static_cast<int>(cfg_download_video));
+	download_continue.SetData(cfg_download_continue);
 	append_user_name.SetData(cfg_append_user_name);
 	append_album_name.SetData(cfg_append_album_name);
 	album_authorization.SetData(cfg_enable_user_auth);
@@ -635,6 +636,7 @@ int Rajce::HttpParse() {
 
 void Rajce::FileDownload() {
 	int processed_files = 0;
+	int failed_files = 0;
 	int all_files = q.GetCount();
 
 	if (http_started) {
@@ -672,10 +674,15 @@ void Rajce::FileDownload() {
 				if (!file_http.IsSuccess()) {
 					DeleteFile(file_http_out_string);
 					Ctrl::ProcessEvents();
-					ErrorOK(t_("[= Download has failed.&\1") +
-						(file_http.IsError() ? file_http.GetErrorDesc()
-								     : AsString(file_http.GetStatusCode()) + ' ' + file_http.GetReasonPhrase()));
-					break;
+					int status = file_http.GetStatusCode();
+					if (status == status_not_found && download_continue.GetData()) {
+						failed_files++;
+					} else {
+						ErrorOK(t_("[= Download has failed.&\1") +
+							(file_http.IsError() ? file_http.GetErrorDesc()
+									     : AsString(status) + ' ' + file_http.GetReasonPhrase()));
+						break;
+					}
 				}
 				processed_files++;
 			}
@@ -686,7 +693,8 @@ void Rajce::FileDownload() {
 	download1_name.SetText("");
 	download1_pi.Set(0, 1);
 
-	Exclamation(t_("[= Download complete!&& Files downloaded: ") + AsString(processed_files) + ']');
+	Exclamation(t_("[= Download complete!&& Files total/downloaded: ") + AsString(q.GetCount()) + '/' + AsString(processed_files - failed_files) +
+		    ']');
 }
 
 void Rajce::FileStart() {
@@ -727,6 +735,7 @@ void Rajce::InitText() {
 	download_text.SetText(t_("Download directory:"));
 	download_new_only.SetLabel(t_("Download new files only"));
 	download_video.SetLabel(t_("Download video files"));
+	download_continue.SetLabel(t_("Continue with download in case of error 404 Not Found"));
 	append_user_name.SetLabel(t_("Append user name to download directory"));
 	append_album_name.SetLabel(t_("Append album name to download directory"));
 	album_authorization.SetLabel(t_("Enable album authorization"));
@@ -894,6 +903,7 @@ void Rajce::LoadCfg() {
 	cfg_download_dir = data.Get("DOWNLOAD_DIR", dir);
 	cfg_download_new_only = data.Get("DOWNLOAD_NEW_ONLY", Null) == "true";
 	cfg_download_video = data.Get("DOWNLOAD_VIDEO", Null) == "true";
+	cfg_download_continue = data.Get("DOWNLOAD_CONTINUE", Null) == "true";
 	cfg_album_url = data.Get("ALBUM_URL", Null);
 	cfg_album_user = data.Get("ALBUM_USER", Null);
 	cfg_append_user_name = data.Get("APPEND_USER_NAME", Null) == "true";
@@ -920,6 +930,7 @@ void Rajce::SaveCfg() {
 	     << "DOWNLOAD_DIR = " << download_dir.GetData() << "\n"
 	     << "DOWNLOAD_NEW_ONLY = " << (download_new_only.GetData() ? "true" : "false") << "\n"
 	     << "DOWNLOAD_VIDEO = " << (download_video.GetData() ? "true" : "false") << "\n"
+	     << "DOWNLOAD_CONTINUE = " << (download_continue.GetData() ? "true" : "false") << "\n"
 	     << "ALBUM_URL = " << album_url.GetData() << "\n"
 	     << "ALBUM_USER = " << album_user.GetData() << "\n"
 	     << "APPEND_USER_NAME = " << (append_user_name.GetData() ? "true" : "false") << "\n"
