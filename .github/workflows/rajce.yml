@@ -1,0 +1,112 @@
+name: Rajce CMake build
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: 'Release'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { sys: mingw32, APP_BIT: '32bit' }
+          - { sys: mingw64, APP_BIT: '64bit' }
+
+    runs-on: windows-latest
+
+    outputs:
+      APP_VERSION: ${{steps.version.outputs.APP_VERSION}}
+
+    env:
+      BUILD_DIR: build.${{matrix.sys}}
+      ROOT_DIR: ${{github.workspace}}
+
+    steps:
+    - name: Checkout git repository
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Generate CMakeLists files
+      shell: bash
+      run: ./GenerateCMakeFiles.sh
+
+    - name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          ninja:p
+
+    - name: Build binary
+      shell: msys2 {0}
+      run: |
+        cmake -G Ninja -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake --build ${{env.BUILD_DIR}}
+
+    - name: Parse version file
+      shell: bash
+      run: echo "APP_VERSION=$(grep '#define APP_VERSION_STR' '${{env.ROOT_DIR}}/app/Rajce/Version.h' | sed -e 's/.*"\([0-9\.]*\)".*/\1/')" >> "$GITHUB_ENV"
+
+    - name: Export version information
+      id: version
+      shell: bash
+      run: echo "APP_VERSION=${{env.APP_VERSION}}" >> "$GITHUB_OUTPUT"
+
+    - name: Create source archive
+      if: matrix.sys == 'mingw32'
+      shell: bash
+      run: |
+        dir
+        mv "${{env.ROOT_DIR}}/Rajce.upp.tar.bz2" "${{env.ROOT_DIR}}/Rajce.upp-${{env.APP_VERSION}}.tar.bz2"
+        sha256sum "${{env.ROOT_DIR}}/Rajce.upp-${{env.APP_VERSION}}.tar.bz2" > "${{env.ROOT_DIR}}/Rajce.upp-${{env.APP_VERSION}}.tar.bz2.sha256"
+
+    - name: Create binary archive
+      shell: bash
+      run: |
+        cp "${{env.ROOT_DIR}}/app/Rajce/Copying" "${{env.BUILD_DIR}}/bin/LICENSE"
+        7z a "${{env.ROOT_DIR}}/rajce-${{env.APP_VERSION}}-${{matrix.APP_BIT}}.zip" "./${{env.BUILD_DIR}}/bin/*"
+        sha256sum "${{env.ROOT_DIR}}/rajce-${{env.APP_VERSION}}-${{matrix.APP_BIT}}.zip" > "${{env.ROOT_DIR}}/rajce-${{env.APP_VERSION}}-${{matrix.APP_BIT}}.zip.sha256"
+
+    - name: Store archives
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{matrix.sys}}-archives
+        if-no-files-found: ignore
+        path: |
+          ${{env.ROOT_DIR}}/Rajce.upp-${{env.APP_VERSION}}.tar.bz2
+          ${{env.ROOT_DIR}}/Rajce.upp-${{env.APP_VERSION}}.tar.bz2.sha256
+          ${{env.ROOT_DIR}}/rajce-${{env.APP_VERSION}}-${{matrix.APP_BIT}}.zip
+          ${{env.ROOT_DIR}}/rajce-${{env.APP_VERSION}}-${{matrix.APP_BIT}}.zip.sha256
+
+  release:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    env:
+      APP_VERSION: ${{needs.build.outputs.APP_VERSION}}
+
+    steps:
+    - name: Retrieve archives
+      uses: actions/download-artifact@v4
+      with:
+        path: archives
+        merge-multiple: true
+
+    - name: Create release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        release_name: 'v${{env.APP_VERSION}}'
+        target_commit: ${{github.sha}}
+        body: ${{ github.event.head_commit.message }}
+        file: archives/*
+        file_glob: true
+

@@ -4,13 +4,13 @@ Rajce album downloader is the U++ GUI application to retrieve images/videos from
 
 [U++](http://www.ultimatepp.org/) is a C++ cross-platform rapid application development framework focused on programmers productivity. It includes a set of libraries (GUI, SQL, etc.), and an integrated development environment.
 
-# AppVeyor build status
+# GitHub actions build status
 
-[AppVeyor](https://www.appveyor.com) is used to build Windows binaries and deploy them to the GitHub releases directory.
+[GitHub actions](https://docs.github.com/en/actions) is used to build Windows binaries and deploy them to the GitHub releases directory.
 
 |branch  | status|
 |---     |---    |
-|master  |[![Build status](https://ci.appveyor.com/api/projects/status/github/CoolmanCZ/rajce?svg=true)](https://ci.appveyor.com/project/CoolmanCZ/rajce)|
+|master  |[![Build status](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml/badge.svg?branch=master)](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml)|
 
 *The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.*
 
@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.22 - Build and release Windows binaries using GitHub actions
 * 1.5.21 - Submodules update to fix build error
 * 1.5.20 - Option to continue with download in case of error 404 Not Found
 * 1.5.19 - Enable append of album user name to the download directory for authorized album only
