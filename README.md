@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.21 - Submodules update to fix build error
 * 1.5.20 - Option to continue with download in case of error 404 Not Found
 * 1.5.19 - Enable append of album user name to the download directory for authorized album only
 * 1.5.18 - Fix of #17 - decode escaped UTF, submodules update, new option to append album user name to download directory
