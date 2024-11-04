@@ -36,7 +36,7 @@ GENERATE_PACKAGE="1"        # set to "1" - create a tarball package of the proje
 
 #GENERATE_NOT_Cxx="1"                # set to "1" - do not use compiler -std=c++14 parameter (compiler parameter is enabled as default)
 #GENERATE_NOT_PARALLEL="1"           # set to "1" - do not build with multiple processes (parralel build is enabled as default)
-GENERATE_NOT_PCH="1"                # set to "1" - do not build with precompiled header support (precompiled header support is enabled as default)
+#GENERATE_NOT_PCH="1"                # set to "1" - do not build with precompiled header support (precompiled header support is enabled as default)
 if [ "${OS}" == "SunOS" ]; then
   GENERATE_NOT_REMOVE_UNUSED_CODE="1" # set to "1" - do not use compile and link parameters to remove unused code and functions (unused code and functions are removed as default)
 fi
@@ -49,7 +49,7 @@ UPP_SRC_DIR="${UPP_SRC_BASE}/uppsrc"
 
 PROJECT_NAME="app/Rajce/Rajce.upp"
 
-PROJECT_EXTRA_COMPILE_FLAGS=""
+PROJECT_EXTRA_COMPILE_FLAGS="-Wno-nontrivial-memaccess"
 PROJECT_EXTRA_LINK_FLAGS=""
 PROJECT_FLAGS="-DflagGUI -DflagMT -DflagGCC"
 

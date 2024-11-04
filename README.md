@@ -10,7 +10,7 @@ Rajce album downloader is the U++ GUI application to retrieve images/videos from
 
 |branch  | status|
 |---     |---    |
-|master  |[![Build status](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml/badge.svg?branch=master)](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml)|
+|master  |[![Rajce CMake build](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml/badge.svg)](https://github.com/CoolmanCZ/rajce/actions/workflows/rajce.yml)|
 
 *The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.*
 
