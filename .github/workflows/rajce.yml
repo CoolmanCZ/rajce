@@ -34,7 +34,7 @@ jobs:
 
     - name: Generate CMakeLists files
       shell: bash
-      run: ./GenerateCMakeFiles.sh
+      run: ./GenerateCMakeFiles.sh "MINGW"
 
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2

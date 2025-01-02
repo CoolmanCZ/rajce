@@ -11,7 +11,7 @@
 
 #define APP_NAME      "Rajce"
 #define APP_TITLE     "Rajce album downloader"
-#define APP_COPYRIGHT "Copyright (c) 2016-2024"
+#define APP_COPYRIGHT "Copyright (c) 2016-2025"
 
 #define APP_MAJOR_VER 1
 #define APP_MINOR_VER 5

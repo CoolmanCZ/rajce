@@ -26,5 +26,4 @@ Checks: '-*,
  -readability-magic-numbers'
 WarningsAsErrors: ''
 HeaderFilterRegex: 'app/Rajce/.*\.(h|hpp)$'
-AnalyzeTemporaryDtors: false
 FormatStyle:     none
