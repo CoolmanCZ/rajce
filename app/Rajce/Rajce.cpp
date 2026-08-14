@@ -553,7 +553,8 @@ int Rajce::HttpParse() {
 		}
 
 		if (txt.Find("settings") && (txt.Find("legacy_media") > 0) && (txt.Find("photoID") > 0)) {
-			int pos = txt.FindFirstOf("[");
+			int pos = txt.Find("legacy_media");
+			pos = txt.FindFirstOf("[", pos);
 			Value photos = ParseJSON(txt.Mid(pos));
 
 			album_name = HttpGetParameterValue("album_name", txt);
