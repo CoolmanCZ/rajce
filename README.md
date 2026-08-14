@@ -45,6 +45,7 @@ Download latest windows binaries and source code from [GitHub releases](https://
 
 # Changelog
 
+* 1.5.26 - Fix JSON parsing by adjusting bracket search position
 * 1.5.25 - Replace prohibited characters in Windows in album name
 * 1.5.24 - Fixed a bug with missing album name, Fixed a bug with options enabled during active download
 * 1.5.23 - Fix of #23 - Downloading is not working, Submodules update
